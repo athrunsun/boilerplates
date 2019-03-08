@@ -4,8 +4,8 @@ import * as ParcelBundler from 'parcel-bundler';
 import * as httpProxy from 'http-proxy-middleware';
 import * as history from 'connect-history-api-fallback';
 
-import PATHS from '@eng/paths';
-import CONFIG from '@eng/config';
+import { PATHS } from '@eng/paths';
+import { CONFIG } from '@eng/config';
 import applyApiMocks from '@eng/dev/apiMock';
 
 const logger = debug('eng:dev:server');

@@ -1,8 +1,8 @@
-# React-Webpack-TypeScript-Boilerplate
+# React-Webpack-TypeScript-Babel-Boilerplate
 A React project boilerplate with:
 
 - Webpack as bundler
-- TypeScript as transpiler
+- Babel as transpiler, `tsc` only responsible for type checking
 - [react-router](https://github.com/ReactTraining/react-router) as routing library
 - Jest as testing framework
 - [typestyle](https://github.com/typestyle/typestyle) as css-in-js library

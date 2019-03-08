@@ -1,5 +1,5 @@
 import * as lodash from 'lodash';
-import * as URI from 'urijs';
+import URI from 'urijs';
 
 const createUrlWithServerAddress = (
     serverAddress: string,

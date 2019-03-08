@@ -2,7 +2,7 @@ import * as debug from 'debug';
 import * as path from 'path';
 import { Express } from 'express';
 
-import CONFIG from '@eng/config';
+import { CONFIG } from '@eng/config';
 import * as appConstants from '$app/constants';
 
 const logger = debug('eng:dev:apiMock');

@@ -6,9 +6,6 @@ A React project boilerplate with:
 - (No testing framework baked in yet)
 - [typestyle](https://github.com/typestyle/typestyle) as css-in-js library
 
-# Warning
-This boilerplate does NOT work right now! Because Parcel doesn't support configuring a custom `tsconfig.json` file like `tsconfig.app.json`.
-
 ## FAQ
 ### Why NOT create-react-app?
 CRA is good for beginners but its ability for customization is still NOT enough. I want to adjust TS/Webpack configuration based on my needs.

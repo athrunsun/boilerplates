@@ -1,7 +1,7 @@
 import * as debug from 'debug';
 import * as ParcelBundler from 'parcel-bundler';
 
-import PATHS from '@eng/paths';
+import { PATHS } from '@eng/paths';
 
 const logger = debug('eng:prod:build');
 
