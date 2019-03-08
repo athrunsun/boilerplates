@@ -1,4 +1,5 @@
-import 'core-js';
+import '@babel/polyfill';
+
 import * as log from 'loglevel';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';

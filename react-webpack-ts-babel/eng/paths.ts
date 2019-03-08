@@ -15,7 +15,6 @@ const PATHS = {
     appBuildOutput: resolveApp('dist'),
     tsConfigBase: resolveApp('tsconfig.json'),
     tsConfigApp: resolveApp('tsconfig.app.json'),
-    tsConfigAppBabel: resolveApp('tsconfig.app.babel.json'),
     tsConfigTest: resolveApp('tsconfig.test.json'),
     tsConfigWebpack: resolveApp('tsconfig.webpack.json'),
 };
