@@ -2,7 +2,7 @@ import webpack from 'webpack';
 import webpackMerge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-import PATHS from '@eng/paths';
+import { PATHS } from '@eng/paths';
 import webpackBaseConfig from '@eng/webpack/webpack.base.config';
 
 const config = webpackMerge(webpackBaseConfig, {

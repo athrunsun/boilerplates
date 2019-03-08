@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 
-import PATHS from '@eng/paths';
-import CONFIG from '@eng/config';
+import { PATHS } from '@eng/paths';
+import { CONFIG } from '@eng/config';
 
 const definePluginDefinitions = { 'process.env': {} };
 

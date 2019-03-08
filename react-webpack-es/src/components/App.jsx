@@ -1,8 +1,13 @@
 import * as log from 'loglevel';
 import React from 'react';
+import { Route, Link } from 'react-router-dom';
 import { style, cssRule } from 'typestyle';
 
+import * as routePathHelpers from '@app/helpers/routePath';
+
 import * as titleServices from '@app/services/title';
+
+import ErrorTest from '@app/components/ErrorBoundaryTest';
 
 cssRule('body', {
     margin: 0,
@@ -11,7 +16,7 @@ cssRule('body', {
 const moduleStyles = {
     container: style({
         $debugName: 'container',
-        height: '100vh',
+        minHeight: '100vh',
         width: '100vw',
         backgroundColor: '#eee',
         display: 'flex',
@@ -20,6 +25,7 @@ const moduleStyles = {
         alignItems: 'center',
         $nest: {
             '& > div': {
+                display: 'flex',
                 fontSize: '2rem',
                 color: '#aaa',
                 padding: '1rem',
@@ -52,10 +58,27 @@ class App extends React.Component {
 
         return (
             <div className={moduleStyles.container}>
-                <div>This is the app page...</div>
-                {process.env.NODE_ENV === 'development' && (
-                    <div>{`If you see document's title changed to '${docTitle}', api mock works.`}</div>
-                )}
+                <div className={style({ display: 'flex' })}>
+                    <Link to={routePathHelpers.routePathProvider.APP}>Home</Link> |{' '}
+                    <Link to={routePathHelpers.routePathProvider.ERROR_BOUNDARY_TEST}>ErrorBoundary Test</Link>
+                </div>
+                <Route
+                    exact={true}
+                    path={routePathHelpers.routePathProvider.APP}
+                    render={() => (
+                        <>
+                            <div>This is the home page...</div>
+                            {process.env.NODE_ENV === 'development' && (
+                                <div>{`If you see document's title changed to '${docTitle}', api mock works.`}</div>
+                            )}
+                        </>
+                    )}
+                />
+                <Route
+                    exact={true}
+                    path={routePathHelpers.routePathProvider.ERROR_BOUNDARY_TEST}
+                    component={ErrorTest}
+                />
             </div>
         );
     }

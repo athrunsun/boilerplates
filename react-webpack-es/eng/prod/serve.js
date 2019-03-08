@@ -4,7 +4,7 @@ import serveStatic from 'serve-static';
 import httpProxy from 'http-proxy-middleware';
 import history from 'connect-history-api-fallback';
 
-import CONFIG from '@eng/config';
+import { CONFIG } from '@eng/config';
 
 const logger = debug('eng:prod:server');
 

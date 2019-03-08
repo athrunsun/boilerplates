@@ -18,4 +18,4 @@ const PATHS = {
     tsConfigTest: resolveApp('tsconfig.test.json'),
 };
 
-export default PATHS;
+export { PATHS };

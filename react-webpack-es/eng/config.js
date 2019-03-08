@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import * as dotenv from 'dotenv';
 
-import PATHS from '@eng/paths';
+import { PATHS } from '@eng/paths';
 
 const logger = debug('eng:config');
 
@@ -42,4 +42,4 @@ if (undefinedConfigEntries.length > 0) {
     throw new Error(`The following config entries are missing: ${undefinedConfigEntries.join(', ')}`);
 }
 
-export default CONFIG;
+export { CONFIG };

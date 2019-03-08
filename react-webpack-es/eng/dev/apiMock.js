@@ -1,7 +1,7 @@
 import debug from 'debug';
 import path from 'path';
 
-import CONFIG from '@eng/config';
+import { CONFIG } from '@eng/config';
 import * as appConstants from '@app/constants';
 
 const logger = debug('eng:dev:apiMock');

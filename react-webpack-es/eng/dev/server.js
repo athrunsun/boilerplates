@@ -7,7 +7,7 @@ import httpProxy from 'http-proxy-middleware';
 import history from 'connect-history-api-fallback';
 
 import webpackConfig from '@eng/webpack/webpack.devserver.config';
-import CONFIG from '@eng/config';
+import { CONFIG } from '@eng/config';
 import applyApiMocks from '@eng/dev/apiMock';
 
 const logger = debug('eng:dev:server');

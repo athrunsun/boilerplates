@@ -3,6 +3,7 @@ A React project boilerplate with:
 
 - Webpack as bundler
 - Babel as transpiler
+- [react-router](https://github.com/ReactTraining/react-router) as routing library
 - Jest as testing framework
 - [typestyle](https://github.com/typestyle/typestyle) as css-in-js library
 
