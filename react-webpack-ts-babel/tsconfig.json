@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist",
+        "baseUrl": ".",
+        "paths": {
+            "@app/*": ["src/*"],
+            "@test/*": ["__tests__/*"],
+            "@eng/*": ["eng/*"]
+        },
+        "module": "esnext",
+        "target": "es5",
+        "importHelpers": true,
+        "lib": ["es6", "dom"],
+        "sourceMap": true,
+        "allowJs": true,
+        "jsx": "react",
+        "moduleResolution": "node",
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noUnusedLocals": false
+    },
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}
