@@ -2,7 +2,7 @@ import webpackMerge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-import PATHS from '@eng/paths';
+import { PATHS } from '@eng/paths';
 import webpackBaseConfig from '@eng/webpack/webpack.base.config';
 
 const config = webpackMerge(webpackBaseConfig, {
@@ -22,13 +22,13 @@ const config = webpackMerge(webpackBaseConfig, {
                 exclude: file => /node_modules/.test(file) && !/\.vue\.js/.test(file),
                 use: [
                     {
-                        loader: 'babel-loader',
+                        loader: require.resolve('babel-loader'),
                     },
                 ],
             },
             {
                 test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+                use: [MiniCssExtractPlugin.loader, require.resolve('css-loader')],
             },
         ],
     },

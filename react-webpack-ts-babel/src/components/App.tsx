@@ -9,6 +9,8 @@ import * as titleServices from '@app/services/title';
 
 import ErrorTest from '@app/components/ErrorBoundaryTest';
 
+const DynamicComp = React.lazy(() => import('@app/components/DynamicComp'));
+
 cssRule('body', {
     margin: 0,
 });
@@ -60,24 +62,33 @@ class App extends React.Component<any> {
             <div className={moduleStyles.container}>
                 <div className={style({ display: 'flex' })}>
                     <Link to={routePathHelpers.routePathProvider.APP}>Home</Link> |{' '}
-                    <Link to={routePathHelpers.routePathProvider.ERROR_BOUNDARY_TEST}>ErrorBoundary Test</Link>
+                    <Link to={routePathHelpers.routePathProvider.ERROR_BOUNDARY_TEST}>ErrorBoundary Test</Link> |{' '}
+                    <Link to={routePathHelpers.routePathProvider.DYNAMIC_LOAD_TEST}>Dynamic Load Test</Link>
                 </div>
-                <Route
-                    exact={true}
-                    path={routePathHelpers.routePathProvider.APP}
-                    render={() => (
-                        <>
-                            <div>This is the home page...</div>
-                            {process.env.NODE_ENV === 'development' && (
-                                <div>
-                                    If you see document's title changed to '{docTitle}
-                                    ', api mock works.
-                                </div>
-                            )}
-                        </>
-                    )}
-                />
-                <Route exact={true} path={routePathHelpers.routePathProvider.ERROR_BOUNDARY_TEST} component={ErrorTest} />
+                <React.Suspense fallback={null}>
+                    <Route
+                        exact={true}
+                        path={routePathHelpers.routePathProvider.APP}
+                        render={() => (
+                            <>
+                                <div>This is the home page...</div>
+                                {process.env.NODE_ENV === 'development' && (
+                                    <div>{`If you see document's title changed to '${docTitle}', api mock works.`}</div>
+                                )}
+                            </>
+                        )}
+                    />
+                    <Route
+                        exact={true}
+                        path={routePathHelpers.routePathProvider.ERROR_BOUNDARY_TEST}
+                        component={ErrorTest}
+                    />
+                    <Route
+                        exact={true}
+                        path={routePathHelpers.routePathProvider.DYNAMIC_LOAD_TEST}
+                        component={DynamicComp}
+                    />
+                </React.Suspense>
             </div>
         );
     }

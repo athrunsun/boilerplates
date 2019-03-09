@@ -1,5 +1,5 @@
 module.exports = {
-    presets: ['@babel/preset-env'],
+    presets: [require.resolve('@babel/preset-env')],
     plugins: [
         [
             require.resolve('babel-plugin-module-resolver'),
@@ -11,8 +11,9 @@ module.exports = {
                 },
             },
         ],
-        '@babel/plugin-proposal-class-properties',
-        '@babel/plugin-transform-regenerator',
-        '@babel/plugin-transform-runtime',
+        require.resolve('@babel/plugin-proposal-class-properties'),
+        require.resolve('@babel/plugin-syntax-dynamic-import'),
+        require.resolve('@babel/plugin-transform-regenerator'),
+        require.resolve('@babel/plugin-transform-runtime'),
     ],
 };

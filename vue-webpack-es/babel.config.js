@@ -13,14 +13,15 @@ module.exports = api => {
                 },
             },
         ],
-        '@babel/plugin-proposal-class-properties',
-        '@babel/plugin-transform-regenerator',
+        require.resolve('@babel/plugin-proposal-class-properties'),
+        require.resolve('@babel/plugin-syntax-dynamic-import'),
+        require.resolve('@babel/plugin-transform-regenerator'),
         // https://github.com/babel/babel-loader#babel-is-injecting-helpers-into-each-file-and-bloating-my-code
-        '@babel/plugin-transform-runtime',
+        require.resolve('@babel/plugin-transform-runtime'),
     ];
 
     return {
-        presets: ['@babel/preset-env'],
+        presets: [require.resolve('@babel/preset-env')],
         plugins,
     };
 };

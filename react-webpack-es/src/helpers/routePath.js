@@ -7,6 +7,7 @@ const routePathProvider = {
     ROOT: composeRouterPath('/'),
     APP: composeRouterPath('/app'),
     ERROR_BOUNDARY_TEST: composeRouterPath('/app/error'),
+    DYNAMIC_LOAD_TEST: composeRouterPath('/app/dynamic'),
 };
 
 export { routePathProvider };

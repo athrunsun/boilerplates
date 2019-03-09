@@ -2,7 +2,7 @@ import webpack from 'webpack';
 import webpackMerge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-import PATHS from '@eng/paths';
+import { PATHS } from '@eng/paths';
 import webpackBaseConfig from '@eng/webpack/webpack.base.config';
 
 const config = webpackMerge(webpackBaseConfig, {
@@ -28,7 +28,7 @@ const config = webpackMerge(webpackBaseConfig, {
                 exclude: file => /node_modules/.test(file) && !/\.vue\.js/.test(file),
                 use: [
                     {
-                        loader: 'babel-loader',
+                        loader: require.resolve('babel-loader'),
                         options: {
                             cacheDirectory: true,
                         },
@@ -39,13 +39,13 @@ const config = webpackMerge(webpackBaseConfig, {
                 test: /\.css$/,
                 use: [
                     {
-                        loader: 'vue-style-loader',
+                        loader: require.resolve('vue-style-loader'),
                         options: {
                             sourceMap: true,
                         },
                     },
                     {
-                        loader: 'css-loader',
+                        loader: require.resolve('css-loader'),
                         options: {
                             sourceMap: true,
                         },

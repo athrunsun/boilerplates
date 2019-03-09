@@ -1,8 +1,8 @@
 import webpack from 'webpack';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
 
-import PATHS from '@eng/paths';
-import CONFIG from '@eng/config';
+import { PATHS } from '@eng/paths';
+import { CONFIG } from '@eng/config';
 
 const definePluginDefinitions = { 'process.env': {} };
 
@@ -35,7 +35,7 @@ const config = {
             {
                 test: /\.vue$/,
                 use: {
-                    loader: 'vue-loader',
+                    loader: require.resolve('vue-loader'),
                     options: {
                         compilerOptions: {
                             preserveWhitespace: false,
@@ -47,12 +47,12 @@ const config = {
                 test: /\.(bmp|png|jpe?g|gif|webp|ico)(\?.*)?$/,
                 use: [
                     {
-                        loader: 'url-loader',
+                        loader: require.resolve('url-loader'),
                         options: {
                             limit: 4096,
                             name: 'static/assets/img/[name].[contenthash].[ext]',
                             fallback: {
-                                loader: 'file-loader',
+                                loader: require.resolve('file-loader'),
                                 options: {
                                     name: 'static/assets/img/[name].[contenthash].[ext]',
                                 },
@@ -65,12 +65,12 @@ const config = {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
                 use: [
                     {
-                        loader: 'url-loader',
+                        loader: require.resolve('url-loader'),
                         options: {
                             limit: 4096,
                             name: 'static/assets/fonts/[name].[contenthash].[ext]',
                             fallback: {
-                                loader: 'file-loader',
+                                loader: require.resolve('file-loader'),
                                 options: {
                                     name: 'static/assets/fonts/[name].[contenthash].[ext]',
                                 },

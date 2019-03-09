@@ -14,6 +14,7 @@ module.exports = api => {
             },
         ],
         require.resolve('@babel/plugin-proposal-class-properties'),
+        require.resolve('@babel/plugin-syntax-dynamic-import'),
         require.resolve('@babel/plugin-transform-regenerator'),
         // https://github.com/babel/babel-loader#babel-is-injecting-helpers-into-each-file-and-bloating-my-code
         require.resolve('@babel/plugin-transform-runtime'),
