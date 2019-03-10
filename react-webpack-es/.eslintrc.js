@@ -15,7 +15,7 @@ module.exports = {
         ecmaVersion: 7,
         sourceType: 'module',
     },
-    plugins: ['babel', 'import', 'jsx-a11y', 'flowtype', 'prettier'],
+    plugins: ['babel', 'prettier'],
     settings: {
         'import/resolver': {
             'babel-module': {

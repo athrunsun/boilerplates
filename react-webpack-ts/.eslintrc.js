@@ -1,35 +1,26 @@
 module.exports = {
-    // So parent files don't get applied
-    root: true,
-    globals: {
-        preval: false,
-    },
-    env: {
-        es6: true,
-        browser: true,
-        node: true,
-    },
-    extends: ['eslint:recommended', 'plugin:react/recommended'],
-    parser: 'babel-eslint',
+    parser: '@typescript-eslint/parser',
+    extends: [
+        'plugin:@typescript-eslint/recommended',
+        'plugin:react/recommended',
+        'plugin:prettier/recommended',
+        'prettier/@typescript-eslint',
+    ],
     parserOptions: {
-        ecmaVersion: 7,
+        ecmaVersion: 2018,
         sourceType: 'module',
+        ecmaFeatures: {
+            jsx: true,
+        },
     },
-    plugins: ['babel', 'import', 'jsx-a11y', 'flowtype', 'prettier'],
+    plugins: ['prettier'],
     settings: {
-        'import/resolver': {
-            'babel-module': {
-                alias: {
-                    '@app': './src',
-                    '@eng': './eng',
-                },
-            },
+        react: {
+            version: 'detect',
         },
     },
     rules: {
-        'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-        'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-        indent: 'off', // Incompatible with prettier
-        'prettier/prettier': ['error'],
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/interface-name-prefix': 'off',
     },
 };

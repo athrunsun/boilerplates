@@ -4,7 +4,7 @@ import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 import { PATHS } from '@eng/paths';
-import webpackBaseConfig  from '@eng/webpack/webpack.base.config';
+import webpackBaseConfig from '@eng/webpack/webpack.base.config';
 
 const config: webpack.Configuration = webpackMerge(webpackBaseConfig, {
     output: {
