@@ -1,5 +1,6 @@
 <template>
     <div v-bind:class="moduleStyles.container">
+        <img class="logo" alt="Vue Logo" src="@app/assets/logo.png" />
         <div>This is the app page...</div>
         <template v-if="onDevEnv">
             <div>If you see document's title changed to '{{ docTitle }}', api mock works.</div>
@@ -10,6 +11,13 @@
 <style>
 body {
     margin: 0;
+}
+</style>
+
+<style scoped>
+.logo {
+    width: 15rem;
+    height: 15rem;
 }
 </style>
 
