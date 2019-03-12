@@ -9,6 +9,8 @@ import * as titleServices from '@app/services/title';
 
 import ErrorTest from '@app/components/ErrorBoundaryTest';
 
+import logo from '@app/assets/logo.svg';
+
 const DynamicComp = React.lazy(() => import('@app/components/DynamicComp'));
 
 cssRule('body', {
@@ -39,6 +41,10 @@ const moduleStyles = {
             },
         },
     }),
+    logo: style({
+        width: '15rem',
+        height: '15rem',
+    }),
 };
 
 class App extends React.Component {
@@ -60,6 +66,7 @@ class App extends React.Component {
 
         return (
             <div className={moduleStyles.container}>
+                <img className={moduleStyles.logo} alt="React Logo" src={logo} />
                 <div className={style({ display: 'flex' })}>
                     <Link to={routePathHelpers.routePathProvider.APP}>Home</Link> |{' '}
                     <Link to={routePathHelpers.routePathProvider.ERROR_BOUNDARY_TEST}>ErrorBoundary Test</Link> |{' '}

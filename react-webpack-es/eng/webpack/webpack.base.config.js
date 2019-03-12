@@ -49,6 +49,17 @@ const config = {
                 ],
             },
             {
+                test: /\.(svg)(\?.*)?$/,
+                use: [
+                    {
+                        loader: require.resolve('file-loader'),
+                        options: {
+                            name: 'static/assets/img/[name].[hash].[ext]',
+                        },
+                    },
+                ],
+            },
+            {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
                 use: [
                     {
