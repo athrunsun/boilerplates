@@ -1,7 +1,7 @@
 import * as log from 'loglevel';
 import * as React from 'react';
 import { Route, Link } from 'react-router-dom';
-import { style, cssRule } from 'typestyle';
+import { style } from 'typestyle';
 
 import * as routePathHelpers from '@app/helpers/routePath';
 
@@ -10,10 +10,6 @@ import * as titleServices from '@app/services/title';
 import ErrorTest from '@app/components/ErrorBoundaryTest';
 
 const DynamicComp = React.lazy(() => import('@app/components/DynamicComp'));
-
-cssRule('body', {
-    margin: 0,
-});
 
 const moduleStyles = {
     container: style({

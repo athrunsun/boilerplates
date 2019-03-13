@@ -1,12 +1,24 @@
 import * as log from 'loglevel';
 import * as React from 'react';
-import { style, cssRule } from 'typestyle';
+import { style, cssRaw } from 'typestyle';
 
 import * as titleServices from '@app/services/title';
 
-cssRule('body', {
-    margin: 0,
-});
+cssRaw(`
+    html {
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+        margin: 0;
+    }
+    *,
+    *::before,
+    *::after {
+        box-sizing: inherit;
+    }
+`);
 
 const moduleStyles = {
     container: style({
@@ -54,10 +66,7 @@ class App extends React.Component<any> {
             <div className={moduleStyles.container}>
                 <div>This is the app page...</div>
                 {process.env.NODE_ENV === 'development' && (
-                    <div>
-                        If you see document's title changed to '{docTitle}
-                        ', api mock works.
-                    </div>
+                    <div>{`If you see document's title changed to '${docTitle}', api mock works.`}</div>
                 )}
             </div>
         );
