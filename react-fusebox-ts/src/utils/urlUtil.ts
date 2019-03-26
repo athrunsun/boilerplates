@@ -1,23 +1,6 @@
 import * as lodash from 'lodash';
 import * as URI from 'urijs';
 
-const createUrlWithServerAddress = (
-    serverAddress: string,
-    urlPaths: string | string[],
-    pathParameters: { [key: string]: string | number } = {},
-    queryParameters: { [key: string]: string | number } = {},
-) => {
-    return createUrl(serverAddress, urlPaths, pathParameters, queryParameters);
-};
-
-const createUrlWithoutServerAddress = (
-    urlPaths: string | string[],
-    pathParameters: { [key: string]: string | number } = {},
-    queryParameters: { [key: string]: string | number } = {},
-) => {
-    return createUrl('', urlPaths, pathParameters, queryParameters);
-};
-
 const createUrl = (
     serverAddress: string,
     urlPaths: string | string[],
@@ -35,13 +18,30 @@ const createUrl = (
 
     const uri = new URI(serverAddress).path(joinedPath);
 
-    if (!lodash.isEmpty(pathParameters)) {
+    if (!lodash.isEmpty(queryParameters)) {
         for (const queryParamKey of Object.keys(queryParameters)) {
             uri.addQuery(queryParamKey, queryParameters[queryParamKey]);
         }
     }
 
     return uri.toString();
+};
+
+const createUrlWithServerAddress = (
+    serverAddress: string,
+    urlPaths: string | string[],
+    pathParameters: { [key: string]: string | number } = {},
+    queryParameters: { [key: string]: string | number } = {},
+) => {
+    return createUrl(serverAddress, urlPaths, pathParameters, queryParameters);
+};
+
+const createUrlWithoutServerAddress = (
+    urlPaths: string | string[],
+    pathParameters: { [key: string]: string | number } = {},
+    queryParameters: { [key: string]: string | number } = {},
+) => {
+    return createUrl('', urlPaths, pathParameters, queryParameters);
 };
 
 export { createUrl, createUrlWithServerAddress, createUrlWithoutServerAddress };
