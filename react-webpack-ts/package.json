@@ -16,7 +16,7 @@
     "dependencies": {
         "axios": "^0.18.0",
         "core-js": "^2.6.5",
-        "lodash": "^4.17.11",
+        "lodash": "^4.17.13",
         "loglevel": "^1.6.1",
         "path-to-regexp": "^3.0.0",
         "react": "^16.8.4",
