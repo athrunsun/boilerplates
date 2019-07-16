@@ -16,7 +16,7 @@
         "@babel/polyfill": "^7.2.5",
         "@babel/runtime": "^7.3.0",
         "axios": "^0.18.0",
-        "lodash": "^4.17.11",
+        "lodash": "^4.17.13",
         "loglevel": "^1.6.1",
         "typestyle": "^2.0.1",
         "urijs": "^1.19.1",
