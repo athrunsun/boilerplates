@@ -15,7 +15,7 @@
     },
     "dependencies": {
         "axios": "^0.18.0",
-        "lodash": "^4.17.11",
+        "lodash": "^4.17.13",
         "loglevel": "^1.6.1",
         "react": "^16.7.0",
         "react-dom": "^16.7.0",
