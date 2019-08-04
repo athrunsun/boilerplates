@@ -10,7 +10,7 @@
         "serve:dev": "SERVE_PROD_BUNDLE_ON_DEV=true yarn run serve"
     },
     "dependencies": {
-        "axios": "^0.18.0",
+        "axios": "^0.18.1",
         "lodash": "^4.17.13",
         "loglevel": "^1.6.1",
         "react": "^16.7.0",
