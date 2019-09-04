@@ -1,5 +1,5 @@
 # React-Webpack-TypeScript-Boilerplate
-A React project boilerplate with:
+A React boilerplate with:
 
 - Webpack as bundler
 - TypeScript as transpiler

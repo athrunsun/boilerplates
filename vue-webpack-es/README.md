@@ -1,5 +1,5 @@
 # Vue-Webpack-ECMAScript-Boilerplate
-A Vue project boilerplate with:
+A Vue boilerplate with:
 
 - Webpack as bundler
 - Babel as transpiler

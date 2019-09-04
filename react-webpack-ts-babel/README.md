@@ -1,5 +1,5 @@
 # React-Webpack-TypeScript-Babel-Boilerplate
-A React project boilerplate with:
+A React boilerplate with:
 
 - Webpack as bundler
 - Babel as transpiler, `tsc` only responsible for type checking

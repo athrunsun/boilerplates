@@ -1,5 +1,5 @@
 # React-FuseBox-TypeScript-Boilerplate
-A React project boilerplate with:
+A React boilerplate with:
 
 - [FuseBox](https://github.com/fuse-box/fuse-box) as bundler and task runner
 - TypeScript as transpiler

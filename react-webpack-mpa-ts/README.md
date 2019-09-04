@@ -1,5 +1,5 @@
 # React-Webpack-MPA-TypeScript-Boilerplate
-A React project boilerplate for multiple-page-application, with:
+A React boilerplate for multiple-page-application, with:
 
 - Webpack as bundler
 - TypeScript as transpiler

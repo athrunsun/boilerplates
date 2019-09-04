@@ -1,5 +1,5 @@
 # React-Parcel-TypeScript-Boilerplate
-A React project boilerplate with:
+A React boilerplate with:
 
 - [Parcel](https://github.com/parcel-bundler/parcel) as bundler and task runner
 - TypeScript as transpiler

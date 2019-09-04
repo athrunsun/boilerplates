@@ -1,12 +1,16 @@
 # Boilerplates
-A collection of project boilerplates, for different combinations of React/Vue/Webpack/TS/Babel.
+My boilerplates collection.
 
-# Projects
-- `react-fusebox-ts`: a React project boilerplate with TypeScript and FuseBox
-- `react-parcel-ts`: (NOT working) a React project boilerplate with TypeScript and Parcel
-- `react-webpack-es`: a React project boilerplate with Babel and Webpack (recommended for React ES project)
-- `react-webpack-mpa-ts`: a React MPA project boilerplate with TypeScript and Webpack
-- `react-webpack-ts`: a React project boilerplate with TypeScript and Webpack
-- `react-webpack-ts-babel`: a React project boilerplate with Babel as TS transpiler and Webpack (recommended for React TS project)
-- `react-webpack-ts-es`: (POC) a React project boilerplate with TypeScript, Babel and Webpack
-- `vue-webpack-es`: a Vue project boilerplate with Babel and Webpack
+# Frontend projects
+- `react-fusebox-ts`: a React boilerplate with TypeScript and FuseBox.
+- ~~`react-parcel-ts`~~: a React boilerplate with TypeScript and Parcel **(NOT working)**
+- `react-webpack-es`: a React boilerplate with Babel and Webpack.
+- `react-webpack-mpa-ts`: a React MPA boilerplate with TypeScript and Webpack.
+- `react-webpack-ts`: a React boilerplate with TypeScript and Webpack.
+- `react-webpack-ts-babel`: a React boilerplate with Babel as TS transpiler and Webpack.
+- `react-webpack-ts-es`: a React boilerplate with TypeScript, Babel and Webpack **(POC)**.
+- `vue-webpack-es`: a Vue boilerplate with Babel and Webpack.
+
+# Backend projects
+- `nest-ts-babel`: a [Nest](https://github.com/nestjs/nest) boilerplate with TypeScript and Babel **(POC)**.
+- `nest-ts`: a [Nest](https://github.com/nestjs/nest) boilerplate in TypeScript.

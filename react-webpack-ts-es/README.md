@@ -1,8 +1,8 @@
-# React-Webpack-TypeScript-ECMAScript-Boilerplate
-A React project boilerplate with:
+# React-Webpack-TypeScript-ECMAScript-Boilerplate (POC)
+A React boilerplate with:
 
 - Webpack as bundler
-- TypeScript and Babel as transpiler (first transpile into ES6 by TS then into ES5 by Babel)
+- TypeScript and Babel as transpiler (first transpiled into ES6 by TS then by Babel)
 - Jest as testing framework
 - [typestyle](https://github.com/typestyle/typestyle) as css-in-js library
 
