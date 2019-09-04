@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "declaration": true,
+        "removeComments": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es2017",
+        "sourceMap": true,
+        "baseUrl": "./",
+        "incremental": true,
+        "paths": {
+            "@app/*": ["src/*"],
+            "@test/*": ["test/*"],
+            "@eng/*": ["eng/*"]
+        },
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noUnusedLocals": false,
+        "esModuleInterop": true
+    },
+    "exclude": ["node_modules"]
+}

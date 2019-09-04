@@ -1,0 +1,7 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./build/prod_tsc_output",
+    },
+    "exclude": ["node_modules", "./build/prod_tsc_output", "test", "**/*spec.ts"]
+}

@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./build/dev_tsc_output",
+        "sourceMap": false,
+        "inlineSources": true,
+        "inlineSourceMap": true
+    },
+    "exclude": ["node_modules", "./build/dev_tsc_output", "test", "**/*spec.ts"]
+}
