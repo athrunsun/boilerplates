@@ -1,16 +1,14 @@
-import * as React from 'react';
+import React, { FunctionComponent } from 'react';
 
 import ErrorBoundary from '@app/components/ErrorBoundary';
 import BuggyCounter from '@app/components/BuggyCounter';
 
-class ErrorBoundaryTest extends React.Component {
-    public render() {
-        return (
-            <ErrorBoundary>
-                <BuggyCounter />
-            </ErrorBoundary>
-        );
-    }
+function ErrorBoundaryTest() {
+    return (
+        <ErrorBoundary>
+            <BuggyCounter />
+        </ErrorBoundary>
+    );
 }
 
-export default ErrorBoundaryTest;
+export default ErrorBoundaryTest as FunctionComponent;

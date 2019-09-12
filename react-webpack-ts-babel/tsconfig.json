@@ -8,7 +8,7 @@
             "@eng/*": ["eng/*"]
         },
         "module": "esnext",
-        "target": "es5",
+        "target": "es6",
         "importHelpers": true,
         "lib": ["es6", "dom"],
         "sourceMap": true,
@@ -21,7 +21,8 @@
         "noImplicitAny": true,
         "strictNullChecks": true,
         "suppressImplicitAnyIndexErrors": true,
-        "noUnusedLocals": false
+        "noUnusedLocals": false,
+        "esModuleInterop": true
     },
     "exclude": [
         "node_modules",

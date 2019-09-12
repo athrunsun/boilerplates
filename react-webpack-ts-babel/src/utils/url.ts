@@ -1,5 +1,5 @@
-import * as lodash from 'lodash';
-import * as URI from 'urijs';
+import lodash from 'lodash';
+import urlJoin from 'proper-url-join';
 
 const createUrl = (
     serverAddress: string,
@@ -7,7 +7,7 @@ const createUrl = (
     pathParameters: { [key: string]: string | number } = {},
     queryParameters: { [key: string]: string | number } = {},
 ) => {
-    let joinedPath = URI.joinPaths(...(typeof urlPaths === 'string' ? [urlPaths] : urlPaths)).toString();
+    let joinedPath = urlJoin(...(lodash.isArray(urlPaths) ? urlPaths : [urlPaths]));
 
     if (!lodash.isEmpty(pathParameters)) {
         for (const pathParamKey of Object.keys(pathParameters)) {
@@ -16,15 +16,13 @@ const createUrl = (
         }
     }
 
-    const uri = new URI(serverAddress).path(joinedPath);
+    let url = urlJoin(serverAddress, joinedPath);
 
     if (!lodash.isEmpty(queryParameters)) {
-        for (const queryParamKey of Object.keys(queryParameters)) {
-            uri.addQuery(queryParamKey, queryParameters[queryParamKey]);
-        }
+        url = urlJoin(url, { query: queryParameters });
     }
 
-    return uri.toString();
+    return url;
 };
 
 const createUrlWithServerAddress = (

@@ -1,10 +1,10 @@
-import * as debug from 'debug';
-import * as express from 'express';
-import * as webpack from 'webpack';
-import * as webpackDevMiddleware from 'webpack-dev-middleware';
-import * as webpackHotMiddleware from 'webpack-hot-middleware';
-import * as httpProxy from 'http-proxy-middleware';
-import * as history from 'connect-history-api-fallback';
+import debug from 'debug';
+import express from 'express';
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
+import httpProxy from 'http-proxy-middleware';
+import history from 'connect-history-api-fallback';
 
 import webpackConfig from '@eng/webpack/webpack.devserver.config';
 import { CONFIG } from '@eng/config';
@@ -31,14 +31,18 @@ if (CONFIG.ENABLE_MOCK) {
 
 app.use(history());
 
-app.use(
-    webpackDevMiddleware(compiler, {
-        stats: {
-            colors: true,
-        },
-        publicPath: webpackConfig.output!.publicPath!,
-    }),
-);
+const devMiddleware = webpackDevMiddleware(compiler, {
+    stats: {
+        colors: true,
+    },
+    publicPath: (webpackConfig.output as webpack.Output).publicPath as string,
+});
+
+devMiddleware.waitUntilValid((stats: Stats) => {
+    logger(`Listening on port ${app.get('port')}...`);
+});
+
+app.use(devMiddleware);
 
 app.use(webpackHotMiddleware(compiler));
 
@@ -48,6 +52,4 @@ app.listen(app.get('port'), (err: any) => {
     if (err) {
         logger(err);
     }
-
-    logger(`Listening on port ${app.get('port')}...`);
 });

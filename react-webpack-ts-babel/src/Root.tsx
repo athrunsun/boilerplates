@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { FunctionComponent } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { cssRaw } from 'typestyle';
 
@@ -22,21 +22,19 @@ cssRaw(`
     }
 `);
 
-class Root extends React.Component {
-    public render() {
-        return (
-            <BrowserRouter>
-                <Switch>
-                    <Redirect
-                        exact={true}
-                        from={routePathHelpers.routePathProvider.ROOT}
-                        to={routePathHelpers.routePathProvider.APP}
-                    />
-                    <Route path={routePathHelpers.routePathProvider.APP} component={App} />
-                </Switch>
-            </BrowserRouter>
-        );
-    }
+function Root() {
+    return (
+        <BrowserRouter>
+            <Switch>
+                <Redirect
+                    exact={true}
+                    from={routePathHelpers.routePathProvider.ROOT}
+                    to={routePathHelpers.routePathProvider.APP}
+                />
+                <Route path={routePathHelpers.routePathProvider.APP} component={App} />
+            </Switch>
+        </BrowserRouter>
+    );
 }
 
-export default Root;
+export default Root as FunctionComponent;

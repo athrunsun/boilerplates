@@ -3,4 +3,4 @@ const shell = require('shelljs');
 
 const PATHS = require('../paths.node');
 
-shell.exec(`tsc -p ${PATHS.TSCONFIG_APP} --noEmit`);
+shell.exec(`tsc -p ${PATHS.TSCONFIG_TEST} --noEmit`);

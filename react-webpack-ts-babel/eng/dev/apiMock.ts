@@ -1,5 +1,5 @@
-import * as debug from 'debug';
-import * as path from 'path';
+import debug from 'debug';
+import path from 'path';
 import { Express } from 'express';
 
 import { CONFIG } from '@eng/config';

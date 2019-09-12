@@ -1,9 +1,11 @@
-import * as webpack from 'webpack';
-import * as webpackMerge from 'webpack-merge';
-import * as HtmlWebpackPlugin from 'html-webpack-plugin';
-import * as MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import webpack from 'webpack';
+import webpackMerge from 'webpack-merge';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 import { PATHS } from '@eng/paths';
+import { CONFIG } from '@eng/config';
 import webpackBaseConfig from '@eng/webpack/webpack.base.config';
 
 const config: webpack.Configuration = webpackMerge(webpackBaseConfig, {
@@ -11,7 +13,7 @@ const config: webpack.Configuration = webpackMerge(webpackBaseConfig, {
         filename: '[name].[contenthash].bundle.js',
         chunkFilename: '[id].[contenthash].bundle.js',
         path: PATHS.appBuildOutput,
-        publicPath: '/',
+        publicPath: CONFIG.PUBLIC_PATH,
     },
 
     mode: 'production',
@@ -57,6 +59,7 @@ const config: webpack.Configuration = webpackMerge(webpackBaseConfig, {
             filename: '[name].[contenthash].css',
             chunkFilename: '[id].[contenthash].css',
         }),
+        new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
     ],
 });
 
