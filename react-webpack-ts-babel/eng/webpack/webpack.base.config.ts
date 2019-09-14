@@ -92,10 +92,7 @@ const config: webpack.Configuration = {
         ],
     },
 
-    plugins: [
-        new webpack.DefinePlugin(definePluginDefinitions),
-        new LodashModuleReplacementPlugin(),
-    ],
+    plugins: [new webpack.DefinePlugin(definePluginDefinitions), new LodashModuleReplacementPlugin()],
 };
 
 export default config;

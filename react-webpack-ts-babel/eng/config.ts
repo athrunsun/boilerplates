@@ -32,7 +32,7 @@ const CONFIG = {
     ENABLE_MOCK: process.env.ENABLE_MOCK === 'true',
     API_PREFIX: process.env.API_PREFIX as string,
     API_TARGET: process.env.API_TARGET as string,
-    PUBLIC_PATH: '/',
+    PUBLIC_PATH: lodash.isEmpty(process.env.BASE_URL) ? '/' : (process.env.BASE_URL as string),
 };
 
 const undefinedConfigEntries = [];

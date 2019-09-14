@@ -1,8 +1,8 @@
-import * as debug from 'debug';
-import * as express from 'express';
-import * as serveStatic from 'serve-static';
-import * as httpProxy from 'http-proxy-middleware';
-import * as history from 'connect-history-api-fallback';
+import debug from 'debug';
+import express from 'express';
+import serveStatic from 'serve-static';
+import httpProxy from 'http-proxy-middleware';
+import history from 'connect-history-api-fallback';
 
 import { CONFIG } from '@eng/config';
 

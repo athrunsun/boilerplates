@@ -1,5 +1,5 @@
-import * as debug from 'debug';
-import * as path from 'path';
+import debug from 'debug';
+import path from 'path';
 import { Express } from 'express';
 
 import { CONFIG } from '@eng/config';
@@ -10,7 +10,7 @@ const logger = debug('eng:dev:apiMock');
 const applyApiMocks = (app: Express) => {
     app.set('json spaces', 40);
 
-    app.get(path.resolve(CONFIG.API_PREFIX, 'title'), (request, response) =>
+    app.get(path.posix.resolve(CONFIG.API_PREFIX, 'title'), (request, response) =>
         response.json({
             data: appConstants.APP_TITLE,
         }),

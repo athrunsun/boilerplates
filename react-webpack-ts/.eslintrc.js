@@ -13,7 +13,7 @@ module.exports = {
             jsx: true,
         },
     },
-    plugins: ['prettier'],
+    plugins: ['prettier', 'react-hooks'],
     settings: {
         react: {
             version: 'detect',
@@ -22,5 +22,8 @@ module.exports = {
     rules: {
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/interface-name-prefix': 'off',
+        '@typescript-eslint/camelcase': 'off',
+        'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/exhaustive-deps': 'warn',
     },
 };

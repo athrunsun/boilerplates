@@ -1,4 +1,6 @@
-import * as webpack from 'webpack';
+import path from 'path';
+import webpack from 'webpack';
+import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
 import { PATHS } from '@eng/paths';
@@ -9,6 +11,9 @@ const definePluginDefinitions = { 'process.env': {} };
 for (const configKey of Object.keys(CONFIG)) {
     definePluginDefinitions['process.env'][`APP_${configKey}`] = JSON.stringify(CONFIG[configKey]);
 }
+
+const imageAssetsPublicPath = path.join(CONFIG.PUBLIC_PATH, PATHS.imageAssetsPath);
+const fontAssetsPublicPath = path.join(CONFIG.PUBLIC_PATH, PATHS.fontAssetsPath);
 
 const config: webpack.Configuration = {
     entry: {
@@ -36,13 +41,30 @@ const config: webpack.Configuration = {
                         loader: require.resolve('url-loader'),
                         options: {
                             limit: 4096,
-                            name: 'static/assets/img/[name].[contenthash].[ext]',
+                            name: '[name].[contenthash].[ext]',
+                            outputPath: PATHS.imageAssetsPath,
+                            publicPath: imageAssetsPublicPath,
                             fallback: {
                                 loader: require.resolve('file-loader'),
                                 options: {
-                                    name: 'static/assets/img/[name].[contenthash].[ext]',
+                                    name: '[name].[contenthash].[ext]',
+                                    outputPath: PATHS.imageAssetsPath,
+                                    publicPath: imageAssetsPublicPath,
                                 },
                             },
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.(svg)(\?.*)?$/,
+                use: [
+                    {
+                        loader: require.resolve('file-loader'),
+                        options: {
+                            name: '[name].[hash].[ext]',
+                            outputPath: PATHS.imageAssetsPath,
+                            publicPath: imageAssetsPublicPath,
                         },
                     },
                 ],
@@ -54,11 +76,15 @@ const config: webpack.Configuration = {
                         loader: require.resolve('url-loader'),
                         options: {
                             limit: 4096,
-                            name: 'static/assets/fonts/[name].[contenthash].[ext]',
+                            name: '[name].[contenthash].[ext]',
+                            outputPath: PATHS.fontAssetsPath,
+                            publicPath: fontAssetsPublicPath,
                             fallback: {
                                 loader: require.resolve('file-loader'),
                                 options: {
-                                    name: 'static/assets/fonts/[name].[contenthash].[ext]',
+                                    name: '[name].[contenthash].[ext]',
+                                    outputPath: PATHS.fontAssetsPath,
+                                    publicPath: fontAssetsPublicPath,
                                 },
                             },
                         },
@@ -68,7 +94,7 @@ const config: webpack.Configuration = {
         ],
     },
 
-    plugins: [new webpack.DefinePlugin(definePluginDefinitions)],
+    plugins: [new webpack.DefinePlugin(definePluginDefinitions), new LodashModuleReplacementPlugin()],
 };
 
 export default config;

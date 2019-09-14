@@ -1,11 +1,15 @@
-import * as debug from 'debug';
-import * as path from 'path';
-import * as fs from 'fs';
+import lodash from 'lodash';
+import debug from 'debug';
+import path from 'path';
+import fs from 'fs';
 import * as dotenv from 'dotenv';
 
 import { PATHS } from '@eng/paths';
 
 const logger = debug('eng:config');
+
+// Load from common `.env` file
+dotenv.config();
 
 let envFileName = `.env.${process.env.NODE_ENV}`;
 
@@ -19,7 +23,7 @@ logger(`Will load environment variables from '${envFileName}'...`);
 const envFilePath = path.resolve(PATHS.appDirectory, envFileName);
 
 if (!fs.existsSync(envFilePath)) {
-    throw new Error(`Env file '${envFilePath}' does NOT exist!`);
+    logger(`Env file '${envFilePath}' does NOT exist!`);
 }
 
 dotenv.config({ path: envFilePath });
@@ -27,8 +31,9 @@ dotenv.config({ path: envFilePath });
 const CONFIG = {
     USE_BABEL: process.env.USE_BABEL === 'true',
     ENABLE_MOCK: process.env.ENABLE_MOCK === 'true',
-    API_PREFIX: process.env.API_PREFIX!,
-    API_TARGET: process.env.API_TARGET!,
+    API_PREFIX: process.env.API_PREFIX as string,
+    API_TARGET: process.env.API_TARGET as string,
+    PUBLIC_PATH: lodash.isEmpty(process.env.BASE_URL) ? '/' : (process.env.BASE_URL as string),
 };
 
 const undefinedConfigEntries = [];

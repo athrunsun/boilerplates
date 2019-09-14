@@ -6,6 +6,7 @@
             "@eng/*": ["eng/*"]
         },
         "module": "commonjs",
-        "target": "es5"
+        "target": "es6",
+        "esModuleInterop": true
     }
 }

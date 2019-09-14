@@ -1,6 +1,6 @@
-import * as webpack from 'webpack';
-import * as webpackMerge from 'webpack-merge';
-import * as HtmlWebpackPlugin from 'html-webpack-plugin';
+import webpack from 'webpack';
+import webpackMerge from 'webpack-merge';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CheckerPlugin } from 'awesome-typescript-loader';
 
 import { PATHS } from '@eng/paths';
@@ -13,7 +13,7 @@ const config: webpack.Configuration = webpackMerge(webpackBaseConfig, {
         filename: '[name].[hash].bundle.js',
         chunkFilename: '[id].[hash].bundle.js',
         path: PATHS.appBuildOutput,
-        publicPath: '/',
+        publicPath: CONFIG.PUBLIC_PATH,
         pathinfo: true,
     },
 
@@ -34,7 +34,19 @@ const config: webpack.Configuration = webpackMerge(webpackBaseConfig, {
                         options: {
                             configFileName: CONFIG.USE_BABEL ? PATHS.tsConfigAppBabel : PATHS.tsConfigApp,
                             useCache: true,
-                            ...(CONFIG.USE_BABEL && { useBabel: true, babelCore: '@babel/core' }),
+                            ...(CONFIG.USE_BABEL && {
+                                useBabel: true,
+                                babelOptions: {
+                                    babelrc: false,
+                                    presets: [
+                                        [
+                                            require.resolve('@babel/preset-react'),
+                                            { development: process.env.NODE_ENV === 'development' },
+                                        ],
+                                    ],
+                                },
+                                babelCore: '@babel/core',
+                            }),
                         },
                     },
                 ],

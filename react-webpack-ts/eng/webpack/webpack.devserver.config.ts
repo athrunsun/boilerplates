@@ -1,5 +1,5 @@
-import * as webpack from 'webpack';
-import * as webpackMerge from 'webpack-merge';
+import webpack from 'webpack';
+import webpackMerge from 'webpack-merge';
 
 import webpackDevConfig from '@eng/webpack/webpack.development.config';
 

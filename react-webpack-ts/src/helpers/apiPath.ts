@@ -1,4 +1,4 @@
-import * as urlUtils from '@app/utils/urlUtil';
+import * as urlUtils from '@app/utils/url';
 
 const API_PREFIX = process.env.APP_API_PREFIX!;
 
