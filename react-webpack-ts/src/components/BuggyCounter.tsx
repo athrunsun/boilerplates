@@ -1,6 +1,6 @@
 import React, { useState, FunctionComponent } from 'react';
 
-function BuggyCounter(props: { counter: number }) {
+function BuggyCounter() {
     const [counter, setCounter] = useState(0);
 
     function handleClick() {

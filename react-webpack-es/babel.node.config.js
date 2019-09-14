@@ -1,7 +1,5 @@
 module.exports = api => {
-    api.cache.using(() => process.env.NODE_ENV === 'development');
-
-    const isTest = api.env('test');
+    api.cache.forever();
 
     const plugins = [
         [
@@ -17,7 +15,6 @@ module.exports = api => {
         ],
         require.resolve('@babel/plugin-proposal-class-properties'),
         require.resolve('@babel/plugin-syntax-dynamic-import'),
-        require.resolve('babel-plugin-lodash'),
     ];
 
     return {
@@ -25,11 +22,11 @@ module.exports = api => {
             [
                 require.resolve('@babel/preset-env'),
                 {
-                    ...(isTest && { targets: { node: 'current' } }),
-                    ...(!isTest && { modules: false }),
+                    targets: { node: 'current' },
+                    modules: 'commonjs',
+                    ignoreBrowserslistConfig: true,
                 },
             ],
-            [require.resolve('@babel/preset-react'), { development: process.env.NODE_ENV === 'development' }],
         ],
         plugins,
     };

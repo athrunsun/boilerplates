@@ -1,23 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-class BuggyCounter extends React.Component {
-    state = {
-        counter: 0,
-    };
+function BuggyCounter() {
+    const [counter, setCounter] = useState(0);
 
-    handleClick = () => {
-        this.setState(({ counter }) => ({
-            counter: counter + 1,
-        }));
-    };
-
-    render() {
-        if (this.state.counter === 5) {
-            // Simulate a JS error
-            throw new Error('I crashed!');
-        }
-        return <h1 onClick={this.handleClick}>{`Click to count: ${this.state.counter}`}</h1>;
+    function handleClick() {
+        setCounter(counter + 1);
     }
+
+    if (counter === 5) {
+        // Simulate a JS error
+        throw new Error('I crashed!');
+    }
+
+    return <h1 onClick={handleClick}>{`Click to count: ${counter}`}</h1>;
 }
 
 export default BuggyCounter;

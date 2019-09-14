@@ -1,4 +1,4 @@
-import * as urlUtils from '@app/utils/urlUtil';
+import * as urlUtils from '@app/utils/url';
 
 const composeRouterPath = (path, pathParameters = {}, queryParameters = {}) =>
     urlUtils.createUrlWithoutServerAddress(path, pathParameters, queryParameters);

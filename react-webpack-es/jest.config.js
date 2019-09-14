@@ -1,7 +1,4 @@
 module.exports = {
-    // transform: {
-    //     '^.+\\.jsx?$': 'babel-jest',
-    // },
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.jsx?$',
     testURL: 'http://localhost',
     moduleFileExtensions: ['js', 'jsx', 'json', 'node'],

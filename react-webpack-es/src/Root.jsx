@@ -1,3 +1,4 @@
+import lodash from 'lodash';
 import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { cssRaw } from 'typestyle';
@@ -22,21 +23,19 @@ cssRaw(`
     }
 `);
 
-class Root extends React.Component {
-    render() {
-        return (
-            <BrowserRouter>
-                <Switch>
-                    <Redirect
-                        exact={true}
-                        from={routePathHelpers.routePathProvider.ROOT}
-                        to={routePathHelpers.routePathProvider.APP}
-                    />
-                    <Route path={routePathHelpers.routePathProvider.APP} component={App} />
-                </Switch>
-            </BrowserRouter>
-        );
-    }
+function Root() {
+    return (
+        <BrowserRouter {...(!lodash.isEmpty(process.env.APP_BASE_URL) && { basename: process.env.APP_BASE_URL })}>
+            <Switch>
+                <Redirect
+                    exact={true}
+                    from={routePathHelpers.routePathProvider.ROOT}
+                    to={routePathHelpers.routePathProvider.APP}
+                />
+                <Route path={routePathHelpers.routePathProvider.APP} component={App} />
+            </Switch>
+        </BrowserRouter>
+    );
 }
 
 export default Root;

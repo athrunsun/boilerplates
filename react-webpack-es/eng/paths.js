@@ -7,6 +7,7 @@ const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 const PATHS = {
     appDirectory,
     appPackageJson: resolveApp('package.json'),
+    appPublicDirectory: resolveApp('public'),
     appIndexHtml: resolveApp('public/index.html'),
     appFavicon: resolveApp('public/favicon.ico'),
     appSrc: resolveApp('src'),
@@ -16,6 +17,9 @@ const PATHS = {
     tsConfigBase: resolveApp('tsconfig.json'),
     tsConfigApp: resolveApp('tsconfig.app.json'),
     tsConfigTest: resolveApp('tsconfig.test.json'),
+    assetsPath: 'assets',
+    imageAssetsPath: path.join('assets', 'img'),
+    fontAssetsPath: path.join('assets', 'font'),
 };
 
 export { PATHS };

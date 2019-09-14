@@ -6,7 +6,6 @@
             "@test/*": ["__tests__/*"],
             "@eng/*": ["eng/*"]
         },
-        //"checkJs": true,
         "jsx": "react",
         "lib": ["es6", "dom"]
     },

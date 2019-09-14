@@ -9,7 +9,7 @@ const logger = debug('eng:dev:apiMock');
 const applyApiMocks = app => {
     app.set('json spaces', 40);
 
-    app.get(path.resolve(CONFIG.API_PREFIX, 'title'), (request, response) =>
+    app.get(path.posix.resolve(CONFIG.API_PREFIX, 'title'), (request, response) =>
         response.json({
             data: appConstants.APP_TITLE,
         }),

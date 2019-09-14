@@ -31,14 +31,18 @@ if (CONFIG.ENABLE_MOCK) {
 
 app.use(history());
 
-app.use(
-    webpackDevMiddleware(compiler, {
-        stats: {
-            colors: true,
-        },
-        publicPath: webpackConfig.output.publicPath,
-    }),
-);
+const devMiddleware = webpackDevMiddleware(compiler, {
+    stats: {
+        colors: true,
+    },
+    publicPath: webpackConfig.output.publicPath,
+});
+
+devMiddleware.waitUntilValid(stats => {
+    logger(`Listening on port ${app.get('port')}...`);
+});
+
+app.use(devMiddleware);
 
 app.use(webpackHotMiddleware(compiler));
 
@@ -48,6 +52,4 @@ app.listen(app.get('port'), err => {
     if (err) {
         logger(err);
     }
-
-    logger(`Listening on port ${app.get('port')}...`);
 });
