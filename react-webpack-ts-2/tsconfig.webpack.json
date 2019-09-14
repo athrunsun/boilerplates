@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@app/*": ["src/*"],
+            "@eng/*": ["eng/*"]
+        },
+        "module": "commonjs",
+        "target": "es6",
+        "esModuleInterop": true
+    }
+}

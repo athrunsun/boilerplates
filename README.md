@@ -6,9 +6,10 @@ My boilerplates collection.
 - ~~`react-parcel-ts`~~: a React boilerplate with TypeScript and Parcel **(NOT working)**
 - `react-webpack-es`: a React boilerplate with Babel and Webpack.
 - `react-webpack-mpa-ts`: a React MPA boilerplate with TypeScript and Webpack.
-- `react-webpack-ts`: a React boilerplate with TypeScript and Webpack.
+- `react-webpack-ts`: a React boilerplate with TypeScript and Webpack (with [awesome-typescript-loader](https://github.com/s-panferov/awesome-typescript-loader)).
+- `react-webpack-ts-2`: a React boilerplate with TypeScript and Webpack (with [ts-loader](https://github.com/TypeStrong/ts-loader)).
 - `react-webpack-ts-babel`: a React boilerplate with Babel as TS transpiler and Webpack.
-- `react-webpack-ts-es`: a React boilerplate with TypeScript, Babel and Webpack **(POC)**.
+- `react-webpack-ts-es`: a React boilerplate with TypeScript (use `tsc` to transpile ES), Babel and Webpack **(POC)**.
 - `vue-webpack-es`: a Vue boilerplate with Babel and Webpack.
 
 # Backend projects

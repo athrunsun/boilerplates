@@ -2,7 +2,7 @@
 A React boilerplate with:
 
 - Webpack as bundler
-- TypeScript and Babel as transpiler (first transpiled into ES6 by TS then by Babel)
+- TypeScript and Babel as transpiler (first transpile ES into ES6 by `tsc` then by Babel)
 - Jest as testing framework
 - [typestyle](https://github.com/typestyle/typestyle) as css-in-js library
 

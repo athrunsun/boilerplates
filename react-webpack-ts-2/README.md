@@ -1,7 +1,7 @@
 # React-Webpack-TypeScript-Boilerplate
 A React boilerplate with:
 
-- Webpack as bundler (with [awesome-typescript-loader](https://github.com/s-panferov/awesome-typescript-loader))
+- Webpack as bundler (with [ts-loader](https://github.com/TypeStrong/ts-loader))
 - TypeScript as transpiler
 - [react-router](https://github.com/ReactTraining/react-router) as routing library
 - Jest as testing framework
