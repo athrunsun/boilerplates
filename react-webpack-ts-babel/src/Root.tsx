@@ -25,7 +25,7 @@ cssRaw(`
 
 function Root() {
     return (
-        <BrowserRouter {...!lodash.isEmpty(process.env.APP_BASE_URL) && { basename: process.env.APP_BASE_URL }}>
+        <BrowserRouter {...(!lodash.isEmpty(process.env.APP_PUBLIC_PATH) && { basename: process.env.APP_PUBLIC_PATH })}>
             <Switch>
                 <Redirect
                     exact={true}

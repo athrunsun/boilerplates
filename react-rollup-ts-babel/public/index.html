@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>React-Rollup-TypeScript-Babel-Boilerplate</title>
+        {% for module in modulepreload.main %}
+            {% if browserSupportsModulePreload -%}
+                <link rel="modulepreload" href="{{ module }}" />
+            {%- else -%}
+                <link rel="preload" as="script" crossorigin="anonymous" href="{{ module }}" />
+            {%- endif %}
+        {%- endfor %}
+    </head>
+
+    <body>
+        <noscript>
+            You need to enable JavaScript to run this app.
+        </noscript>
+        <div id="root"></div>
+        <script type="module" src="{{ manifest.main }}"></script>
+        <script nomodule src="{{ manifest.nomodule }}"></script>
+    </body>
+</html>
