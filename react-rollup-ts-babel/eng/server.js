@@ -5,7 +5,7 @@ const nunjucks = require('nunjucks');
 const path = require('path');
 const uaParser = require('ua-parser-js');
 const httpProxy = require('http-proxy-middleware');
-const history = require('connect-history-api-fallback');
+// const history = require('connect-history-api-fallback');
 const debug = require('debug');
 
 const { PATHS } = require('./paths');
@@ -34,7 +34,8 @@ if (CONFIG.ENABLE_MOCK) {
     applyApiMocks(app);
 }
 
-// This won't work since `public/index.html` is not copied to `dist`.
+// This won't work since `public/index.html` is not generated and copied to `dist` - it is served via `nunjucks` on the
+// fly below.
 // app.use(history());
 
 app.use(express.static(PATHS.appBuildOutput));
@@ -50,6 +51,7 @@ app.get('/', function(request, response) {
     const templateData = {
         manifest,
         modulepreload,
+        // `modulepreload` is Chrome-only at the moment (as of 2019/9/27)
         browserSupportsModulePreload: ua.engine.name === 'Blink',
         ENV: process.env.NODE_ENV || 'development',
     };

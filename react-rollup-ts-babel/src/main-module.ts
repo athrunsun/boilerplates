@@ -1,3 +1,4 @@
+// Modern browsers already support dynamic import so this polyfill is not necessary.
 // import dynamicImportPolyfill from 'dynamic-import-polyfill';
 import { main } from './index';
 

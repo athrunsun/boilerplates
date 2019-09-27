@@ -25,6 +25,7 @@ module.exports = api => {
     ];
 
     if (isTest) {
+        // Need to transpile `lodash-es`.
         plugins.push(require.resolve('@babel/plugin-transform-modules-commonjs'));
     }
 

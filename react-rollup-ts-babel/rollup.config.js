@@ -87,7 +87,13 @@ function createBabelPluginOptions(nomodule) {
           ];
 
     const presetEnvOptionsModule = { modules: false, targets: { browsers } };
-    const presetEnvOptionsNoModule = { targets: { browsers }, useBuiltIns: 'usage', corejs: 3 };
+
+    const presetEnvOptionsNoModule = {
+        targets: { browsers },
+        useBuiltIns: 'usage',
+        corejs: 3,
+        forceAllTransforms: true,
+    };
 
     const plugins = [
         [
@@ -110,12 +116,12 @@ function createBabelPluginOptions(nomodule) {
     }
 
     return {
-        ...(nomodule
-            ? {
-                  exclude: /node_modules(?!(\/|\\)(strict-uri-encode|split-on-first|query-string))/,
-              }
-            : { exclude: /node_modules/ }),
-        extensions: ['.ts', '.tsx', '.js'],
+        // Exclude `core-js` under nomodule mode b/c it will cause a lot of circular dependency warnings.
+        // We need to transpile code in `node_modules` under nomodule mode b/c IE11 doesn't support a lot of ES6
+        // features, which are used in 3rd-party libraries in `node_modules`.
+        ...(nomodule ? { exclude: /node_modules(\/|\\)core-js/ } : { exclude: /node_modules/ }),
+        // Need to include `.js` files when transpiling `node_modules` code under nomodule mode.
+        ...(nomodule ? { extensions: ['.ts', '.tsx', '.js'] } : { extensions: ['.ts', '.tsx'] }),
         babelrc: false,
         configFile: false,
         presets: [
