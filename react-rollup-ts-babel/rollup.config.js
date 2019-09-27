@@ -147,6 +147,8 @@ function basePlugins({ nomodule = false } = {}) {
 
     const plugins = [
         rollupPluginNodeResolve({
+            // THIS IS VERY IMPORTANT!
+            // Without it, rollup won't find the correct entry file of libraries.
             browser: true,
             extensions: ['.mjs', '.js', '.ts', '.tsx'],
         }),
