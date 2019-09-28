@@ -4,7 +4,7 @@ const rollupPluginBabel = require('rollup-plugin-babel');
 const rollupPluginCommonjs = require('rollup-plugin-commonjs');
 const rollupPluginNodeResolve = require('rollup-plugin-node-resolve');
 const rollupPluginReplace = require('rollup-plugin-replace');
-const { terser } = require('rollup-plugin-terser');
+const { rollupPluginTerser } = require('rollup-plugin-terser');
 const rollupPluginUrl = require('rollup-plugin-url');
 const { default: svgrRollup } = require('@svgr/rollup');
 const rollupPluginJson = require('rollup-plugin-json');
@@ -119,11 +119,14 @@ function createBabelPluginOptions(nomodule) {
         // Exclude `core-js` under nomodule mode b/c it will cause a lot of circular dependency warnings.
         // We need to transpile code in `node_modules` under nomodule mode b/c IE11 doesn't support a lot of ES6
         // features, which are used in 3rd-party libraries in `node_modules`.
-        ...(nomodule ? { exclude: /node_modules(\/|\\)core-js/ } : { exclude: /node_modules/ }),
+        ...(nomodule
+            ? { exclude: /node_modules(\/|\\)(core-js|react|react-dom)(\/|\\)/ }
+            : { exclude: /node_modules/ }),
         // Need to include `.js` files when transpiling `node_modules` code under nomodule mode.
         ...(nomodule ? { extensions: ['.ts', '.tsx', '.js'] } : { extensions: ['.ts', '.tsx'] }),
         babelrc: false,
         configFile: false,
+        ...(process.env.NODE_ENV === 'development' && { sourceMaps: true, inputSourceMap: true }),
         presets: [
             [
                 require.resolve('@babel/preset-env'),
@@ -174,7 +177,7 @@ function basePlugins({ nomodule = false } = {}) {
     if (process.env.NODE_ENV === 'production') {
         // TODO: enable if actually deploying this to production, but I have
         // minification off for now so it's easier to view the demo source.
-        plugins.push(terser({ module: !nomodule }));
+        plugins.push(rollupPluginTerser({ module: !nomodule }));
     }
 
     return plugins;
@@ -186,11 +189,12 @@ const moduleConfig = {
         main: 'src/main-module.ts',
     },
     output: {
+        sourcemap: true,
         dir: PATHS.appBuildOutput,
         format: 'esm',
         entryFileNames: '[name]-[hash].mjs',
         chunkFileNames: '[name]-[hash].mjs',
-        dynamicImportFunction: '__import__',
+        // dynamicImportFunction: '__import__',
     },
     plugins: [...basePlugins(), modulepreloadPlugin()],
     manualChunks(id) {
@@ -231,6 +235,7 @@ const nomoduleConfig = {
         nomodule: 'src/main-nomodule.ts',
     },
     output: {
+        sourcemap: true,
         dir: PATHS.appBuildOutput,
         format: 'iife',
         entryFileNames: '[name]-[hash].js',
