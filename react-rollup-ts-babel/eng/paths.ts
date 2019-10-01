@@ -1,9 +1,8 @@
-/* eslint @typescript-eslint/no-var-requires: "off" */
-const path = require('path');
-const fs = require('fs');
+import path from 'path';
+import fs from 'fs';
 
 const appDirectory = fs.realpathSync(process.cwd());
-const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
+const resolveApp = (relativePath: string) => path.resolve(appDirectory, relativePath);
 
 const PATHS = {
     appDirectory,
@@ -13,6 +12,8 @@ const PATHS = {
     appFavicon: resolveApp('public/favicon.ico'),
     appSrc: resolveApp('src'),
     appIndex: resolveApp('src/index.tsx'),
+    appMainESModule: resolveApp('src/main-module.ts'),
+    appMainNoESModule: resolveApp('src/main-nomodule.ts'),
     appNodeModules: resolveApp('node_modules'),
     appBuildOutput: resolveApp('dist'),
     babelNodeConfig: './babel.node.config.js',
@@ -24,4 +25,4 @@ const PATHS = {
     fontAssetsPath: path.join('assets', 'font'),
 };
 
-module.exports = { PATHS };
+export { PATHS };

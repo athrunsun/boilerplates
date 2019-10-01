@@ -5,11 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <title>React-Rollup-TypeScript-Babel-Boilerplate</title>
         {% for module in modulepreload.main %}
-            {% if browserSupportsModulePreload -%}
-                <link rel="modulepreload" href="{{ module }}" />
-            {%- else -%}
-                <link rel="preload" as="script" crossorigin="anonymous" href="{{ module }}" />
-            {%- endif %}
+            <link rel="preload" as="script" crossorigin="anonymous" href="{{ module }}" />
         {%- endfor %}
     </head>
 

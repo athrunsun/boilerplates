@@ -1,11 +1,10 @@
-/* eslint @typescript-eslint/no-var-requires: "off" */
-const lodash = require('lodash');
-const debug = require('debug');
-const path = require('path');
-const fs = require('fs');
-const dotenv = require('dotenv');
+import lodash from 'lodash';
+import debug from 'debug';
+import path from 'path';
+import fs from 'fs';
+import * as dotenv from 'dotenv';
 
-const { PATHS } = require('./paths');
+import { PATHS } from '@eng/paths';
 
 const logger = debug('eng:config');
 
@@ -31,9 +30,9 @@ dotenv.config({ path: envFilePath });
 
 const CONFIG = {
     ENABLE_MOCK: process.env.ENABLE_MOCK === 'true',
-    API_PREFIX: process.env.API_PREFIX,
-    API_TARGET: process.env.API_TARGET,
-    PUBLIC_PATH: lodash.isEmpty(process.env.BASE_URL) ? '/' : process.env.BASE_URL,
+    API_PREFIX: process.env.API_PREFIX as string,
+    API_TARGET: process.env.API_TARGET as string,
+    PUBLIC_PATH: lodash.isEmpty(process.env.BASE_URL) ? '/' : (process.env.BASE_URL as string),
 };
 
 const undefinedConfigEntries = [];
@@ -48,4 +47,4 @@ if (undefinedConfigEntries.length > 0) {
     throw new Error(`The following config entries are missing: ${undefinedConfigEntries.join(', ')}`);
 }
 
-module.exports = { CONFIG };
+export { CONFIG };

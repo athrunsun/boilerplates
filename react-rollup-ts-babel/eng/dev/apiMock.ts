@@ -1,12 +1,12 @@
-/* eslint @typescript-eslint/no-var-requires: "off" */
-const debug = require('debug');
-const path = require('path');
+import debug from 'debug';
+import path from 'path';
+import { Express } from 'express';
 
-const { CONFIG } = require('../config');
+import { CONFIG } from '@eng/config';
 
 const logger = debug('eng:dev:apiMock');
 
-const applyApiMocks = app => {
+const applyApiMocks = (app: Express) => {
     app.set('json spaces', 40);
 
     app.get(path.posix.resolve(CONFIG.API_PREFIX, 'title'), (request, response) =>
@@ -16,4 +16,4 @@ const applyApiMocks = app => {
     );
 };
 
-module.exports = applyApiMocks;
+export { applyApiMocks };

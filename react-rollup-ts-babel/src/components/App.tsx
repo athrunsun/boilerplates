@@ -8,6 +8,7 @@ import * as titleServices from '@app/services/title';
 
 import ErrorTest from '@app/components/ErrorBoundaryTest';
 
+import '@app/components/App.css';
 import logo from '@app/assets/logo.svg';
 
 const DynamicComp = React.lazy(() => import('@app/components/DynamicComp'));

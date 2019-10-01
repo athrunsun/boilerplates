@@ -1,4 +1,4 @@
-# React-Rollup-TypeScript-Babel-Boilerplate (POC)
+# React-Rollup-TypeScript-Babel-Boilerplate
 A React boilerplate with:
 
 - Rollup as bundler
@@ -7,8 +7,7 @@ A React boilerplate with:
 - Jest as testing framework
 - [typestyle](https://github.com/typestyle/typestyle) as css-in-js library
 
-## WARNING
-Please NOTE that this boilerplate is just a **proof of concept** according to [Using Native JavaScript Modules in Production Today](https://philipwalton.com/articles/using-native-javascript-modules-in-production-today/).
+This boilerplate is created based on [Using Native JavaScript Modules in Production Today](https://philipwalton.com/articles/using-native-javascript-modules-in-production-today/).
 
 ## FAQ
 ### Why `typestyle` but not any other css-in-js library?
