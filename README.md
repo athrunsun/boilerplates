@@ -4,7 +4,7 @@ My boilerplates collection.
 # Frontend projects
 - `react-fusebox-ts`: a React boilerplate with TypeScript and FuseBox.
 - ~~`react-parcel-ts`~~: a React boilerplate with TypeScript and Parcel **(NOT working)**
-- `react-rollup-ts-babel`: a React boilerplate with Babel as TS transpiler and Rollup **(POC)**.
+- `react-rollup-ts-babel`: a React boilerplate with Babel as TS transpiler and Rollup.
 - `react-webpack-es`: a React boilerplate with Babel and Webpack.
 - `react-webpack-mpa-ts`: a React MPA boilerplate with TypeScript and Webpack.
 - `react-webpack-ts`: a React boilerplate with TypeScript and Webpack (with [awesome-typescript-loader](https://github.com/s-panferov/awesome-typescript-loader)).
