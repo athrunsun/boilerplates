@@ -1,10 +1,11 @@
 import debug from 'debug';
 import path from 'path';
-import fs from 'fs-extra';
+import fsExtra from 'fs-extra';
 import nunjucks from 'nunjucks';
 import { rollup, InputOptions, OutputOptions } from 'rollup';
+import shell from 'shelljs';
 
-import buildConfigs from '@eng/rollupConfigs';
+import buildConfigs from '@eng/tasks/rollupConfigs';
 import { PATHS } from '@eng/paths';
 
 const logger = debug('eng:rollupBuild');
@@ -23,8 +24,12 @@ async function createBundle(inputOptions: InputOptions, outputOptions: OutputOpt
 
 async function compileTemplate() {
     logger('Compiling template...');
-    const manifest = fs.readJsonSync(path.resolve(PATHS.appBuildOutput, 'manifest.json'));
-    const modulepreload = fs.readJsonSync(path.resolve(PATHS.appBuildOutput, 'modulepreload.json'));
+    const manifest = fsExtra.readJsonSync(path.resolve(PATHS.appBuildOutput, 'manifest.json'));
+    const modulepreload = fsExtra.readJsonSync(path.resolve(PATHS.appBuildOutput, 'modulepreload.json'));
+
+    nunjucks.configure({
+        noCache: process.env.NODE_ENV !== 'production',
+    });
 
     const templateData = {
         manifest,
@@ -32,10 +37,12 @@ async function compileTemplate() {
         ENV: process.env.NODE_ENV || 'development',
     };
 
-    await fs.outputFile(
+    await fsExtra.outputFile(
         path.resolve(PATHS.appBuildOutput, 'index.html'),
         nunjucks.render(PATHS.appIndexHtml, templateData),
     );
+
+    shell.cp(PATHS.appFavicon, PATHS.appBuildOutput);
 }
 
 async function build() {
@@ -44,6 +51,7 @@ async function build() {
     logger('Creating non-ES module bundle...');
     await createBundle(otherOptionsNoModule, outputOptionsNoModule as OutputOptions);
     await compileTemplate();
+    logger('Done!');
 }
 
-build();
+export { build };

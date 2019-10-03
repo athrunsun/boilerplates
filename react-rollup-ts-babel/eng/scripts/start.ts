@@ -2,6 +2,6 @@ import shell from 'shelljs';
 
 import { PATHS } from '@eng/paths';
 
-shell.exec(`babel-node --config-file ${PATHS.babelNodeConfig} --extensions ".ts" eng/server`, {
+shell.exec(`babel-node --config-file ${PATHS.babelNodeConfig} --extensions ".ts" eng/tasks/start`, {
     env: { ...process.env, NODE_ENV: 'development', DEBUG: 'app:*,eng:*' },
 });

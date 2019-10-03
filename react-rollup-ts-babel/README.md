@@ -7,7 +7,34 @@ A React boilerplate with:
 - Jest as testing framework
 - [typestyle](https://github.com/typestyle/typestyle) as css-in-js library
 
-This boilerplate is created based on [Using Native JavaScript Modules in Production Today](https://philipwalton.com/articles/using-native-javascript-modules-in-production-today/).
+This boilerplate is based on [Using Native JavaScript Modules in Production Today](https://philipwalton.com/articles/using-native-javascript-modules-in-production-today/).
+
+## Get Started
+### View site locally
+```sh
+yarn run start
+```
+
+This will build all the source files, watch for changes, and serve them from [`http://localhost:3000`](http://localhost:3000) by default.
+
+To start the app with API mock enabled,
+
+```sh
+yarn run start:mock
+```
+
+### Generate production bundles
+```sh
+yarn run build
+```
+
+To view production bundles in browser,
+
+```sh
+yarn run serve
+```
+
+This will serve production bundles from [`http://localhost:3000`](http://localhost:3000) by default.
 
 ## FAQ
 ### Why `typestyle` but not any other css-in-js library?

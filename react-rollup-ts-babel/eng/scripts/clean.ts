@@ -1,5 +1,3 @@
-import shell from 'shelljs';
+import { clean } from '@eng/tasks/clean';
 
-import { PATHS } from '@eng/paths';
-
-shell.rm('-rf', PATHS.appBuildOutput);
+clean();

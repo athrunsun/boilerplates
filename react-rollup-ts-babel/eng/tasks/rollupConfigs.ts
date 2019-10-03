@@ -4,7 +4,7 @@ import rollupPluginBabel from 'rollup-plugin-babel';
 import rollupPluginCommonjs from 'rollup-plugin-commonjs';
 import rollupPluginNodeResolve from 'rollup-plugin-node-resolve';
 import rollupPluginReplace from 'rollup-plugin-replace';
-import { terser } from 'rollup-plugin-terser';
+import { terser as rollupPluginTerser } from 'rollup-plugin-terser';
 import rollupPluginUrl from 'rollup-plugin-url';
 import svgrRollup from '@svgr/rollup';
 import rollupPluginJson from 'rollup-plugin-json';
@@ -176,7 +176,7 @@ function basePlugins({ nomodule = false } = {}) {
     if (process.env.NODE_ENV === 'production') {
         // TODO: enable if actually deploying this to production, but I have
         // minification off for now so it's easier to view the demo source.
-        plugins.push(terser({ module: !nomodule }));
+        plugins.push(rollupPluginTerser({ module: !nomodule }));
     }
 
     return plugins;
