@@ -119,21 +119,14 @@ function createBabelPluginOptions(nomodule: boolean) {
         // Exclude `core-js` under nomodule mode b/c it will cause a lot of circular dependency warnings.
         // We need to transpile code in `node_modules` under nomodule mode b/c IE11 doesn't support a lot of ES6
         // features, which are used in 3rd-party libraries in `node_modules`.
-        ...(nomodule
-            ? { exclude: /node_modules(\/|\\)(core-js|react|react-dom)(\/|\\)/ }
-            : { exclude: /node_modules/ }),
+        exclude: nomodule ? /node_modules(\/|\\)(core-js|react|react-dom)(\/|\\)/ : /node_modules/,
         // Need to include `.js` files when transpiling `node_modules` code under nomodule mode.
-        ...(nomodule ? { extensions: ['.ts', '.tsx', '.js'] } : { extensions: ['.ts', '.tsx'] }),
+        extensions: nomodule ? ['.ts', '.tsx', '.js'] : ['.ts', '.tsx'],
         babelrc: false,
         configFile: false,
         ...(process.env.NODE_ENV === 'development' && { sourceMaps: true, inputSourceMap: true }),
         presets: [
-            [
-                require.resolve('@babel/preset-env'),
-                {
-                    ...(nomodule ? presetEnvOptionsNoModule : presetEnvOptionsModule),
-                },
-            ],
+            [require.resolve('@babel/preset-env'), nomodule ? presetEnvOptionsNoModule : presetEnvOptionsModule],
             require.resolve('@babel/preset-typescript'),
             [require.resolve('@babel/preset-react'), { development: process.env.NODE_ENV === 'development' }],
         ],
