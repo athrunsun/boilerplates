@@ -1,4 +1,3 @@
-import path from 'path';
 import { RollupOptions, OutputOptions, OutputChunk, Plugin, PluginContext } from 'rollup';
 import rollupPluginBabel from 'rollup-plugin-babel';
 import rollupPluginCommonjs from 'rollup-plugin-commonjs';
@@ -18,7 +17,7 @@ import { CONFIG } from '@eng/config';
 // If, in the future, the build process were to extends beyond just this rollup
 // config, then the manifest would have to be initialized from a file, but
 // since everything  is currently being built here, it's OK to just initialize
-// it as an empty object object when the build starts.
+// it as an empty object when the build starts.
 const manifest = {};
 
 /**
@@ -47,7 +46,7 @@ function manifestPlugin(): Plugin {
 /**
  * A Rollup plugin to generate a list of import dependencies for each entry
  * point in the module graph. This is then used by the template to generate
- * the necessary `<link rel="preload">` tags.
+ * the necessary `<link rel="preload">` tags (`<link rel="modulepreload">` is Chrome-only for now).
  * @return {Object}
  */
 function modulepreloadPlugin(): Plugin {
@@ -188,7 +187,7 @@ const moduleConfig: RollupOptions = {
         main: PATHS.appMainESModule,
     },
     output: {
-        sourcemap: true,
+        ...(process.env.NODE_ENV === 'development' && { sourcemap: true }),
         dir: PATHS.appBuildOutput,
         format: 'esm',
         entryFileNames: '[name]-[hash].mjs',
@@ -198,31 +197,11 @@ const moduleConfig: RollupOptions = {
     },
     plugins: [...basePlugins(), modulepreloadPlugin()],
     manualChunks(id: string) {
-        if (id.includes('node_modules')) {
-            // The directory name following the last `node_modules`.
-            // Usually this is the package, but it could also be the scope.
-            const directories = id.split(path.sep);
-            const name = directories[directories.lastIndexOf('node_modules') + 1];
-
-            // Group react dependencies into a common "react" chunk.
-            // NOTE: This isn't strictly necessary for this app, but it's included
-            // as an example to show how to manually group common dependencies.
-            // WARNING: need to comment this out since it will cause circular dependency between `react` and
-            // `mini-create-react-context`.
-            // if (name.match(/^react/) || ['prop-types', 'scheduler'].includes(name)) {
-            //     return 'react';
-            // }
-
-            // Group `tslib` and `dynamic-import-polyfill` into the default bundle.
-            // NOTE: This isn't strictly necessary for this app, but it's included
-            // to show how to manually keep deps in the default chunk.
-            // if (name === 'tslib' || name === 'dynamic-import-polyfill') {
-            //     return;
-            // }
-
-            // Otherwise just return the name.
-            return name;
+        if (!id.includes('node_modules')) {
+            return;
         }
+
+        return 'vendor';
     },
     watch: {
         clearScreen: false,
@@ -235,7 +214,7 @@ const nomoduleConfig: RollupOptions = {
         nomodule: PATHS.appMainNoESModule,
     },
     output: {
-        sourcemap: true,
+        ...(process.env.NODE_ENV === 'development' && { sourcemap: true }),
         dir: PATHS.appBuildOutput,
         format: 'iife',
         entryFileNames: '[name]-[hash].js',
