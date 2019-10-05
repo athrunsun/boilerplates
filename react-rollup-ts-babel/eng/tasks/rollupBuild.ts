@@ -3,10 +3,10 @@ import path from 'path';
 import fsExtra from 'fs-extra';
 import nunjucks from 'nunjucks';
 import { rollup, InputOptions, OutputOptions } from 'rollup';
-import shell from 'shelljs';
 
-import buildConfigs from '@eng/tasks/rollupConfigs';
+import { buildConfigs } from '@eng/tasks/rollupConfigs';
 import { PATHS } from '@eng/paths';
+import { copyAssets } from '@eng/tasks/copyAssets';
 
 const logger = debug('eng:rollupBuild');
 
@@ -42,7 +42,7 @@ async function compileTemplate() {
         nunjucks.render(PATHS.appIndexHtml, templateData),
     );
 
-    shell.cp(PATHS.appFavicon, PATHS.appBuildOutput);
+    copyAssets();
 }
 
 async function build() {

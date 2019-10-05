@@ -219,4 +219,6 @@ const nomoduleConfig: RollupOptions = {
     },
 };
 
-export default [moduleConfig, nomoduleConfig];
+const buildConfigs = [moduleConfig, nomoduleConfig];
+
+export { buildConfigs };
