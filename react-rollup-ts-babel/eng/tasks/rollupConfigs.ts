@@ -1,4 +1,4 @@
-import { RollupOptions, OutputOptions, OutputChunk, Plugin, PluginContext } from 'rollup';
+import { RollupOptions, OutputOptions, OutputBundle, OutputChunk, Plugin, PluginContext } from 'rollup';
 import rollupPluginBabel from 'rollup-plugin-babel';
 import rollupPluginCommonjs from 'rollup-plugin-commonjs';
 import rollupPluginNodeResolve from 'rollup-plugin-node-resolve';
@@ -29,15 +29,17 @@ const manifest = {};
 function manifestPlugin(): Plugin {
     return {
         name: 'manifest',
-        generateBundle(this: PluginContext, options: OutputOptions, bundle: { [fileName: string]: OutputChunk }) {
+        generateBundle(this: PluginContext, options: OutputOptions, bundle: OutputBundle) {
             for (const [fileName, chunkInfo] of Object.entries(bundle)) {
-                manifest[chunkInfo.name] = fileName;
+                if (chunkInfo.type === 'chunk') {
+                    manifest[chunkInfo.name] = fileName;
+                }
             }
 
             this.emitFile({
                 type: 'asset',
                 fileName: 'manifest.json',
-                source: JSON.stringify(manifest, null, 2),
+                source: JSON.stringify(manifest, null, 4),
             });
         },
     };
@@ -52,13 +54,13 @@ function manifestPlugin(): Plugin {
 function modulepreloadPlugin(): Plugin {
     return {
         name: 'modulepreload',
-        generateBundle(this: PluginContext, options: OutputOptions, bundle: { [fileName: string]: OutputChunk }) {
+        generateBundle(this: PluginContext, options: OutputOptions, bundle: OutputBundle) {
             // A mapping of entry chunk names to their full dependency list.
             const modulepreloadMap = {};
 
             // Loop through all the chunks to detect entries.
             for (const [fileName, chunkInfo] of Object.entries(bundle)) {
-                if (chunkInfo.isEntry || chunkInfo.isDynamicEntry) {
+                if (chunkInfo.type === 'chunk' && (chunkInfo.isEntry || chunkInfo.isDynamicEntry)) {
                     modulepreloadMap[chunkInfo.name] = [fileName, ...chunkInfo.imports];
                 }
             }
@@ -66,7 +68,7 @@ function modulepreloadPlugin(): Plugin {
             this.emitFile({
                 type: 'asset',
                 fileName: 'modulepreload.json',
-                source: JSON.stringify(modulepreloadMap, null, 2),
+                source: JSON.stringify(modulepreloadMap, null, 4),
             });
         },
     };
@@ -158,7 +160,7 @@ function basePlugins({ nomodule = false } = {}) {
         rollupPluginBabel(createBabelPluginOptions(nomodule)),
         rollupPluginReplace(replacePluginDefinitions),
         manifestPlugin(),
-        rollupPluginPostcss(process.env.NODE_ENV === 'development' ? { sourceMap: 'inline' } : undefined),
+        rollupPluginPostcss(process.env.NODE_ENV === 'development' ? { sourceMap: 'inline' } : { minimize: true }),
         rollupPluginUrl(),
         svgrRollup(),
         rollupPluginJson(),

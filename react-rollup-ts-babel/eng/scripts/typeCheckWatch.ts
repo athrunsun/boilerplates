@@ -1,5 +1,3 @@
-import shell from 'shelljs';
+import { typeCheckWatch } from '@eng/tasks/typeCheck';
 
-import { PATHS } from '@eng/paths';
-
-shell.exec(`tsc -p ${PATHS.tsConfigApp} --noEmit --watch`);
+typeCheckWatch();

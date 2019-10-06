@@ -3,6 +3,7 @@
     "private": true,
     "version": "0.1.0",
     "scripts": {
+        "lint": "babel-node --config-file ./babel.node.config.js --extensions \".ts\" eng/scripts/lint",
         "type-check": "babel-node --config-file ./babel.node.config.js --extensions \".ts\" eng/scripts/typeCheck",
         "type-check:watch": "babel-node --config-file ./babel.node.config.js --extensions \".ts\" eng/scripts/typeCheckWatch",
         "type-check:test": "babel-node --config-file ./babel.node.config.js --extensions \".ts\" eng/scripts/typeCheckTest",
@@ -15,8 +16,7 @@
         "test": "yarn run type-check:test && jest",
         "test:watch": "yarn run type-check:test && jest --watch",
         "test:cov": "yarn run type-check:test && jest --coverage",
-        "test:debug": "yarn run type-check:test && node --inspect-brk node_modules/.bin/jest --runInBand",
-        "lint": "babel-node --config-file ./babel.node.config.js --extensions \".ts\" eng/scripts/lint"
+        "test:debug": "yarn run type-check:test && node --inspect-brk node_modules/.bin/jest --runInBand"
     },
     "dependencies": {
         "axios": "^0.18.1",
