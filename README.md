@@ -10,6 +10,7 @@ My boilerplates collection.
 - `react-webpack-ts`: a React boilerplate with TypeScript and Webpack (with [awesome-typescript-loader](https://github.com/s-panferov/awesome-typescript-loader)).
 - `react-webpack-ts-2`: a React boilerplate with TypeScript and Webpack (with [ts-loader](https://github.com/TypeStrong/ts-loader)).
 - `react-webpack-ts-babel`: a React boilerplate with Babel as TS transpiler and Webpack.
+- `react-webpack-ts-babel-multi-bundles`: a React boilerplate with Babel as TS transpiler and Webpack to serve a modern (for browsers that support native ES module) and a legacy bundles (for browsers that do NOT support native ES module) in one html.
 - `react-webpack-ts-es`: a React boilerplate with TypeScript (use `tsc` to transpile ES), Babel and Webpack **(POC)**.
 - `vue-webpack-es`: a Vue boilerplate with Babel and Webpack.
 
