@@ -1,12 +1,11 @@
-import shell from 'shelljs';
-
-import { clean } from '@eng/tasks/clean';
+import { cleanAll } from '@eng/tasks/clean';
+import { yarnInstall } from '@eng/tasks/yarnInstall';
 import { typeCheck } from '@eng/tasks/typeCheck';
-import compile from './compile';
+import { compile } from '@eng/tasks/compile';
 
-(async () => {
-    clean();
-    shell.exec('yarn install');
+(async function() {
+    yarnInstall();
+    cleanAll();
     typeCheck();
     await compile();
 })();

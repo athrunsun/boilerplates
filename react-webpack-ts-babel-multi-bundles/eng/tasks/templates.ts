@@ -2,15 +2,15 @@ import debug from 'debug';
 import path from 'path';
 import fsExtra from 'fs-extra';
 import nunjucks from 'nunjucks';
-import shell from 'shelljs';
 
 import { PATHS } from '@eng/paths';
+import { copyAssets } from '@eng/tasks/copyAssets';
 import { getManifest } from '@eng/tasks/utils/assets';
 import { getModulepreload } from '@eng/tasks/utils/modulepreload';
 
 const logger = debug('eng:tasks:templates');
 
-export default async () => {
+async function compileTemplates() {
     logger('Compiling template...');
     const manifest = getManifest();
     const modulepreload = getModulepreload();
@@ -32,6 +32,8 @@ export default async () => {
         nunjucks.render(PATHS.appIndexHtml, templateData),
     );
 
-    shell.cp(PATHS.appFavicon, PATHS.appBuildOutput);
+    copyAssets();
     logger('Built template: index.html\n');
-};
+}
+
+export { compileTemplates };

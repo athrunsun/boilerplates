@@ -10,7 +10,9 @@ import { PATHS } from '@eng/paths';
 import { CONFIG } from '@eng/config';
 import { applyApiMocks } from '@eng/dev/apiMock';
 import { clean } from '@eng/tasks/clean';
-import compile from '@eng/tasks/compile';
+import { compile } from '@eng/tasks/compile';
+import { resetManifest } from '@eng/tasks/utils/assets';
+import { resetModulepreload } from '@eng/tasks/utils/modulepreload';
 
 const logger = debug('eng:tasks:server');
 
@@ -51,8 +53,10 @@ function startApp() {
 }
 
 async function cleanAndCompile() {
-    clean();
+    resetManifest();
+    resetModulepreload();
     await compile();
+    await clean();
 }
 
 async function watch() {

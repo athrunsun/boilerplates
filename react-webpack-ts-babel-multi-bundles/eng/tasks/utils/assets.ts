@@ -15,7 +15,7 @@ const getManifest = () => {
 };
 
 const saveManifest = () => {
-    fsExtra.outputJson(path.resolve(PATHS.appBuildOutput, PATHS.manifestFileName), revisionedAssetManifest, {
+    fsExtra.outputJsonSync(path.resolve(PATHS.appBuildOutput, PATHS.manifestFileName), revisionedAssetManifest, {
         spaces: 4,
     });
 };
@@ -45,10 +45,4 @@ const getRevisionedAssetUrl = (filename: string) => {
     return path.resolve(PATHS.appBuildOutput, getAsset(filename));
 };
 
-const saveModulepreload = (modulepreloadMap: object) => {
-    fsExtra.outputJson(path.resolve(PATHS.appBuildOutput, PATHS.modulepreloadFileName), modulepreloadMap, {
-        spaces: 4,
-    });
-};
-
-export { getManifest, saveManifest, resetManifest, getAsset, addAsset, getRevisionedAssetUrl, saveModulepreload };
+export { getManifest, saveManifest, resetManifest, getAsset, addAsset, getRevisionedAssetUrl };

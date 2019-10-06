@@ -4,7 +4,7 @@ import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 import { PATHS } from '@eng/paths';
 import { CONFIG } from '@eng/config';
@@ -55,19 +55,16 @@ const configurePlugins = (nomodule: boolean) => {
             fileName: PATHS.manifestFileName,
             generate: (seed, files) => {
                 return files.reduce((manifest, opts) => {
-                    // logger(opts);
                     // Needed until this issue is resolved:
                     // https://github.com/danethurber/webpack-manifest-plugin/issues/159
                     const name = path.basename(opts.path);
 
-                    if (name.endsWith('.mjs') || name.endsWith('.js')) {
-                        const unhashedName = name.replace(/[_.-][0-9a-f]{10}/, '');
-                        addAsset(unhashedName, name);
+                    const unhashedName = name.replace(/[_.-][0-9a-f]{20}/, '');
+                    addAsset(unhashedName, name);
 
-                        // `opts.isInitial === false` means that chunk is dynamically loaded.
-                        if (!nomodule && opts.isChunk && opts.isInitial) {
-                            addModule(unhashedName, name);
-                        }
+                    // `opts.isInitial === false` means that chunk is dynamically loaded.
+                    if (!nomodule && name.endsWith('.mjs') && opts.isChunk && opts.isInitial) {
+                        addModule(unhashedName, name);
                     }
 
                     return getManifest();
@@ -83,9 +80,10 @@ const configurePlugins = (nomodule: boolean) => {
         plugins.push(new webpack.NoEmitOnErrorsPlugin());
     } else if (process.env.NODE_ENV === 'production') {
         plugins.push(
-            new MiniCssExtractPlugin({
-                filename: '[name].[contenthash].css',
-                chunkFilename: '[id].[contenthash].css',
+            new BundleAnalyzerPlugin({
+                analyzerMode: 'static',
+                reportFilename: nomodule ? 'report_legacy.html' : 'report_modern.html',
+                openAnalyzer: false,
             }),
         );
     }
@@ -98,7 +96,7 @@ const configureBabelLoader = (nomodule: boolean) => {
     const presetEnvOptionsModule = { modules: false, targets: { browsers } };
 
     const presetEnvOptionsNoModule = {
-        loose: true,
+        // loose: true,
         // modules: false,
         // debug: true,
         corejs: 3,
@@ -236,7 +234,7 @@ const configureCssLoader = () => {
     } else if (process.env.NODE_ENV === 'production') {
         return {
             test: /\.css$/,
-            use: [MiniCssExtractPlugin.loader, require.resolve('css-loader')],
+            use: [require.resolve('style-loader'), require.resolve('css-loader')],
         };
     } else {
         throw new Error(`Unable to configure css-loader under current process.env.NODE_ENV: ${process.env.NODE_ENV}`);
@@ -253,11 +251,12 @@ const baseConfig = (nomodule: boolean) => ({
                 chunks: 'all',
             },
         }),
+        ...(process.env.NODE_ENV === 'development' && { minimize: false }),
         ...(process.env.NODE_ENV === 'production' && {
             minimizer: [
                 new TerserPlugin({
                     test: /\.m?js(\?.*)?$/i,
-                    sourceMap: true,
+                    // sourceMap: true,
                     terserOptions: {
                         safari10: true,
                     },
@@ -278,7 +277,7 @@ const modernConfig = Object.assign({}, baseConfig(false), {
     output: {
         path: PATHS.appBuildOutput,
         publicPath: CONFIG.PUBLIC_PATH,
-        filename: '[name]-[chunkhash:10].mjs',
+        filename: '[name]-[contenthash].mjs',
     },
     plugins: configurePlugins(false),
     module: {
@@ -293,7 +292,7 @@ const legacyConfig = Object.assign({}, baseConfig(true), {
     output: {
         path: PATHS.appBuildOutput,
         publicPath: CONFIG.PUBLIC_PATH,
-        filename: '[name]-[chunkhash:10].js',
+        filename: '[name]-[contenthash].js',
     },
     plugins: configurePlugins(true),
     module: {
@@ -319,7 +318,9 @@ const createCompiler = (config: webpack.Configuration) => {
 const compileModernBundle = createCompiler(modernConfig);
 const compileLegacyBundle = createCompiler(legacyConfig);
 
-export default async () => {
+async function bundles() {
     await compileModernBundle();
     await compileLegacyBundle();
-};
+}
+
+export { bundles };
