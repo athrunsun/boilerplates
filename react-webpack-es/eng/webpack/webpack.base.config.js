@@ -78,14 +78,14 @@ const config = {
                         options: {
                             limit: 4096,
                             name: '[name].[contenthash].[ext]',
-                            outputPath: PATHS.imageAssetsPath,
-                            publicPath: imageAssetsPublicPath,
+                            outputPath: PATHS.fontAssetsPath,
+                            publicPath: fontAssetsPublicPath,
                             fallback: {
                                 loader: require.resolve('file-loader'),
                                 options: {
                                     name: '[name].[contenthash].[ext]',
-                                    outputPath: PATHS.imageAssetsPath,
-                                    publicPath: imageAssetsPublicPath,
+                                    outputPath: PATHS.fontAssetsPath,
+                                    publicPath: fontAssetsPublicPath,
                                 },
                             },
                         },
