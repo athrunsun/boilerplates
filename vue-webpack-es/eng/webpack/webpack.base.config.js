@@ -1,5 +1,7 @@
+import path from 'path';
 import webpack from 'webpack';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
+import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
 
 import { PATHS } from '@eng/paths';
 import { CONFIG } from '@eng/config';
@@ -9,6 +11,9 @@ const definePluginDefinitions = { 'process.env': {} };
 for (const configKey of Object.keys(CONFIG)) {
     definePluginDefinitions['process.env'][`APP_${configKey}`] = JSON.stringify(CONFIG[configKey]);
 }
+
+const imageAssetsPublicPath = path.join(CONFIG.PUBLIC_PATH, PATHS.imageAssetsPath);
+const fontAssetsPublicPath = path.join(CONFIG.PUBLIC_PATH, PATHS.fontAssetsPath);
 
 const config = {
     entry: {
@@ -50,11 +55,15 @@ const config = {
                         loader: require.resolve('url-loader'),
                         options: {
                             limit: 4096,
-                            name: 'static/assets/img/[name].[contenthash].[ext]',
+                            name: '[name].[contenthash].[ext]',
+                            outputPath: PATHS.imageAssetsPath,
+                            publicPath: imageAssetsPublicPath,
                             fallback: {
                                 loader: require.resolve('file-loader'),
                                 options: {
-                                    name: 'static/assets/img/[name].[contenthash].[ext]',
+                                    name: '[name].[contenthash].[ext]',
+                                    outputPath: PATHS.imageAssetsPath,
+                                    publicPath: imageAssetsPublicPath,
                                 },
                             },
                         },
@@ -67,7 +76,9 @@ const config = {
                     {
                         loader: require.resolve('file-loader'),
                         options: {
-                            name: 'static/assets/img/[name].[hash].[ext]',
+                            name: '[name].[hash].[ext]',
+                            outputPath: PATHS.imageAssetsPath,
+                            publicPath: imageAssetsPublicPath,
                         },
                     },
                 ],
@@ -79,11 +90,15 @@ const config = {
                         loader: require.resolve('url-loader'),
                         options: {
                             limit: 4096,
-                            name: 'static/assets/fonts/[name].[contenthash].[ext]',
+                            name: '[name].[contenthash].[ext]',
+                            outputPath: PATHS.fontAssetsPath,
+                            publicPath: fontAssetsPublicPath,
                             fallback: {
                                 loader: require.resolve('file-loader'),
                                 options: {
-                                    name: 'static/assets/fonts/[name].[contenthash].[ext]',
+                                    name: '[name].[contenthash].[ext]',
+                                    outputPath: PATHS.fontAssetsPath,
+                                    publicPath: fontAssetsPublicPath,
                                 },
                             },
                         },
@@ -93,7 +108,11 @@ const config = {
         ],
     },
 
-    plugins: [new webpack.DefinePlugin(definePluginDefinitions), new VueLoaderPlugin()],
+    plugins: [
+        new webpack.DefinePlugin(definePluginDefinitions),
+        new VueLoaderPlugin(),
+        new LodashModuleReplacementPlugin(),
+    ],
 };
 
 export default config;

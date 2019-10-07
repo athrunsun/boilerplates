@@ -22,7 +22,7 @@ body {
 </style>
 
 <script>
-import * as log from 'loglevel';
+import Vue from 'vue';
 import { style } from 'typestyle';
 
 import * as titleServices from '@app/services/title';
@@ -53,14 +53,14 @@ const moduleStyles = {
 };
 
 if (process.env.NODE_ENV === 'development') {
-    (async () => {
-        log.debug(
+    (async function() {
+        console.log(
             'You have async support if you read this instead of "ReferenceError: regeneratorRuntime is not defined" error.',
         );
     })();
 }
 
-export default {
+export default Vue.extend({
     data: function() {
         return {
             onDevEnv: process.env.NODE_ENV === 'development',
@@ -69,12 +69,12 @@ export default {
         };
     },
     mounted: function() {
-        if (process.env.NODE_ENV === 'development') {
+        if (this.onDevEnv) {
             titleServices.requestTitle().then(response => {
                 this.docTitle = response.data.data;
                 document.title = response.data.data;
             });
         }
     },
-};
+});
 </script>

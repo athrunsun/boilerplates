@@ -3,6 +3,7 @@ import webpackMerge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 import { PATHS } from '@eng/paths';
+import { CONFIG } from '@eng/config';
 import webpackBaseConfig from '@eng/webpack/webpack.base.config';
 
 const config = webpackMerge(webpackBaseConfig, {
@@ -11,7 +12,7 @@ const config = webpackMerge(webpackBaseConfig, {
         filename: '[name].[hash].bundle.js',
         chunkFilename: '[id].[hash].bundle.js',
         path: PATHS.appBuildOutput,
-        publicPath: '/',
+        publicPath: CONFIG.PUBLIC_PATH,
         pathinfo: true,
     },
 
@@ -55,7 +56,7 @@ const config = webpackMerge(webpackBaseConfig, {
         ],
     },
 
-    devtool: 'inline-source-map',
+    devtool: '#source-map',
 
     plugins: [
         new HtmlWebpackPlugin({
