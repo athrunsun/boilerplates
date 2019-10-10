@@ -1,10 +1,11 @@
 <template>
     <div v-bind:class="moduleStyles.container">
         <img class="logo" alt="Vue Logo" src="@app/assets/logo.png" />
-        <div>This is the app page...</div>
-        <template v-if="onDevEnv">
-            <div>If you see document's title changed to '{{ docTitle }}', api mock works.</div>
-        </template>
+        <div class="nav">
+            <router-link v-bind:to="routePathProvider.APP">Home</router-link> |
+            <router-link v-bind:to="routePathProvider.DYNAMIC_COMP_TEST">Dynamic Component Test</router-link>
+        </div>
+        <router-view />
     </div>
 </template>
 
@@ -19,13 +20,16 @@ body {
     width: 15rem;
     height: 15rem;
 }
+.nav {
+    display: flex;
+}
 </style>
 
 <script>
 import Vue from 'vue';
 import { style } from 'typestyle';
 
-import * as titleServices from '@app/services/title';
+import { routePathProvider } from '@app/helpers/routePath';
 
 const moduleStyles = {
     container: style({
@@ -38,14 +42,24 @@ const moduleStyles = {
         justifyContent: 'center',
         alignItems: 'center',
         $nest: {
-            '& > div': {
+            '& div': {
                 fontSize: '2rem',
                 color: '#aaa',
                 padding: '1rem',
                 backgroundColor: '#ccc',
                 borderRadius: '0.8rem',
             },
-            '& > div:not(:last-child)': {
+            '& div:not(:last-child)': {
+                marginBottom: '1rem',
+            },
+            '& section div': {
+                fontSize: '2rem',
+                color: '#aaa',
+                padding: '1rem',
+                backgroundColor: '#ccc',
+                borderRadius: '0.8rem',
+            },
+            '& section div:not(:last-child)': {
                 marginBottom: '1rem',
             },
         },
@@ -61,20 +75,13 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 export default Vue.extend({
-    data: function() {
+    name: 'App',
+    data() {
         return {
             onDevEnv: process.env.NODE_ENV === 'development',
-            docTitle: '',
             moduleStyles,
+            routePathProvider,
         };
-    },
-    mounted: function() {
-        if (this.onDevEnv) {
-            titleServices.requestTitle().then(response => {
-                this.docTitle = response.data.data;
-                document.title = response.data.data;
-            });
-        }
     },
 });
 </script>
