@@ -5,7 +5,7 @@ import { cssRaw } from 'typestyle';
 
 import * as routePathHelpers from '@app/helpers/route-path';
 
-import App from '@app/components/app1';
+import App from '@app/components/app';
 
 cssRaw(`
     html {

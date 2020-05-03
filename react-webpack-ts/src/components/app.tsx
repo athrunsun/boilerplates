@@ -8,7 +8,7 @@ import * as titleServices from '@app/services/title';
 
 import ErrorTest from '@app/components/error-boundary-test';
 
-import '@app/components/app1.css';
+import '@app/components/app.css';
 import '@app/components/app.less';
 import logo from '@app/assets/logo.svg';
 
