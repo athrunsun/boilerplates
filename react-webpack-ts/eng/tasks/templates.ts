@@ -4,6 +4,7 @@ import fsExtra from 'fs-extra';
 import nunjucks from 'nunjucks';
 
 import { PATHS } from '@eng/paths';
+import { CONFIG } from '@eng/config';
 import { copyAssets } from '@eng/tasks/copy-assets';
 import { getManifest } from '@eng/tasks/utils/assets';
 import { getModulepreload } from '@eng/tasks/utils/modulepreload';
@@ -24,10 +25,13 @@ async function compileTemplates() {
     });
 
     const templateData = {
+        ENV: process.env.NODE_ENV || 'development',
+        PUBLIC_PATH: CONFIG.PUBLIC_PATH,
+        APP_FAVICON_FILE_NAME: PATHS.APP_FAVICON_FILE_NAME,
         manifest,
         modulepreload,
+        APPLY_CSS_ASSETS: process.env.NODE_ENV === 'production',
         cssAssets,
-        ENV: process.env.NODE_ENV || 'development',
     };
 
     await fsExtra.outputFile(

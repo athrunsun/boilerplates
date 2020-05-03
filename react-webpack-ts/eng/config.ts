@@ -36,6 +36,12 @@ const CONFIG = {
     PUBLIC_PATH: lodash.isEmpty(process.env.BASE_URL) ? '/' : (process.env.BASE_URL as string),
 };
 
+if (CONFIG.MULTI_BUNDLES) {
+    logger('Multi-bundles mode is ON');
+} else {
+    logger('Multi-bundles mode is OFF');
+}
+
 const undefinedConfigEntries = [];
 
 for (const configKey of Object.keys(CONFIG)) {

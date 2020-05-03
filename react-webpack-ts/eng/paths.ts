@@ -14,6 +14,7 @@ const PATHS = {
     APP_INDEX_HTML: resolveApp('public/index.html'),
     APP_MULTI_BUNDLES_INDEX_HTML: resolveApp('public/index.multi-bundles.html'),
     APP_FAVICON: resolveApp('public/favicon.ico'),
+    APP_FAVICON_FILE_NAME: 'favicon.ico',
     APP_SRC: resolveApp('src'),
     APP_INDEX: resolveApp('src/index.tsx'),
     APP_MAIN_ES_MODULE: resolveApp('src/main-module.ts'),
