@@ -11,6 +11,7 @@
         "clean": "babel-node --config-file ./babel.node.config.js --extensions \".ts\" eng/scripts/clean",
         "start": "babel-node --config-file ./babel.node.config.js --extensions \".ts\" eng/scripts/start",
         "start:mock": "babel-node --config-file ./babel.node.config.js --extensions \".ts\" eng/scripts/start-mock",
+        "start:mock-server": "babel-node --config-file ./babel.node.config.js --extensions \".ts\" eng/scripts/start-stand-alone-mock-server",
         "build": "babel-node --config-file ./babel.node.config.js --extensions \".ts\" eng/scripts/build",
         "build:dev": "babel-node --config-file ./babel.node.config.js --extensions \".ts\" eng/scripts/build-dev",
         "serve": "babel-node --config-file ./babel.node.config.js --extensions \".ts\" eng/scripts/serve",

@@ -379,45 +379,49 @@ function baseConfig(nomodule: boolean) {
     };
 }
 
-const modernConfig = Object.assign({}, baseConfig(false), {
-    entry: {
-        main: PATHS.APP_MAIN_ES_MODULE,
-    },
-    output: {
-        path: PATHS.APP_BUILD_OUTPUT,
-        publicPath: CONFIG.PUBLIC_PATH,
-        filename: '[name]-[contenthash].mjs',
-    },
-    plugins: configurePlugins(false),
-    module: {
-        rules: [
-            configureBabelLoader(false),
-            configureCssLoader(false),
-            configureLessLoader(false),
-            ...sharedWebpackModuleRules(),
-        ],
-    },
-});
+function createModernConfig() {
+    return Object.assign({}, baseConfig(false), {
+        entry: {
+            main: PATHS.APP_MAIN_ES_MODULE,
+        },
+        output: {
+            path: PATHS.APP_BUILD_OUTPUT,
+            publicPath: CONFIG.PUBLIC_PATH,
+            filename: '[name]-[contenthash].mjs',
+        },
+        plugins: configurePlugins(false),
+        module: {
+            rules: [
+                configureBabelLoader(false),
+                configureCssLoader(false),
+                configureLessLoader(false),
+                ...sharedWebpackModuleRules(),
+            ],
+        },
+    });
+}
 
-const legacyConfig = Object.assign({}, baseConfig(true), {
-    entry: {
-        nomodule: PATHS.APP_MAIN_NO_ES_MODULE,
-    },
-    output: {
-        path: PATHS.APP_BUILD_OUTPUT,
-        publicPath: CONFIG.PUBLIC_PATH,
-        filename: '[name]-[contenthash].js',
-    },
-    plugins: configurePlugins(true),
-    module: {
-        rules: [
-            configureBabelLoader(true),
-            configureCssLoader(true),
-            configureLessLoader(true),
-            ...sharedWebpackModuleRules(),
-        ],
-    },
-});
+function createLegacyConfig() {
+    return Object.assign({}, baseConfig(true), {
+        entry: {
+            nomodule: PATHS.APP_MAIN_NO_ES_MODULE,
+        },
+        output: {
+            path: PATHS.APP_BUILD_OUTPUT,
+            publicPath: CONFIG.PUBLIC_PATH,
+            filename: '[name]-[contenthash].js',
+        },
+        plugins: configurePlugins(true),
+        module: {
+            rules: [
+                configureBabelLoader(true),
+                configureCssLoader(true),
+                configureLessLoader(true),
+                ...sharedWebpackModuleRules(),
+            ],
+        },
+    });
+}
 
 function createCompiler(config: webpack.Configuration) {
     const compiler = webpack(config);
@@ -434,10 +438,18 @@ function createCompiler(config: webpack.Configuration) {
     };
 }
 
-const compileModernBundle = createCompiler(modernConfig);
-const compileLegacyBundle = createCompiler(legacyConfig);
+function createModernBundleCompiler() {
+    return createCompiler(createModernConfig());
+}
+
+function createLegacyBundleCompiler() {
+    return createCompiler(createLegacyConfig());
+}
 
 async function bundles() {
+    const compileModernBundle = createModernBundleCompiler();
+    const compileLegacyBundle = createLegacyBundleCompiler();
+
     await compileModernBundle();
 
     if (CONFIG.MULTI_BUNDLES) {

@@ -21,6 +21,12 @@ To start the app with API mock enabled,
 yarn run start:mock
 ```
 
+To start a stand-alone mock server, so that we don't have to re-compile app code (by issuing `yarn run start:mock` again) everytime api mock is changed,
+
+```sh
+yarn run start:mock-server
+```
+
 ### Generate production bundles
 ```sh
 yarn run build

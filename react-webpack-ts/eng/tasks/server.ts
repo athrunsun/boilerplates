@@ -13,6 +13,7 @@ import { clean } from '@eng/tasks/clean';
 import { compile } from '@eng/tasks/compile';
 import { resetManifest } from '@eng/tasks/utils/assets';
 import { resetModulepreload } from '@eng/tasks/utils/modulepreload';
+import { resetManifest as resetCssAssetsManifest } from '@eng/tasks/utils/css-assets';
 
 const logger = debug('eng:tasks:server');
 
@@ -30,7 +31,7 @@ function startApp() {
 
     if (CONFIG.ENABLE_MOCK) {
         logger('API mock is enabled...');
-        applyApiMocks(app);
+        applyApiMocks(app, false);
     }
 
     app.use(history());
@@ -52,9 +53,38 @@ function startApp() {
     });
 }
 
+function startStandAloneMockServer() {
+    const app = express();
+
+    const apiProxy = createProxyMiddleware({
+        // Should be set to real API server address
+        target: 'http://localhost:5000',
+
+        changeOrigin: true,
+        secure: false,
+    });
+
+    // Apply mock before requests proxying
+    applyApiMocks(app, true);
+
+    // Proxy non-mock requests to remote server
+    app.use('/**', apiProxy);
+
+    app.set('port', process.env.PORT || 4000);
+
+    app.listen(app.get('port'), (err: any) => {
+        logger(`Stand-alone mock server is running:\nhttp://localhost:${app.get('port')}`);
+
+        if (err) {
+            logger(err);
+        }
+    });
+}
+
 async function compileAndClean() {
     resetManifest();
     resetModulepreload();
+    resetCssAssetsManifest();
     await compile();
     await clean();
 }
@@ -66,4 +96,4 @@ async function watch() {
     startApp();
 }
 
-export { startApp, watch };
+export { startApp, startStandAloneMockServer, watch };
