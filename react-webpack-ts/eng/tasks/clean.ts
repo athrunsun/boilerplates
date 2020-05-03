@@ -6,21 +6,21 @@ import path from 'path';
 import { PATHS } from '@eng/paths';
 
 function cleanAll() {
-    shell.rm('-rf', PATHS.appBuildOutput);
+    shell.rm('-rf', PATHS.APP_BUILD_OUTPUT);
 }
 
 /**
  * This is necessary because in watch mode, webpack is caching old build files if they have the same hash and won't emit
- * them again in future builds - nuking the entire `PATHS.appBuildOutput` folder will also delete needed files.
+ * them again in future builds - nuking the entire `PATHS.APP_BUILD_OUTPUT` folder will also delete needed files.
  */
 async function clean() {
-    const manifestPath = path.resolve(PATHS.appBuildOutput, PATHS.manifestFileName);
+    const manifestPath = path.resolve(PATHS.APP_BUILD_OUTPUT, PATHS.MANIFEST_FILE_NAME);
 
     const manifest: { [key: string]: string } = fsExtra.existsSync(manifestPath)
         ? (fsExtra.readJsonSync(manifestPath) as { [key: string]: string })
         : {};
 
-    const outputModules = new Set(await globby('*.+(js|mjs|map)', { cwd: PATHS.appBuildOutput }));
+    const outputModules = new Set(await globby('*.+(js|mjs|map)', { cwd: PATHS.APP_BUILD_OUTPUT }));
 
     // Remove files from the `outputModules` set if they're in the manifest.
     for (const fileName of Object.values(manifest)) {
@@ -31,7 +31,7 @@ async function clean() {
 
     // Delete all remaining modules (not in the manifest).
     for (const fileName of outputModules) {
-        fsExtra.removeSync(path.join(PATHS.appBuildOutput, fileName));
+        fsExtra.removeSync(path.join(PATHS.APP_BUILD_OUTPUT, fileName));
     }
 }
 

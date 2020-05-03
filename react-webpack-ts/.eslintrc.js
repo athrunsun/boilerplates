@@ -20,6 +20,7 @@ module.exports = {
         },
     },
     rules: {
+        'prettier/prettier': 'warn',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/camelcase': 'off',

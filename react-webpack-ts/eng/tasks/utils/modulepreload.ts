@@ -5,27 +5,27 @@ import { PATHS } from '@eng/paths';
 
 let modulepreloadMap: object;
 
-const getModulepreload = () => {
+function getModulepreload() {
     if (!modulepreloadMap) {
-        const modulepreloadPath = path.resolve(PATHS.appBuildOutput, PATHS.modulepreloadFileName);
+        const modulepreloadPath = path.resolve(PATHS.APP_BUILD_OUTPUT, PATHS.MODULE_PRELOAD_FILE_NAME);
         modulepreloadMap = fsExtra.readJsonSync(modulepreloadPath, { throws: false }) || {};
     }
 
     return modulepreloadMap;
-};
+}
 
-const saveModulepreload = () => {
-    fsExtra.outputJson(path.resolve(PATHS.appBuildOutput, PATHS.modulepreloadFileName), modulepreloadMap, {
+function saveModulepreload() {
+    fsExtra.outputJson(path.resolve(PATHS.APP_BUILD_OUTPUT, PATHS.MODULE_PRELOAD_FILE_NAME), modulepreloadMap, {
         spaces: 4,
     });
-};
+}
 
-const resetModulepreload = () => {
+function resetModulepreload() {
     modulepreloadMap = {};
     saveModulepreload();
-};
+}
 
-const getModule = (filename: string) => {
+function getModule(filename: string) {
     getModulepreload();
 
     if (!modulepreloadMap[filename]) {
@@ -33,16 +33,16 @@ const getModule = (filename: string) => {
     }
 
     return modulepreloadMap[filename];
-};
+}
 
-const addModule = async (filename: string, revisionedFilename: string) => {
+function addModule(filename: string, revisionedFilename: string) {
     getModulepreload();
     modulepreloadMap[filename] = revisionedFilename;
     saveModulepreload();
-};
+}
 
-const getRevisionedModuleUrl = (filename: string) => {
-    return path.resolve(PATHS.appBuildOutput, getModule(filename));
-};
+function getRevisionedModuleUrl(filename: string) {
+    return path.resolve(PATHS.APP_BUILD_OUTPUT, getModule(filename));
+}
 
 export { getModulepreload, saveModulepreload, resetModulepreload, getModule, addModule, getRevisionedModuleUrl };

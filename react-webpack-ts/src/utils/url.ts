@@ -1,12 +1,12 @@
 import lodash from 'lodash';
 import urlJoin from 'proper-url-join';
 
-const createUrl = (
+function createUrl(
     serverAddress: string,
     urlPaths: string | string[],
     pathParameters: { [key: string]: string | number } = {},
     queryParameters: { [key: string]: string | number } = {},
-) => {
+) {
     let joinedPath = urlJoin(...(lodash.isArray(urlPaths) ? urlPaths : [urlPaths]));
 
     if (!lodash.isEmpty(pathParameters)) {
@@ -23,23 +23,23 @@ const createUrl = (
     }
 
     return url;
-};
+}
 
-const createUrlWithServerAddress = (
+function createUrlWithServerAddress(
     serverAddress: string,
     urlPaths: string | string[],
     pathParameters: { [key: string]: string | number } = {},
     queryParameters: { [key: string]: string | number } = {},
-) => {
+) {
     return createUrl(serverAddress, urlPaths, pathParameters, queryParameters);
-};
+}
 
-const createUrlWithoutServerAddress = (
+function createUrlWithoutServerAddress(
     urlPaths: string | string[],
     pathParameters: { [key: string]: string | number } = {},
     queryParameters: { [key: string]: string | number } = {},
-) => {
+) {
     return createUrl('', urlPaths, pathParameters, queryParameters);
-};
+}
 
 export { createUrl, createUrlWithServerAddress, createUrlWithoutServerAddress };

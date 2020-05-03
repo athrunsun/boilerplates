@@ -5,27 +5,27 @@ import { PATHS } from '@eng/paths';
 
 let revisionedAssetManifest: object;
 
-const getManifest = () => {
+function getManifest() {
     if (!revisionedAssetManifest) {
-        const manifestPath = path.resolve(PATHS.appBuildOutput, PATHS.manifestFileName);
+        const manifestPath = path.resolve(PATHS.APP_BUILD_OUTPUT, PATHS.MANIFEST_FILE_NAME);
         revisionedAssetManifest = fsExtra.readJsonSync(manifestPath, { throws: false }) || {};
     }
 
     return revisionedAssetManifest;
-};
+}
 
-const saveManifest = () => {
-    fsExtra.outputJsonSync(path.resolve(PATHS.appBuildOutput, PATHS.manifestFileName), revisionedAssetManifest, {
+function saveManifest() {
+    fsExtra.outputJsonSync(path.resolve(PATHS.APP_BUILD_OUTPUT, PATHS.MANIFEST_FILE_NAME), revisionedAssetManifest, {
         spaces: 4,
     });
-};
+}
 
-const resetManifest = () => {
+function resetManifest() {
     revisionedAssetManifest = {};
     saveManifest();
-};
+}
 
-const getAsset = (filename: string) => {
+function getAsset(filename: string) {
     getManifest();
 
     if (!revisionedAssetManifest[filename]) {
@@ -33,16 +33,16 @@ const getAsset = (filename: string) => {
     }
 
     return revisionedAssetManifest[filename];
-};
+}
 
-const addAsset = async (filename: string, revisionedFilename: string) => {
+function addAsset(filename: string, revisionedFilename: string) {
     getManifest();
     revisionedAssetManifest[filename] = revisionedFilename;
     saveManifest();
-};
+}
 
-const getRevisionedAssetUrl = (filename: string) => {
-    return path.resolve(PATHS.appBuildOutput, getAsset(filename));
-};
+function getRevisionedAssetUrl(filename: string) {
+    return path.resolve(PATHS.APP_BUILD_OUTPUT, getAsset(filename));
+}
 
 export { getManifest, saveManifest, resetManifest, getAsset, addAsset, getRevisionedAssetUrl };

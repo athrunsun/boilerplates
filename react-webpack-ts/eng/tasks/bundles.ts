@@ -1,3 +1,4 @@
+import lodash from 'lodash';
 import debug from 'debug';
 import path from 'path';
 import webpack from 'webpack';
@@ -7,7 +8,7 @@ import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 import { PATHS } from '@eng/paths';
-import { CONFIG } from '@eng/config';
+import { REACT_APP_CONFIG_KEY_PREFIX, CONFIG } from '@eng/config';
 import { addAsset, getManifest } from '@eng/tasks/utils/assets';
 import { addModule } from '@eng/tasks/utils/modulepreload';
 
@@ -31,20 +32,27 @@ const browserlistModule = [
 
 const browserlistNoModule = ['> 1%', 'last 2 versions', 'Firefox ESR'];
 
-const imageAssetsPublicPath = path.join(CONFIG.PUBLIC_PATH, PATHS.imageAssetsPath);
-const fontAssetsPublicPath = path.join(CONFIG.PUBLIC_PATH, PATHS.fontAssetsPath);
+const imageAssetsPublicPath = path.join(CONFIG.PUBLIC_PATH, PATHS.IMAGE_ASSETS_PATH);
+const fontAssetsPublicPath = path.join(CONFIG.PUBLIC_PATH, PATHS.FONT_ASSETS_PATH);
 
-const composeWebpackDefinePluginDefinitions = () => {
+function composeWebpackDefinePluginDefinitions() {
     const definePluginDefinitions = { 'process.env': {} };
 
     for (const configKey of Object.keys(CONFIG)) {
-        definePluginDefinitions['process.env'][`APP_${configKey}`] = JSON.stringify(CONFIG[configKey]);
+        definePluginDefinitions['process.env'][configKey] = JSON.stringify(CONFIG[configKey]);
+    }
+
+    for (const envKey of Object.keys(process.env)) {
+        // Will NOT override already processed keys
+        if (envKey.startsWith(REACT_APP_CONFIG_KEY_PREFIX) && lodash.isNil(definePluginDefinitions['process.env'][envKey])) {
+            definePluginDefinitions['process.env'][envKey] = JSON.stringify(process.env.configKey);
+        }
     }
 
     return definePluginDefinitions;
-};
+}
 
-const configurePlugins = (nomodule: boolean) => {
+function configurePlugins(nomodule: boolean) {
     const plugins = [
         // Identify each module by a hash, so caching is more predictable.
         new webpack.HashedModuleIdsPlugin(),
@@ -52,7 +60,7 @@ const configurePlugins = (nomodule: boolean) => {
         // Create manifest of the original filenames to their hashed filenames.
         new ManifestPlugin({
             seed: getManifest(),
-            fileName: PATHS.manifestFileName,
+            fileName: PATHS.MANIFEST_FILE_NAME,
             generate: (seed, files) => {
                 return files.reduce((manifest, opts) => {
                     // Needed until this issue is resolved:
@@ -89,20 +97,21 @@ const configurePlugins = (nomodule: boolean) => {
     }
 
     return plugins;
-};
+}
 
-const configureBabelLoader = (nomodule: boolean) => {
+function configureBabelLoader(nomodule: boolean) {
     const browsers = nomodule ? browserlistNoModule : browserlistModule;
-    const presetEnvOptionsModule = { modules: false, targets: { browsers } };
+    const presetEnvOptionsModule = { ignoreBrowserslistConfig: true, modules: false, targets: browsers };
 
     const presetEnvOptionsNoModule = {
         // loose: true,
         // modules: false,
         // debug: true,
+        ignoreBrowserslistConfig: true,
         corejs: 3,
         useBuiltIns: 'usage',
         forceAllTransforms: true,
-        targets: { browsers },
+        targets: browsers,
     };
 
     const plugins = [
@@ -150,7 +159,7 @@ const configureBabelLoader = (nomodule: boolean) => {
             },
         },
     };
-};
+}
 
 const sharedWebpackModuleRules = [
     {
@@ -161,13 +170,13 @@ const sharedWebpackModuleRules = [
                 options: {
                     limit: 4096,
                     name: '[name].[contenthash].[ext]',
-                    outputPath: PATHS.imageAssetsPath,
+                    outputPath: PATHS.IMAGE_ASSETS_PATH,
                     publicPath: imageAssetsPublicPath,
                     fallback: {
                         loader: require.resolve('file-loader'),
                         options: {
                             name: '[name].[contenthash].[ext]',
-                            outputPath: PATHS.imageAssetsPath,
+                            outputPath: PATHS.IMAGE_ASSETS_PATH,
                             publicPath: imageAssetsPublicPath,
                         },
                     },
@@ -182,7 +191,7 @@ const sharedWebpackModuleRules = [
                 loader: require.resolve('file-loader'),
                 options: {
                     name: '[name].[hash].[ext]',
-                    outputPath: PATHS.imageAssetsPath,
+                    outputPath: PATHS.IMAGE_ASSETS_PATH,
                     publicPath: imageAssetsPublicPath,
                 },
             },
@@ -196,13 +205,13 @@ const sharedWebpackModuleRules = [
                 options: {
                     limit: 4096,
                     name: '[name].[contenthash].[ext]',
-                    outputPath: PATHS.fontAssetsPath,
+                    outputPath: PATHS.FONT_ASSETS_PATH,
                     publicPath: fontAssetsPublicPath,
                     fallback: {
                         loader: require.resolve('file-loader'),
                         options: {
                             name: '[name].[contenthash].[ext]',
-                            outputPath: PATHS.fontAssetsPath,
+                            outputPath: PATHS.FONT_ASSETS_PATH,
                             publicPath: fontAssetsPublicPath,
                         },
                     },
@@ -212,7 +221,7 @@ const sharedWebpackModuleRules = [
     },
 ];
 
-const configureCssLoader = () => {
+function configureCssLoader() {
     if (process.env.NODE_ENV === 'development') {
         return {
             test: /\.css$/,
@@ -239,43 +248,45 @@ const configureCssLoader = () => {
     } else {
         throw new Error(`Unable to configure css-loader under current process.env.NODE_ENV: ${process.env.NODE_ENV}`);
     }
-};
+}
 
-const baseConfig = (nomodule: boolean) => ({
-    mode: process.env.NODE_ENV || 'development',
-    cache: {},
-    ...(process.env.NODE_ENV === 'development' && { devtool: '#source-map' }),
-    optimization: {
-        ...(!nomodule && {
-            splitChunks: {
-                chunks: 'all',
-            },
-        }),
-        ...(process.env.NODE_ENV === 'development' && { minimize: false }),
-        ...(process.env.NODE_ENV === 'production' && {
-            minimizer: [
-                new TerserPlugin({
-                    test: /\.m?js(\?.*)?$/i,
-                    // sourceMap: true,
-                    terserOptions: {
-                        safari10: true,
-                    },
-                }),
-            ],
-        }),
-    },
-    resolve: {
-        modules: [PATHS.appDirectory, PATHS.appNodeModules, PATHS.appSrc],
-        extensions: ['.ts', '.tsx', '.js', '.mjs', '.jsx'],
-    },
-});
+function baseConfig(nomodule: boolean) {
+    return {
+        mode: process.env.NODE_ENV || 'development',
+        cache: {},
+        ...(process.env.NODE_ENV === 'development' && { devtool: '#source-map' }),
+        optimization: {
+            ...(!nomodule && {
+                splitChunks: {
+                    chunks: 'all',
+                },
+            }),
+            ...(process.env.NODE_ENV === 'development' && { minimize: false }),
+            ...(process.env.NODE_ENV === 'production' && {
+                minimizer: [
+                    new TerserPlugin({
+                        test: /\.m?js(\?.*)?$/i,
+                        // sourceMap: true,
+                        terserOptions: {
+                            safari10: true,
+                        },
+                    }),
+                ],
+            }),
+        },
+        resolve: {
+            modules: [PATHS.APP_DIRECTORY, PATHS.APP_NODE_MODULES, PATHS.APP_SRC],
+            extensions: ['.ts', '.tsx', '.js', '.mjs', '.jsx'],
+        },
+    };
+}
 
 const modernConfig = Object.assign({}, baseConfig(false), {
     entry: {
-        main: PATHS.appMainESModule,
+        main: PATHS.APP_MAIN_ES_MODULE,
     },
     output: {
-        path: PATHS.appBuildOutput,
+        path: PATHS.APP_BUILD_OUTPUT,
         publicPath: CONFIG.PUBLIC_PATH,
         filename: '[name]-[contenthash].mjs',
     },
@@ -287,10 +298,10 @@ const modernConfig = Object.assign({}, baseConfig(false), {
 
 const legacyConfig = Object.assign({}, baseConfig(true), {
     entry: {
-        nomodule: PATHS.appMainNoESModule,
+        nomodule: PATHS.APP_MAIN_NO_ES_MODULE,
     },
     output: {
-        path: PATHS.appBuildOutput,
+        path: PATHS.APP_BUILD_OUTPUT,
         publicPath: CONFIG.PUBLIC_PATH,
         filename: '[name]-[contenthash].js',
     },
@@ -300,9 +311,9 @@ const legacyConfig = Object.assign({}, baseConfig(true), {
     },
 });
 
-const createCompiler = (config: webpack.Configuration) => {
+function createCompiler(config: webpack.Configuration) {
     const compiler = webpack(config);
-    return () => {
+    return function () {
         return new Promise((resolve, reject) => {
             compiler.run((err, stats) => {
                 if (err) {
@@ -313,7 +324,7 @@ const createCompiler = (config: webpack.Configuration) => {
             });
         });
     };
-};
+}
 
 const compileModernBundle = createCompiler(modernConfig);
 const compileLegacyBundle = createCompiler(legacyConfig);

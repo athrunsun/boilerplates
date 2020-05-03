@@ -28,8 +28,8 @@ async function compileTemplates() {
     };
 
     await fsExtra.outputFile(
-        path.resolve(PATHS.appBuildOutput, 'index.html'),
-        nunjucks.render(PATHS.appIndexHtml, templateData),
+        path.resolve(PATHS.APP_BUILD_OUTPUT, 'index.html'),
+        nunjucks.render(PATHS.APP_INDEX_HTML, templateData),
     );
 
     copyAssets();

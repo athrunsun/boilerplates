@@ -3,7 +3,7 @@ import { yarnInstall } from '@eng/tasks/yarnInstall';
 import { typeCheck } from '@eng/tasks/typeCheck';
 import { compile } from '@eng/tasks/compile';
 
-(async function() {
+(async function () {
     yarnInstall();
     cleanAll();
     typeCheck();

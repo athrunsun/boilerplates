@@ -6,32 +6,32 @@ import * as dotenv from 'dotenv';
 
 import { PATHS } from '@eng/paths';
 
+const REACT_APP_CONFIG_KEY_PREFIX = 'REACT_APP_';
 const logger = debug('eng:config');
 
 // Load from common `.env` file
 dotenv.config();
 
-let envFileName = `.env.${process.env.NODE_ENV}`;
+if (lodash.isNil(process.env.CONFIG_ENV)) {
+    logger('"process.env.CONFIG_ENV" not defined, skip reading environment specific dotenv file...');
+} else {
+    const envFileName = `.env.${process.env.CONFIG_ENV}`;
 
-if (process.env.SERVE_PROD_BUNDLE_ON_DEV === 'true') {
-    logger('Will serve production bundle on dev...');
-    envFileName = '.env.development';
+    const envFilePath = path.resolve(PATHS.APP_DIRECTORY, envFileName);
+
+    if (!fs.existsSync(envFilePath)) {
+        logger(`Env file '${envFilePath}' does NOT exist, skipping...`);
+    } else {
+        logger(`Loading environment variables from '${envFileName}'...`);
+    }
+
+    dotenv.config({ path: envFilePath });
 }
-
-logger(`Will load environment variables from '${envFileName}'...`);
-
-const envFilePath = path.resolve(PATHS.appDirectory, envFileName);
-
-if (!fs.existsSync(envFilePath)) {
-    logger(`Env file '${envFilePath}' does NOT exist!`);
-}
-
-dotenv.config({ path: envFilePath });
 
 const CONFIG = {
     ENABLE_MOCK: process.env.ENABLE_MOCK === 'true',
-    API_PREFIX: process.env.API_PREFIX as string,
-    API_TARGET: process.env.API_TARGET as string,
+    REACT_APP_API_PREFIX: process.env.REACT_APP_API_PREFIX as string,
+    REACT_APP_API_TARGET: process.env.REACT_APP_API_TARGET as string,
     PUBLIC_PATH: lodash.isEmpty(process.env.BASE_URL) ? '/' : (process.env.BASE_URL as string),
 };
 
@@ -47,4 +47,4 @@ if (undefinedConfigEntries.length > 0) {
     throw new Error(`The following config entries are missing: ${undefinedConfigEntries.join(', ')}`);
 }
 
-export { CONFIG };
+export { REACT_APP_CONFIG_KEY_PREFIX, CONFIG };

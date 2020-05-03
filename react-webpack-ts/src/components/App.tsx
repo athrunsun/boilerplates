@@ -52,7 +52,7 @@ function App() {
 
     useEffect(() => {
         if (process.env.NODE_ENV === 'development') {
-            titleServices.requestTitle().then(response => {
+            titleServices.requestTitle().then((response) => {
                 setDocTitle(response.data.data);
                 document.title = response.data.data;
             });
