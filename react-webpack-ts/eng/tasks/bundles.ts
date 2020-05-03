@@ -4,13 +4,16 @@ import path from 'path';
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 import { PATHS } from '@eng/paths';
 import { REACT_APP_CONFIG_KEY_PREFIX, CONFIG } from '@eng/config';
 import { addAsset, getManifest } from '@eng/tasks/utils/assets';
 import { addModule } from '@eng/tasks/utils/modulepreload';
+import { addCssAsset } from '@eng/tasks/utils/css-assets';
 
 const logger = debug('eng:tasks:bundles');
 
@@ -78,6 +81,10 @@ function configurePlugins(nomodule: boolean) {
                         addModule(unhashedName, name);
                     }
 
+                    if (!nomodule && name.endsWith('.css')) {
+                        addCssAsset(unhashedName, name);
+                    }
+
                     return getManifest();
                 }, seed);
             },
@@ -89,7 +96,26 @@ function configurePlugins(nomodule: boolean) {
 
     if (process.env.NODE_ENV === 'development') {
         plugins.push(new webpack.NoEmitOnErrorsPlugin());
+
+        if (!CONFIG.MULTI_BUNDLES) {
+            plugins.push(
+                new HtmlWebpackPlugin({
+                    template: PATHS.APP_INDEX_HTML,
+                    favicon: PATHS.APP_FAVICON,
+                    inject: true,
+                }),
+            );
+        }
     } else if (process.env.NODE_ENV === 'production') {
+        if (!nomodule) {
+            plugins.push(
+                new MiniCssExtractPlugin({
+                    filename: '[name].[contenthash].css',
+                    chunkFilename: '[id].[contenthash].css',
+                }),
+            );
+        }
+
         plugins.push(
             new BundleAnalyzerPlugin({
                 analyzerMode: 'static',
@@ -97,6 +123,25 @@ function configurePlugins(nomodule: boolean) {
                 openAnalyzer: false,
             }),
         );
+
+        if (!CONFIG.MULTI_BUNDLES) {
+            plugins.push(
+                new HtmlWebpackPlugin({
+                    template: PATHS.APP_INDEX_HTML,
+                    favicon: PATHS.APP_FAVICON,
+                    inject: true,
+                    minify: {
+                        html5: true,
+                        collapseWhitespace: true,
+                        // conservativeCollapse: true,
+                        removeComments: true,
+                        removeTagWhitespace: true,
+                        removeEmptyAttributes: true,
+                        removeStyleLinkTypeAttributes: true,
+                    },
+                }),
+            );
+        }
     }
 
     return plugins;
@@ -164,79 +209,79 @@ function configureBabelLoader(nomodule: boolean) {
     };
 }
 
-const sharedWebpackModuleRules = [
-    {
-        test: /\.(bmp|png|jpe?g|gif|webp|ico)(\?.*)?$/,
-        use: [
-            {
-                loader: require.resolve('url-loader'),
-                options: {
-                    limit: 4096,
-                    name: '[name].[contenthash].[ext]',
-                    outputPath: PATHS.IMAGE_ASSETS_PATH,
-                    publicPath: imageAssetsPublicPath,
-                    fallback: {
-                        loader: require.resolve('file-loader'),
-                        options: {
-                            name: '[name].[contenthash].[ext]',
-                            outputPath: PATHS.IMAGE_ASSETS_PATH,
-                            publicPath: imageAssetsPublicPath,
+function sharedWebpackModuleRules() {
+    return [
+        {
+            test: /\.(bmp|png|jpe?g|gif|webp|ico)(\?.*)?$/,
+            use: [
+                {
+                    loader: require.resolve('url-loader'),
+                    options: {
+                        limit: 4096,
+                        name: '[name].[contenthash].[ext]',
+                        outputPath: PATHS.IMAGE_ASSETS_PATH,
+                        publicPath: imageAssetsPublicPath,
+                        fallback: {
+                            loader: require.resolve('file-loader'),
+                            options: {
+                                name: '[name].[contenthash].[ext]',
+                                outputPath: PATHS.IMAGE_ASSETS_PATH,
+                                publicPath: imageAssetsPublicPath,
+                            },
                         },
                     },
                 },
-            },
-        ],
-    },
-    {
-        test: /\.(svg)(\?.*)?$/,
-        use: [
-            {
-                loader: require.resolve('file-loader'),
-                options: {
-                    name: '[name].[hash].[ext]',
-                    outputPath: PATHS.IMAGE_ASSETS_PATH,
-                    publicPath: imageAssetsPublicPath,
+            ],
+        },
+        {
+            test: /\.(svg)(\?.*)?$/,
+            use: [
+                {
+                    loader: require.resolve('file-loader'),
+                    options: {
+                        name: '[name].[hash].[ext]',
+                        outputPath: PATHS.IMAGE_ASSETS_PATH,
+                        publicPath: imageAssetsPublicPath,
+                    },
                 },
-            },
-        ],
-    },
-    {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
-        use: [
-            {
-                loader: require.resolve('url-loader'),
-                options: {
-                    limit: 4096,
-                    name: '[name].[contenthash].[ext]',
-                    outputPath: PATHS.FONT_ASSETS_PATH,
-                    publicPath: fontAssetsPublicPath,
-                    fallback: {
-                        loader: require.resolve('file-loader'),
-                        options: {
-                            name: '[name].[contenthash].[ext]',
-                            outputPath: PATHS.FONT_ASSETS_PATH,
-                            publicPath: fontAssetsPublicPath,
+            ],
+        },
+        {
+            test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
+            use: [
+                {
+                    loader: require.resolve('url-loader'),
+                    options: {
+                        limit: 4096,
+                        name: '[name].[contenthash].[ext]',
+                        outputPath: PATHS.FONT_ASSETS_PATH,
+                        publicPath: fontAssetsPublicPath,
+                        fallback: {
+                            loader: require.resolve('file-loader'),
+                            options: {
+                                name: '[name].[contenthash].[ext]',
+                                outputPath: PATHS.FONT_ASSETS_PATH,
+                                publicPath: fontAssetsPublicPath,
+                            },
                         },
                     },
                 },
-            },
-        ],
-    },
-];
+            ],
+        },
+    ];
+}
 
 function configureCssLoader(nomodule: boolean) {
-    const styleLoaderConfig = {
-        loader: require.resolve('style-loader'),
-        options: {
-            ...(!nomodule && { esModule: true }),
-        },
-    };
-
     if (process.env.NODE_ENV === 'development') {
         return {
             test: /\.css$/,
             use: [
-                styleLoaderConfig,
+                {
+                    loader: require.resolve('style-loader'),
+                    options: {
+                        ...(!nomodule && { esModule: true }),
+                    },
+                },
                 {
                     loader: require.resolve('css-loader'),
                     options: {
@@ -248,10 +293,58 @@ function configureCssLoader(nomodule: boolean) {
     } else if (process.env.NODE_ENV === 'production') {
         return {
             test: /\.css$/,
-            use: [styleLoaderConfig, require.resolve('css-loader')],
+            use: [
+                nomodule ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
+                require.resolve('css-loader'),
+            ],
         };
     } else {
         throw new Error(`Unable to configure css-loader under current process.env.NODE_ENV: ${process.env.NODE_ENV}`);
+    }
+}
+
+function configureLessLoader(nomodule: boolean) {
+    if (process.env.NODE_ENV === 'development') {
+        return {
+            test: /\.less$/,
+            use: [
+                {
+                    loader: require.resolve('style-loader'),
+                    options: {
+                        ...(!nomodule && { esModule: true }),
+                    },
+                },
+                {
+                    loader: require.resolve('css-loader'),
+                    options: {
+                        sourceMap: true,
+                    },
+                },
+                {
+                    loader: require.resolve('less-loader'),
+                    options: {
+                        sourceMap: true,
+                        // lessOptions: {
+                        //     modifyVars: {
+                        //         'primary-color': '#9c27b0',
+                        //     },
+                        //     javascriptEnabled: true,
+                        // },
+                    },
+                },
+            ],
+        };
+    } else if (process.env.NODE_ENV === 'production') {
+        return {
+            test: /\.less$/,
+            use: [
+                nomodule ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
+                require.resolve('css-loader'),
+                require.resolve('less-loader'),
+            ],
+        };
+    } else {
+        throw new Error(`Unable to configure less-loader under current process.env.NODE_ENV: ${process.env.NODE_ENV}`);
     }
 }
 
@@ -281,7 +374,7 @@ function baseConfig(nomodule: boolean) {
         },
         resolve: {
             modules: [PATHS.APP_DIRECTORY, PATHS.APP_NODE_MODULES, PATHS.APP_SRC],
-            extensions: ['.ts', '.tsx', '.js', '.mjs', '.jsx'],
+            extensions: ['.ts', '.tsx', '.js', '.mjs', '.jsx', '.css', '.less'],
         },
     };
 }
@@ -297,7 +390,12 @@ const modernConfig = Object.assign({}, baseConfig(false), {
     },
     plugins: configurePlugins(false),
     module: {
-        rules: [configureBabelLoader(false), configureCssLoader(false), ...sharedWebpackModuleRules],
+        rules: [
+            configureBabelLoader(false),
+            configureCssLoader(false),
+            configureLessLoader(false),
+            ...sharedWebpackModuleRules(),
+        ],
     },
 });
 
@@ -312,7 +410,12 @@ const legacyConfig = Object.assign({}, baseConfig(true), {
     },
     plugins: configurePlugins(true),
     module: {
-        rules: [configureBabelLoader(true), configureCssLoader(true), ...sharedWebpackModuleRules],
+        rules: [
+            configureBabelLoader(true),
+            configureCssLoader(true),
+            configureLessLoader(true),
+            ...sharedWebpackModuleRules(),
+        ],
     },
 });
 
@@ -336,7 +439,10 @@ const compileLegacyBundle = createCompiler(legacyConfig);
 
 async function bundles() {
     await compileModernBundle();
-    await compileLegacyBundle();
+
+    if (CONFIG.MULTI_BUNDLES) {
+        await compileLegacyBundle();
+    }
 }
 
 export { bundles };

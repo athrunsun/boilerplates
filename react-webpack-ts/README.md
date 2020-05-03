@@ -7,15 +7,13 @@ A React boilerplate with:
 - Jest as testing framework
 - [typestyle](https://github.com/typestyle/typestyle) as css-in-js library
 
-This boilerplate is based on [Deploying ES2015+ Code in Production Today](https://philipwalton.com/articles/deploying-es2015-code-in-production-today/).
-
 ## Get Started
 ### View site locally
 ```sh
 yarn run start
 ```
 
-This will build all the source files, watch for changes, and serve them from [`http://localhost:3000`](http://localhost:3000) by default.
+This will build all the source files, watch for changes, and serve them from [`http://localhost:3000`](http://localhost:3000) by default. All api calls are proxied to address configured by `REACT_APP_API_TARGET` in dotenv files.
 
 To start the app with API mock enabled,
 
@@ -35,6 +33,11 @@ yarn run serve
 ```
 
 This will serve production bundles from [`http://localhost:3000`](http://localhost:3000) by default.
+
+## Multi-bundles mode
+This boilerplate is based on [Deploying ES2015+ Code in Production Today](https://philipwalton.com/articles/deploying-es2015-code-in-production-today/), it will generate 2 bundles by default, one for modern browsers that support `<script type="module">`, one for browsers that do not.
+
+By default this mode is **off**, and only a single bundle is injected into template `index.html` without any "preload" technique. To enable it, issue yarn command with `MULTI_BUNDLES` set to string value of `true` explicitly.
 
 ## FAQ
 ### Why NOT create-react-app?

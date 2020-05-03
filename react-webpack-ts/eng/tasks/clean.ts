@@ -20,7 +20,7 @@ async function clean() {
         ? (fsExtra.readJsonSync(manifestPath) as { [key: string]: string })
         : {};
 
-    const outputModules = new Set(await globby('*.+(js|mjs|map)', { cwd: PATHS.APP_BUILD_OUTPUT }));
+    const outputModules = new Set(await globby('*.+(js|mjs|map|css)', { cwd: PATHS.APP_BUILD_OUTPUT }));
 
     // Remove files from the `outputModules` set if they're in the manifest.
     for (const fileName of Object.values(manifest)) {

@@ -9,6 +9,7 @@ import * as titleServices from '@app/services/title';
 import ErrorTest from '@app/components/ErrorBoundaryTest';
 
 import '@app/components/App.css';
+import '@app/components/app.less';
 import logo from '@app/assets/logo.svg';
 
 const DynamicComp = React.lazy(() => import('@app/components/DynamicComp'));
@@ -31,7 +32,6 @@ const moduleStyles = {
             '& > div': {
                 display: 'flex',
                 fontSize: '2rem',
-                color: '#aaa',
                 padding: '1rem',
                 backgroundColor: '#ccc',
                 borderRadius: '0.8rem',
@@ -73,7 +73,7 @@ function App() {
                     path={routePathHelpers.routePathProvider.APP}
                     render={() => (
                         <>
-                            <div>This is the home page...</div>
+                            <div className="test-color">This is the home page...</div>
                             {process.env.NODE_ENV === 'development' && (
                                 <div>{`If you see document's title changed to '${docTitle}', api mock works.`}</div>
                             )}

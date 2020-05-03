@@ -12,6 +12,7 @@ const PATHS = {
     APP_PACKAGE_JSON: resolveApp('package.json'),
     APP_PUBLIC_DIRECTORY: resolveApp('public'),
     APP_INDEX_HTML: resolveApp('public/index.html'),
+    APP_MULTI_BUNDLES_INDEX_HTML: resolveApp('public/index.multi-bundles.html'),
     APP_FAVICON: resolveApp('public/favicon.ico'),
     APP_SRC: resolveApp('src'),
     APP_INDEX: resolveApp('src/index.tsx'),
@@ -29,6 +30,7 @@ const PATHS = {
     MANIFEST_FILE_NAME: 'manifest.json',
     MANIFEST_FILE_PATH: resolveApp('public/manifest.json'),
     MODULE_PRELOAD_FILE_NAME: 'modulepreload.json',
+    CSS_ASSETS_FILE_NAME: 'css-assets.json',
 };
 
 export { PATHS };

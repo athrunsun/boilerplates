@@ -8,7 +8,7 @@ import { debounce } from 'lodash';
 
 import { PATHS } from '@eng/paths';
 import { CONFIG } from '@eng/config';
-import { applyApiMocks } from '@eng/dev/apiMock';
+import { applyApiMocks } from '@eng/dev/api-mock';
 import { clean } from '@eng/tasks/clean';
 import { compile } from '@eng/tasks/compile';
 import { resetManifest } from '@eng/tasks/utils/assets';
@@ -52,7 +52,7 @@ function startApp() {
     });
 }
 
-async function cleanAndCompile() {
+async function compileAndClean() {
     resetManifest();
     resetModulepreload();
     await compile();
@@ -60,9 +60,9 @@ async function cleanAndCompile() {
 }
 
 async function watch() {
-    await cleanAndCompile();
+    await compileAndClean();
     logger('Watching source files for changes...');
-    chokidar.watch(`${PATHS.APP_SRC}/**/*`, { ignoreInitial: true }).on('all', debounce(cleanAndCompile, 100));
+    chokidar.watch(`${PATHS.APP_SRC}/**/*`, { ignoreInitial: true }).on('all', debounce(compileAndClean, 100));
     startApp();
 }
 
