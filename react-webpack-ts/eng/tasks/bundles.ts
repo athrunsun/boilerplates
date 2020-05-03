@@ -44,7 +44,10 @@ function composeWebpackDefinePluginDefinitions() {
 
     for (const envKey of Object.keys(process.env)) {
         // Will NOT override already processed keys
-        if (envKey.startsWith(REACT_APP_CONFIG_KEY_PREFIX) && lodash.isNil(definePluginDefinitions['process.env'][envKey])) {
+        if (
+            envKey.startsWith(REACT_APP_CONFIG_KEY_PREFIX) &&
+            lodash.isNil(definePluginDefinitions['process.env'][envKey])
+        ) {
             definePluginDefinitions['process.env'][envKey] = JSON.stringify(process.env.configKey);
         }
     }
@@ -221,17 +224,19 @@ const sharedWebpackModuleRules = [
     },
 ];
 
-function configureCssLoader() {
+function configureCssLoader(nomodule: boolean) {
+    const styleLoaderConfig = {
+        loader: require.resolve('style-loader'),
+        options: {
+            ...(!nomodule && { esModule: true }),
+        },
+    };
+
     if (process.env.NODE_ENV === 'development') {
         return {
             test: /\.css$/,
             use: [
-                {
-                    loader: require.resolve('style-loader'),
-                    options: {
-                        sourceMap: true,
-                    },
-                },
+                styleLoaderConfig,
                 {
                     loader: require.resolve('css-loader'),
                     options: {
@@ -243,7 +248,7 @@ function configureCssLoader() {
     } else if (process.env.NODE_ENV === 'production') {
         return {
             test: /\.css$/,
-            use: [require.resolve('style-loader'), require.resolve('css-loader')],
+            use: [styleLoaderConfig, require.resolve('css-loader')],
         };
     } else {
         throw new Error(`Unable to configure css-loader under current process.env.NODE_ENV: ${process.env.NODE_ENV}`);
@@ -292,7 +297,7 @@ const modernConfig = Object.assign({}, baseConfig(false), {
     },
     plugins: configurePlugins(false),
     module: {
-        rules: [configureBabelLoader(false), configureCssLoader(), ...sharedWebpackModuleRules],
+        rules: [configureBabelLoader(false), configureCssLoader(false), ...sharedWebpackModuleRules],
     },
 });
 
@@ -307,7 +312,7 @@ const legacyConfig = Object.assign({}, baseConfig(true), {
     },
     plugins: configurePlugins(true),
     module: {
-        rules: [configureBabelLoader(true), configureCssLoader(), ...sharedWebpackModuleRules],
+        rules: [configureBabelLoader(true), configureCssLoader(true), ...sharedWebpackModuleRules],
     },
 });
 
