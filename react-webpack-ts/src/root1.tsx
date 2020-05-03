@@ -3,9 +3,9 @@ import React, { FunctionComponent } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { cssRaw } from 'typestyle';
 
-import * as routePathHelpers from '@app/helpers/routePath';
+import * as routePathHelpers from '@app/helpers/route-path';
 
-import App from '@app/components/App';
+import App from '@app/components/app1';
 
 cssRaw(`
     html {

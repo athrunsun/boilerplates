@@ -2,17 +2,17 @@ import React, { useState, useEffect, FunctionComponent } from 'react';
 import { Route, Link } from 'react-router-dom';
 import { style, cssRule } from 'typestyle';
 
-import * as routePathHelpers from '@app/helpers/routePath';
+import * as routePathHelpers from '@app/helpers/route-path';
 
 import * as titleServices from '@app/services/title';
 
-import ErrorTest from '@app/components/ErrorBoundaryTest';
+import ErrorTest from '@app/components/error-boundary-test';
 
-import '@app/components/App.css';
+import '@app/components/app1.css';
 import '@app/components/app.less';
 import logo from '@app/assets/logo.svg';
 
-const DynamicComp = React.lazy(() => import('@app/components/DynamicComp'));
+const DynamicComp = React.lazy(() => import('@app/components/dynamic-comp'));
 
 cssRule('body', {
     margin: 0,

@@ -4,7 +4,7 @@ import fsExtra from 'fs-extra';
 import nunjucks from 'nunjucks';
 
 import { PATHS } from '@eng/paths';
-import { copyAssets } from '@eng/tasks/copyAssets';
+import { copyAssets } from '@eng/tasks/copy-assets';
 import { getManifest } from '@eng/tasks/utils/assets';
 import { getModulepreload } from '@eng/tasks/utils/modulepreload';
 import { getManifest as getCssAssetsManifest } from '@eng/tasks/utils/css-assets';
