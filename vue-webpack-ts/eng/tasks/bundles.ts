@@ -204,7 +204,8 @@ function configureBabelLoader(nomodule: boolean) {
         test: /\.(tsx?|m?js)$/,
         exclude: (file: any) => {
             if (nomodule) {
-                return /node_modules(\/|\\)(core-js|regenerator-runtime)(\/|\\)/.test(file) && !/\.vue\.js/.test(file);
+                return /node_modules(\/|\\)(core-js|regenerator-runtime)(\/|\\)/.test(file);
+                // return false;
             } else {
                 return /node_modules/.test(file) && !/\.vue\.js/.test(file);
             }
@@ -476,9 +477,11 @@ async function bundles() {
     const compileModernBundle = createModernBundleCompiler();
     const compileLegacyBundle = createLegacyBundleCompiler();
 
+    logger('Compiling modern bundle...\n');
     await compileModernBundle();
 
     if (CONFIG.MULTI_BUNDLES) {
+        logger('Compiling legacy bundle...\n');
         await compileLegacyBundle();
     }
 }

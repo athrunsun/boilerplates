@@ -47,6 +47,8 @@ body {
     }
 
     section div {
+        display: flex;
+        justify-content: center;
         font-size: 2rem;
         padding: 1rem;
         background-color: #ccc;
