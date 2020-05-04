@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>React-Webpack-TypeScript-Babel-Multi-Bundles-Boilerplate</title>
+        <link rel="icon" href="{{ PUBLIC_PATH }}{{ APP_FAVICON_FILE_NAME }}" />
+        {% for moduleName, module in modulepreload %}
+            <link rel="preload" as="script" crossorigin="anonymous" href="{{ PUBLIC_PATH }}{{ module }}" />
+        {%- endfor %}
+        {% if APPLY_CSS_ASSETS %}
+            {% for cssAssetName, cssAsset in cssAssets %}
+                <link rel="preload" as="style" href="{{ PUBLIC_PATH }}{{ cssAsset }}" />
+            {%- endfor %}
+            {% for cssAssetName, cssAsset in cssAssets %}
+                <link rel="stylesheet" href="{{ PUBLIC_PATH }}{{ cssAsset }}" />
+            {%- endfor %}
+        {% endif %}
+    </head>
+
+    <body>
+        <noscript>
+            You need to enable JavaScript to run this app.
+        </noscript>
+        <div id="root"></div>
+        <script type="module" src="{{ PUBLIC_PATH }}{{ manifest['vendors~main.mjs'] }}"></script>
+        <script type="module" src="{{ PUBLIC_PATH }}{{ manifest['main.mjs'] }}"></script>
+        <script nomodule src="{{ PUBLIC_PATH }}{{ manifest['nomodule.js'] }}"></script>
+    </body>
+</html>
