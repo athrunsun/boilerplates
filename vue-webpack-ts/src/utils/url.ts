@@ -7,7 +7,18 @@ function createUrl(
     pathParameters: { [key: string]: string | number } = {},
     queryParameters: { [key: string]: string | number } = {},
 ) {
-    let joinedPath = urlJoin(...(lodash.isArray(urlPaths) ? urlPaths : [urlPaths]));
+    const urlPathsAsArray = lodash.isArray(urlPaths) ? urlPaths : [urlPaths];
+    let joinedPath = '';
+
+    if (urlPathsAsArray.length <= 1) {
+        joinedPath = urlJoin(urlPathsAsArray[0]);
+    } else if (urlPathsAsArray.length === 2) {
+        joinedPath = urlJoin(urlPathsAsArray[0], urlPathsAsArray[1]);
+    } else {
+        for (let index = 0; index <= urlPathsAsArray.length - 2; index++) {
+            joinedPath = urlJoin(joinedPath, urlPathsAsArray[index]);
+        }
+    }
 
     if (!lodash.isEmpty(pathParameters)) {
         for (const pathParamKey of Object.keys(pathParameters)) {

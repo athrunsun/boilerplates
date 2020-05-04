@@ -9,6 +9,9 @@
         },
         "module": "esnext",
         "target": "es6",
+        // https://vuejs.org/v2/guide/typescript.html#Recommended-Configuration
+        // This enables stricter inference for data properties on `this`
+        "strict": true,
         "importHelpers": true,
         "lib": ["es6", "dom"],
         "sourceMap": true,

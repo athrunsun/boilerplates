@@ -1,6 +1,6 @@
 import * as urlUtils from '@app/utils/url';
 
-const API_PREFIX = process.env.REACT_APP_API_PREFIX as string;
+const API_PREFIX = process.env.VUE_APP_API_PREFIX as string;
 
 function composeApiPath(
     path: string,

@@ -6,11 +6,12 @@ import TerserPlugin from 'terser-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
+import VueLoader from 'vue-loader';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 import { PATHS } from '@eng/paths';
-import { REACT_APP_CONFIG_KEY_PREFIX, CONFIG } from '@eng/config';
+import { VUE_APP_CONFIG_KEY_PREFIX, CONFIG } from '@eng/config';
 import { addAsset, getManifest } from '@eng/tasks/utils/assets';
 import { addModule } from '@eng/tasks/utils/modulepreload';
 import { addCssAsset } from '@eng/tasks/utils/css-assets';
@@ -48,7 +49,7 @@ function composeWebpackDefinePluginDefinitions() {
     for (const envKey of Object.keys(process.env)) {
         // Will NOT override already processed keys
         if (
-            envKey.startsWith(REACT_APP_CONFIG_KEY_PREFIX) &&
+            envKey.startsWith(VUE_APP_CONFIG_KEY_PREFIX) &&
             lodash.isNil(definePluginDefinitions['process.env'][envKey])
         ) {
             definePluginDefinitions['process.env'][envKey] = JSON.stringify(process.env.configKey);
@@ -91,6 +92,7 @@ function configurePlugins(nomodule: boolean) {
         }),
 
         new webpack.DefinePlugin(composeWebpackDefinePluginDefinitions()),
+        new VueLoader.VueLoaderPlugin(),
         new LodashModuleReplacementPlugin(),
     ];
 
@@ -147,6 +149,20 @@ function configurePlugins(nomodule: boolean) {
     return plugins;
 }
 
+function configureVueLoader() {
+    return {
+        test: /\.vue$/,
+        use: {
+            loader: require.resolve('vue-loader'),
+            options: {
+                compilerOptions: {
+                    preserveWhitespace: false,
+                },
+            },
+        },
+    };
+}
+
 function configureBabelLoader(nomodule: boolean) {
     const browsers = nomodule ? browserlistNoModule : browserlistModule;
     const presetEnvOptionsModule = { ignoreBrowserslistConfig: true, modules: false, targets: browsers };
@@ -186,14 +202,19 @@ function configureBabelLoader(nomodule: boolean) {
 
     return {
         test: /\.(tsx?|m?js)$/,
+        exclude: (file: any) => {
+            if (nomodule) {
+                return /node_modules(\/|\\)(core-js|regenerator-runtime)(\/|\\)/.test(file) && !/\.vue\.js/.test(file);
+            } else {
+                return /node_modules/.test(file) && !/\.vue\.js/.test(file);
+            }
+        },
         use: {
             loader: 'babel-loader',
             options: {
+                ...(process.env.NODE_ENV === 'development' && { cacheDirectory: true }),
                 babelrc: false,
                 configFile: false,
-                exclude: nomodule
-                    ? /node_modules(\/|\\)(core-js|regenerator-runtime|react|react-dom)(\/|\\)/
-                    : /node_modules/,
                 ...(process.env.NODE_ENV === 'development' && { sourceMaps: true, inputSourceMap: true }),
                 presets: [
                     [
@@ -201,7 +222,6 @@ function configureBabelLoader(nomodule: boolean) {
                         nomodule ? presetEnvOptionsNoModule : presetEnvOptionsModule,
                     ],
                     require.resolve('@babel/preset-typescript'),
-                    [require.resolve('@babel/preset-react'), { development: process.env.NODE_ENV === 'development' }],
                 ],
                 plugins,
             },
@@ -277,9 +297,9 @@ function configureCssLoader(nomodule: boolean) {
             test: /\.css$/,
             use: [
                 {
-                    loader: require.resolve('style-loader'),
+                    loader: require.resolve('vue-style-loader'),
                     options: {
-                        ...(!nomodule && { esModule: true }),
+                        sourceMap: true,
                     },
                 },
                 {
@@ -294,7 +314,7 @@ function configureCssLoader(nomodule: boolean) {
         return {
             test: /\.css$/,
             use: [
-                nomodule ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
+                nomodule ? require.resolve('vue-style-loader') : MiniCssExtractPlugin.loader,
                 require.resolve('css-loader'),
             ],
         };
@@ -309,9 +329,9 @@ function configureLessLoader(nomodule: boolean) {
             test: /\.less$/,
             use: [
                 {
-                    loader: require.resolve('style-loader'),
+                    loader: require.resolve('vue-style-loader'),
                     options: {
-                        ...(!nomodule && { esModule: true }),
+                        sourceMap: true,
                     },
                 },
                 {
@@ -338,7 +358,7 @@ function configureLessLoader(nomodule: boolean) {
         return {
             test: /\.less$/,
             use: [
-                nomodule ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
+                nomodule ? require.resolve('vue-style-loader') : MiniCssExtractPlugin.loader,
                 require.resolve('css-loader'),
                 require.resolve('less-loader'),
             ],
@@ -374,7 +394,10 @@ function baseConfig(nomodule: boolean) {
         },
         resolve: {
             modules: [PATHS.APP_DIRECTORY, PATHS.APP_NODE_MODULES, PATHS.APP_SRC],
-            extensions: ['.ts', '.tsx', '.js', '.mjs', '.jsx', '.css', '.less'],
+            extensions: ['.ts', '.tsx', '.js', '.mjs', '.jsx', '.css', '.less', '.vue'],
+            alias: {
+                '@app': PATHS.APP_SRC,
+            },
         },
     };
 }
@@ -391,7 +414,9 @@ function createModernConfig() {
         },
         plugins: configurePlugins(false),
         module: {
+            noParse: /^(vue|vue-router|vuex|vuex-router-sync)$/,
             rules: [
+                configureVueLoader(),
                 configureBabelLoader(false),
                 configureCssLoader(false),
                 configureLessLoader(false),
@@ -414,6 +439,7 @@ function createLegacyConfig() {
         plugins: configurePlugins(true),
         module: {
             rules: [
+                configureVueLoader(),
                 configureBabelLoader(true),
                 configureCssLoader(true),
                 configureLessLoader(true),

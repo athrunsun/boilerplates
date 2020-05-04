@@ -30,7 +30,6 @@ module.exports = api => {
                 },
             ],
             require.resolve('@babel/preset-typescript'),
-            [require.resolve('@babel/preset-react'), { development: process.env.NODE_ENV === 'development' }],
         ],
         plugins,
     };

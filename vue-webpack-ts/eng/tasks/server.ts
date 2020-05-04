@@ -21,9 +21,9 @@ function startApp() {
     const app = express();
 
     const apiProxy = createProxyMiddleware({
-        target: CONFIG.REACT_APP_API_TARGET,
+        target: CONFIG.VUE_APP_API_TARGET,
         changeOrigin: true,
-        pathRewrite: { [`^${CONFIG.REACT_APP_API_PREFIX}`]: '' },
+        pathRewrite: { [`^${CONFIG.VUE_APP_API_PREFIX}`]: '' },
         secure: false,
     });
 
@@ -42,7 +42,7 @@ function startApp() {
         response.send(path.resolve(PATHS.APP_BUILD_OUTPUT, 'index.html'));
     });
 
-    app.use(`${CONFIG.REACT_APP_API_PREFIX}/**`, apiProxy);
+    app.use(`${CONFIG.VUE_APP_API_PREFIX}/**`, apiProxy);
 
     app.listen(app.get('port'), (err: any) => {
         logger(`App is running:\nhttp://localhost:${app.get('port')}`);
