@@ -1368,6 +1368,13 @@
   resolved "https://registry.npm.taobao.org/@types/prop-types/download/@types/prop-types-15.7.3.tgz?cache=0&sync_timestamp=1588201821986&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fprop-types%2Fdownload%2F%40types%2Fprop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha1-KrDV2i5YFflLC51LldHl8kOrLKc=
 
+"@types/proper-url-join@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@types/proper-url-join/-/proper-url-join-2.0.0.tgz#b63fed98a37631215586022de55353ba84384789"
+  integrity sha512-Q2MqlyNLYiqnJI01t/FRut17VURfCtbGzkavnfGueUQ9oM4a1cQwogjDUnCFxjaIfQBAomspYHuNGxhngVkfTQ==
+  dependencies:
+    query-string "^6.3.0"
+
 "@types/qs@*":
   version "6.9.1"
   resolved "https://registry.npm.taobao.org/@types/qs/download/@types/qs-6.9.1.tgz?cache=0&sync_timestamp=1588201516981&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fqs%2Fdownload%2F%40types%2Fqs-6.9.1.tgz#937fab3194766256ee09fcd40b781740758617e7"
