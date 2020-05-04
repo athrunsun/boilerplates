@@ -192,7 +192,6 @@ function configureBabelLoader(nomodule: boolean) {
                 ...(process.env.NODE_ENV === 'development' && { cacheDirectory: true }),
                 babelrc: false,
                 configFile: false,
-                // Exclude `core-js` under nomodule mode b/c it will cause a lot of circular dependency warnings.
                 // We need to transpile code in `node_modules` under nomodule mode b/c IE11 doesn't support a lot of ES6
                 // features, which are used in 3rd-party libraries in `node_modules`.
                 exclude: nomodule
@@ -457,9 +456,11 @@ async function bundles() {
     const compileModernBundle = createModernBundleCompiler();
     const compileLegacyBundle = createLegacyBundleCompiler();
 
+    logger('Compiling modern bundle...\n');
     await compileModernBundle();
 
     if (CONFIG.MULTI_BUNDLES) {
+        logger('Compiling legacy bundle...\n');
         await compileLegacyBundle();
     }
 }
