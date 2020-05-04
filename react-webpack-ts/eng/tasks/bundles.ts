@@ -189,8 +189,12 @@ function configureBabelLoader(nomodule: boolean) {
         use: {
             loader: 'babel-loader',
             options: {
+                ...(process.env.NODE_ENV === 'development' && { cacheDirectory: true }),
                 babelrc: false,
                 configFile: false,
+                // Exclude `core-js` under nomodule mode b/c it will cause a lot of circular dependency warnings.
+                // We need to transpile code in `node_modules` under nomodule mode b/c IE11 doesn't support a lot of ES6
+                // features, which are used in 3rd-party libraries in `node_modules`.
                 exclude: nomodule
                     ? /node_modules(\/|\\)(core-js|regenerator-runtime|react|react-dom)(\/|\\)/
                     : /node_modules/,
@@ -375,6 +379,9 @@ function baseConfig(nomodule: boolean) {
         resolve: {
             modules: [PATHS.APP_DIRECTORY, PATHS.APP_NODE_MODULES, PATHS.APP_SRC],
             extensions: ['.ts', '.tsx', '.js', '.mjs', '.jsx', '.css', '.less'],
+            alias: {
+                '@app': PATHS.APP_SRC,
+            },
         },
     };
 }
