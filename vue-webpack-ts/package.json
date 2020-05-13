@@ -1,5 +1,5 @@
 {
-    "name": "vue-webpack-ts-babel-esmodule-boilerplate",
+    "name": "vue-webpack-typescript-babel-boilerplate",
     "version": "0.1.0",
     "private": true,
     "scripts": {
