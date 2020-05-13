@@ -1,10 +1,12 @@
 import * as urlUtils from '@app/utils/url';
 
-const composeRouterPath = (
+function composeRouterPath(
     path: string,
     pathParameters: { [key: string]: string | number } = {},
     queryParameters: { [key: string]: string | number } = {},
-) => urlUtils.createUrlWithoutServerAddress(path, pathParameters, queryParameters);
+) {
+    return urlUtils.createUrlWithoutServerAddress(path, pathParameters, queryParameters);
+}
 
 const routePathProvider = {
     ROOT: composeRouterPath('/'),

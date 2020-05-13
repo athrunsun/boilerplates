@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-import * as apiPathHelpers from '@app/helpers/apiPath';
+import * as apiPathHelpers from '@app/helpers/api-path';
 
-const requestTitle = () => axios.get(apiPathHelpers.apiPathProvider.TITLE);
+function requestTitle() {
+    return axios.get(apiPathHelpers.apiPathProvider.TITLE);
+}
 
 export { requestTitle };

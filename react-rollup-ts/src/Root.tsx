@@ -1,11 +1,11 @@
-import { isEmpty } from 'lodash-es';
+import lodash from 'lodash';
 import React, { FunctionComponent } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { cssRaw } from 'typestyle';
 
-import * as routePathHelpers from '@app/helpers/routePath';
+import * as routePathHelpers from '@app/helpers/route-path';
 
-import App from '@app/components/App';
+import App from '@app/components/app';
 
 cssRaw(`
     html {
@@ -25,7 +25,7 @@ cssRaw(`
 
 function Root() {
     return (
-        <BrowserRouter {...(!isEmpty(process.env.APP_PUBLIC_PATH) && { basename: process.env.APP_PUBLIC_PATH })}>
+        <BrowserRouter {...(!lodash.isEmpty(process.env.PUBLIC_PATH) && { basename: process.env.PUBLIC_PATH })}>
             <Switch>
                 <Redirect
                     exact={true}

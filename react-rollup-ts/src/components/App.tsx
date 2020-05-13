@@ -2,16 +2,17 @@ import React, { useState, useEffect, FunctionComponent } from 'react';
 import { Route, Link } from 'react-router-dom';
 import { style, cssRule } from 'typestyle';
 
-import * as routePathHelpers from '@app/helpers/routePath';
+import * as routePathHelpers from '@app/helpers/route-path';
 
 import * as titleServices from '@app/services/title';
 
-import ErrorTest from '@app/components/ErrorBoundaryTest';
+import ErrorTest from '@app/components/error-boundary-test';
 
-import '@app/components/App.css';
+import '@app/components/app.css';
+import '@app/components/app.less';
 import logo from '@app/assets/logo.svg';
 
-const DynamicComp = React.lazy(() => import('@app/components/DynamicComp'));
+const DynamicComp = React.lazy(() => import('@app/components/dynamic-comp'));
 
 cssRule('body', {
     margin: 0,
@@ -31,7 +32,6 @@ const moduleStyles = {
             '& > div': {
                 display: 'flex',
                 fontSize: '2rem',
-                color: '#aaa',
                 padding: '1rem',
                 backgroundColor: '#ccc',
                 borderRadius: '0.8rem',
@@ -52,7 +52,7 @@ function App() {
 
     useEffect(() => {
         if (process.env.NODE_ENV === 'development') {
-            titleServices.requestTitle().then(response => {
+            titleServices.requestTitle().then((response) => {
                 setDocTitle(response.data.data);
                 document.title = response.data.data;
             });
@@ -73,7 +73,7 @@ function App() {
                     path={routePathHelpers.routePathProvider.APP}
                     render={() => (
                         <>
-                            <div>This is the home page...</div>
+                            <div className="test-color">This is the home page...</div>
                             {process.env.NODE_ENV === 'development' && (
                                 <div>{`If you see document's title changed to '${docTitle}', api mock works.`}</div>
                             )}

@@ -128,6 +128,7 @@ function configurePlugins(nomodule: boolean) {
             plugins.push(
                 new HtmlWebpackPlugin({
                     template: PATHS.APP_INDEX_HTML,
+                    title: CONFIG.TITLE,
                     favicon: PATHS.APP_FAVICON,
                     inject: true,
                     minify: {

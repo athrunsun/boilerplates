@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 
-import ErrorBoundary from '@app/components/ErrorBoundary';
-import BuggyCounter from '@app/components/BuggyCounter';
+import ErrorBoundary from '@app/components/error-boundary';
+import BuggyCounter from '@app/components/buggy-counter';
 
 function ErrorBoundaryTest() {
     return (

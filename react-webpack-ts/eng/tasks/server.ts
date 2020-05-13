@@ -39,7 +39,7 @@ function startApp() {
     app.use(express.static(PATHS.APP_BUILD_OUTPUT));
 
     app.get('/', function (request, response) {
-        response.send(path.resolve(PATHS.APP_BUILD_OUTPUT, 'index.html'));
+        response.send(path.resolve(PATHS.APP_BUILD_OUTPUT, PATHS.APP_INDEX_HTML_FILE_NAME));
     });
 
     app.use(`${CONFIG.REACT_APP_API_PREFIX}/**`, apiProxy);

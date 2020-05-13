@@ -12,6 +12,7 @@ const PATHS = {
     APP_PACKAGE_JSON: resolveApp('package.json'),
     APP_PUBLIC_DIRECTORY: resolveApp('public'),
     APP_INDEX_HTML: resolveApp('public/index.html'),
+    APP_INDEX_HTML_FILE_NAME: 'index.html',
     APP_MULTI_BUNDLES_INDEX_HTML: resolveApp('public/index.multi-bundles.html'),
     APP_FAVICON: resolveApp('public/favicon.ico'),
     APP_FAVICON_FILE_NAME: 'favicon.ico',

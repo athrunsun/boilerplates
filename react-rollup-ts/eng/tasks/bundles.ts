@@ -1,29 +1,33 @@
-import { RollupOptions, OutputOptions, OutputBundle, OutputChunk, Plugin, PluginContext } from 'rollup';
-import rollupPluginBabel from 'rollup-plugin-babel';
-import rollupPluginCommonjs from 'rollup-plugin-commonjs';
-import rollupPluginNodeResolve from 'rollup-plugin-node-resolve';
-import rollupPluginReplace from 'rollup-plugin-replace';
+import lodash from 'lodash';
+import debug from 'debug';
+import { rollup, InputOptions, OutputOptions, RollupOptions, OutputBundle, Plugin, PluginContext } from 'rollup';
+import rollupPluginBabel from '@rollup/plugin-babel';
+import rollupPluginCommonjs from '@rollup/plugin-commonjs';
+import rollupPluginNodeResolve from '@rollup/plugin-node-resolve';
+import rollupPluginReplace from '@rollup/plugin-replace';
 import { terser as rollupPluginTerser } from 'rollup-plugin-terser';
 import rollupPluginUrl from 'rollup-plugin-url';
 import svgrRollup from '@svgr/rollup';
-import rollupPluginJson from 'rollup-plugin-json';
+import rollupPluginJson from '@rollup/plugin-json';
 import rollupPluginPostcss from 'rollup-plugin-postcss';
 
 import { PATHS } from '@eng/paths';
-import { CONFIG } from '@eng/config';
+import { REACT_APP_CONFIG_KEY_PREFIX, CONFIG } from '@eng/config';
+
+const logger = debug('eng:tasks:bundles');
 
 // NOTE: this value must be defined outside of the plugin because it needs
 // to persist from build to build (e.g. the module and nomodule builds).
 // If, in the future, the build process were to extends beyond just this rollup
 // config, then the manifest would have to be initialized from a file, but
-// since everything  is currently being built here, it's OK to just initialize
+// since everything is currently being built here, it's OK to just initialize
 // it as an empty object when the build starts.
 const manifest = {};
 
 /**
  * A Rollup plugin to generate a manifest of chunk names to their filenames
  * (including their content hash). This manifest is then used by the template
- * to point to the currect URL.
+ * to point to the correct URL.
  * @return {Object}
  */
 function manifestPlugin(): Plugin {
@@ -38,7 +42,7 @@ function manifestPlugin(): Plugin {
 
             this.emitFile({
                 type: 'asset',
-                fileName: 'manifest.json',
+                fileName: PATHS.MANIFEST_FILE_NAME,
                 source: JSON.stringify(manifest, null, 4),
             });
         },
@@ -87,13 +91,14 @@ function createBabelPluginOptions(nomodule: boolean) {
               'last 2 Edge versions',
           ];
 
-    const presetEnvOptionsModule = { modules: false, targets: { browsers } };
+    const presetEnvOptionsModule = { ignoreBrowserslistConfig: true, modules: false, targets: browsers };
 
     const presetEnvOptionsNoModule = {
-        targets: { browsers },
-        useBuiltIns: 'usage',
+        ignoreBrowserslistConfig: true,
         corejs: 3,
+        useBuiltIns: 'usage',
         forceAllTransforms: true,
+        targets: browsers,
     };
 
     const plugins = [
@@ -137,10 +142,22 @@ function createBabelPluginOptions(nomodule: boolean) {
 }
 
 function basePlugins({ nomodule = false } = {}) {
-    const replacePluginDefinitions = { 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development') };
+    const replacePluginDefinitions = {
+        'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development') },
+    };
 
     for (const configKey of Object.keys(CONFIG)) {
-        replacePluginDefinitions[`process.env.APP_${configKey}`] = JSON.stringify(CONFIG[configKey]);
+        replacePluginDefinitions['process.env'][configKey] = JSON.stringify(CONFIG[configKey]);
+    }
+
+    for (const envKey of Object.keys(process.env)) {
+        // Will NOT override already processed keys
+        if (
+            envKey.startsWith(REACT_APP_CONFIG_KEY_PREFIX) &&
+            lodash.isNil(replacePluginDefinitions['process.env'][envKey])
+        ) {
+            replacePluginDefinitions['process.env'][envKey] = JSON.stringify(process.env.configKey);
+        }
     }
 
     const plugins = [
@@ -177,50 +194,78 @@ function basePlugins({ nomodule = false } = {}) {
 }
 
 // Module config for <script type="module">
-const moduleConfig: RollupOptions = {
-    input: {
-        main: PATHS.appMainESModule,
-    },
-    output: {
-        ...(process.env.NODE_ENV === 'development' && { sourcemap: true }),
-        dir: PATHS.appBuildOutput,
-        format: 'esm',
-        entryFileNames: '[name]-[hash].mjs',
-        chunkFileNames: '[name]-[hash].mjs',
-        // Required only when using `dynamic-import-polyfill`.
-        // dynamicImportFunction: '__import__',
-    },
-    plugins: [...basePlugins(), modulepreloadPlugin()],
-    manualChunks(id: string) {
-        if (!id.includes('node_modules')) {
-            return;
-        }
+function createModuleConfig(): RollupOptions {
+    return {
+        input: {
+            main: PATHS.APP_MAIN_ES_MODULE,
+        },
+        output: {
+            ...(process.env.NODE_ENV === 'development' && { sourcemap: true }),
+            dir: PATHS.APP_BUILD_OUTPUT,
+            format: 'esm',
+            entryFileNames: '[name]-[hash].mjs',
+            chunkFileNames: '[name]-[hash].mjs',
+            // Required only when using `dynamic-import-polyfill`.
+            // dynamicImportFunction: '__import__',
+        },
+        plugins: [...basePlugins(), modulepreloadPlugin()],
+        manualChunks(id: string) {
+            if (!id.includes('node_modules')) {
+                return;
+            }
 
-        return 'vendor';
-    },
-    watch: {
-        clearScreen: false,
-    },
-};
+            return 'vendor';
+        },
+        watch: {
+            clearScreen: false,
+        },
+    };
+}
 
 // Legacy config for <script nomodule>
-const nomoduleConfig: RollupOptions = {
-    input: {
-        nomodule: PATHS.appMainNoESModule,
-    },
-    output: {
-        ...(process.env.NODE_ENV === 'development' && { sourcemap: true }),
-        dir: PATHS.appBuildOutput,
-        format: 'iife',
-        entryFileNames: '[name]-[hash].js',
-    },
-    plugins: basePlugins({ nomodule: true }),
-    inlineDynamicImports: true,
-    watch: {
-        clearScreen: false,
-    },
-};
+function createNoModuleConfig(): RollupOptions {
+    return {
+        input: {
+            nomodule: PATHS.APP_MAIN_NO_ES_MODULE,
+        },
+        output: {
+            ...(process.env.NODE_ENV === 'development' && { sourcemap: true }),
+            dir: PATHS.APP_BUILD_OUTPUT,
+            format: 'iife',
+            entryFileNames: '[name]-[hash].js',
+        },
+        plugins: basePlugins({ nomodule: true }),
+        inlineDynamicImports: true,
+        watch: {
+            clearScreen: false,
+        },
+    };
+}
 
-const buildConfigs = [moduleConfig, nomoduleConfig];
+function createBundleConfigs() {
+    return [createModuleConfig(), createNoModuleConfig()];
+}
 
-export { buildConfigs };
+async function createBundle(inputOptions: InputOptions, outputOptions: OutputOptions) {
+    // create a bundle
+    const bundle = await rollup(inputOptions);
+
+    // write the bundle to disk
+    await bundle.write(outputOptions);
+}
+
+async function bundles() {
+    const [moduleConfig, nomoduleConfig] = createBundleConfigs();
+    const { output: outputOptionsModule, ...otherOptionsModule } = moduleConfig;
+    const { output: outputOptionsNoModule, ...otherOptionsNoModule } = nomoduleConfig;
+
+    logger('Creating modern bundle...');
+    await createBundle(otherOptionsModule, outputOptionsModule as OutputOptions);
+
+    if (CONFIG.MULTI_BUNDLES) {
+        logger('Creating legacy bundle...');
+        await createBundle(otherOptionsNoModule, outputOptionsNoModule as OutputOptions);
+    }
+}
+
+export { bundles };
