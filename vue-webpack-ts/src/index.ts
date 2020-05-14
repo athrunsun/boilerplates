@@ -1,15 +1,20 @@
 import Vue from 'vue';
 
-import router from '@app/router';
-import Root from '@app/root.vue';
+import { getRouter, initRouter } from '@app/router';
 
 Vue.config.productionTip = false;
 
-function main() {
-    new Vue({
-        router,
+async function main() {
+    initRouter();
+
+    const { default: Root } = await import('@app/root.vue');
+
+    const vueInstance = new Vue({
+        router: getRouter(),
         render: (h) => h(Root),
-    }).$mount('#root');
+    });
+
+    vueInstance.$mount('#root');
 }
 
 export { main };

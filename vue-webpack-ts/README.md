@@ -1,9 +1,9 @@
-# React-Webpack-TypeScript-Babel-Multi-Bundles-Boilerplate
-A React boilerplate with:
+# Vue-Webpack-TypeScript-Boilerplate
+A Vue boilerplate with:
 
 - Webpack as bundler
 - Babel as transpiler, `tsc` only responsible for type checking
-- [react-router](https://github.com/ReactTraining/react-router) as routing library
+- [vue-router](https://github.com/vuejs/vue-router) as routing library
 - Jest as testing framework
 - [typestyle](https://github.com/typestyle/typestyle) as css-in-js library
 
@@ -40,14 +40,16 @@ yarn run serve
 
 This will serve production bundles from [`http://localhost:3000`](http://localhost:3000) by default.
 
-## Multi-bundles mode
+## Single-bundle/multi-bundles mode
 This boilerplate is based on [Deploying ES2015+ Code in Production Today](https://philipwalton.com/articles/deploying-es2015-code-in-production-today/), it will generate 2 bundles by default, one for modern browsers that support `<script type="module">`, one for browsers that do not.
 
-By default this mode is **off**, and only a single bundle is injected into template `index.html` without any "preload" technique. To enable it, issue yarn command with `MULTI_BUNDLES` set to string value of `true` explicitly.
+By default this mode is **off**, and only **modern** bundle is injected into template `index.html`. To inject **legacy** bundle, issue yarn command with `OUTPUT_LEGACY_BUNDLE` set to string value of `true` explicitly.
+
+To enable multi-bundle mode, issue yarn command with `MULTI_BUNDLES` set to string value of `true` explicitly.
 
 ## FAQ
-### Why NOT create-react-app?
-CRA is good for beginners but its ability for customization is still NOT enough. I want to adjust TS/Webpack configuration based on my needs.
+### Why NOT Vue-CLI?
+Vue-CLI is good for beginners but its capability of deep customization does NOT suffice.
 
 ### Why `typestyle` but not any other css-in-js library?
 Pros:

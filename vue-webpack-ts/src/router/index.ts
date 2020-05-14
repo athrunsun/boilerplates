@@ -1,36 +1,45 @@
 import Vue from 'vue';
-import Router from 'vue-router';
+import VueRouter from 'vue-router';
 
-import App from '@app/components/app.vue';
-import Home from '@app/components/home.vue';
+let router: VueRouter;
 
-Vue.use(Router);
+function getRouter() {
+    return router;
+}
 
-export default new Router({
-    mode: 'history',
-    base: process.env.PUBLIC_PATH,
-    routes: [
-        {
-            path: '/',
-            redirect: '/app',
-        },
-        {
-            path: '/app',
-            component: App,
-            children: [
-                {
-                    path: 'home',
-                    component: Home,
-                },
-                {
-                    path: 'dynamic',
-                    component: () => import('@app/components/dynamic-comp.vue'),
-                },
-                {
-                    path: '',
-                    component: Home,
-                },
-            ],
-        },
-    ],
-});
+function initRouter() {
+    Vue.use(VueRouter);
+
+    router = new VueRouter({
+        mode: 'history',
+        base: process.env.PUBLIC_PATH,
+        routes: [
+            {
+                path: '/',
+                redirect: '/app',
+            },
+            {
+                path: '/app',
+                component: () => import('@app/components/app.vue'),
+                children: [
+                    {
+                        path: 'home',
+                        component: () => import('@app/components/home.vue'),
+                    },
+                    {
+                        path: 'dynamic',
+                        component: () => import('@app/components/dynamic-comp.vue'),
+                    },
+                    {
+                        path: '',
+                        component: () => import('@app/components/home.vue'),
+                    },
+                ],
+            },
+        ],
+    });
+
+    return router;
+}
+
+export { getRouter, initRouter };
