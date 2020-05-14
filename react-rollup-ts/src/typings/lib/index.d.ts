@@ -1,2 +1,3 @@
 declare module '@rollup/plugin-babel';
-declare module '@svgr/rollup';
+declare module '@rollup/plugin-url';
+declare module '@rollup/plugin-html';

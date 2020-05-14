@@ -6,10 +6,10 @@ import rollupPluginCommonjs from '@rollup/plugin-commonjs';
 import rollupPluginNodeResolve from '@rollup/plugin-node-resolve';
 import rollupPluginReplace from '@rollup/plugin-replace';
 import { terser as rollupPluginTerser } from 'rollup-plugin-terser';
-import rollupPluginUrl from 'rollup-plugin-url';
-import svgrRollup from '@svgr/rollup';
+import rollupPluginUrl from '@rollup/plugin-url';
 import rollupPluginJson from '@rollup/plugin-json';
 import rollupPluginPostcss from 'rollup-plugin-postcss';
+import rollupPluginHtml from '@rollup/plugin-html';
 
 import { PATHS } from '@eng/paths';
 import { REACT_APP_CONFIG_KEY_PREFIX, CONFIG } from '@eng/config';
@@ -129,6 +129,7 @@ function createBabelPluginOptions(nomodule: boolean) {
         exclude: nomodule ? /node_modules(\/|\\)(core-js|react|react-dom)(\/|\\)/ : /node_modules/,
         // Need to include `.js` files when transpiling `node_modules` code under nomodule mode.
         extensions: nomodule ? ['.ts', '.tsx', '.js'] : ['.ts', '.tsx'],
+        babelHelpers: 'bundled',
         babelrc: false,
         configFile: false,
         ...(process.env.NODE_ENV === 'development' && { sourceMaps: true, inputSourceMap: true }),
@@ -141,25 +142,27 @@ function createBabelPluginOptions(nomodule: boolean) {
     };
 }
 
-function basePlugins({ nomodule = false } = {}) {
-    const replacePluginDefinitions = {
-        'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development') },
-    };
+function composeReplacePluginDefinitions() {
+    const replacePluginDefinitions = { 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development') };
 
     for (const configKey of Object.keys(CONFIG)) {
-        replacePluginDefinitions['process.env'][configKey] = JSON.stringify(CONFIG[configKey]);
+        replacePluginDefinitions[`process.env.${configKey}`] = JSON.stringify(CONFIG[configKey]);
     }
 
     for (const envKey of Object.keys(process.env)) {
         // Will NOT override already processed keys
         if (
             envKey.startsWith(REACT_APP_CONFIG_KEY_PREFIX) &&
-            lodash.isNil(replacePluginDefinitions['process.env'][envKey])
+            lodash.isNil(replacePluginDefinitions[`process.env.${envKey}`])
         ) {
-            replacePluginDefinitions['process.env'][envKey] = JSON.stringify(process.env.configKey);
+            replacePluginDefinitions[`process.env.${envKey}`] = JSON.stringify(process.env[envKey]);
         }
     }
 
+    return replacePluginDefinitions;
+}
+
+function basePlugins({ nomodule = false } = {}) {
     const plugins = [
         rollupPluginNodeResolve({
             // THIS IS VERY IMPORTANT!
@@ -169,19 +172,24 @@ function basePlugins({ nomodule = false } = {}) {
         }),
         rollupPluginCommonjs({
             // include: 'node_modules/**',
+            // https://github.com/rollup/plugins/issues/304#issuecomment-619858916
+            exclude: ['node_modules/lodash-es/*.js'],
             namedExports: {
                 'node_modules/react/index.js': ['Component', 'PureComponent', 'useState', 'useEffect'],
                 'node_modules/react-is/index.js': ['isValidElementType'],
             },
         }),
         rollupPluginBabel(createBabelPluginOptions(nomodule)),
-        rollupPluginReplace(replacePluginDefinitions),
+        rollupPluginReplace(composeReplacePluginDefinitions()),
         manifestPlugin(),
         rollupPluginPostcss(process.env.NODE_ENV === 'development' ? { sourceMap: 'inline' } : { minimize: true }),
         rollupPluginUrl(),
-        svgrRollup(),
         rollupPluginJson(),
     ];
+
+    if (!CONFIG.MULTI_BUNDLES) {
+        plugins.push(rollupPluginHtml({ title: CONFIG.TITLE, publicPath: CONFIG.PUBLIC_PATH }));
+    }
 
     // Only add minification in production
     if (process.env.NODE_ENV === 'production') {

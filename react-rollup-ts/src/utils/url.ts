@@ -1,4 +1,4 @@
-import lodash from 'lodash';
+import { isArray, isEmpty } from 'lodash-es';
 import urlJoin from 'proper-url-join';
 
 function createUrl(
@@ -7,7 +7,7 @@ function createUrl(
     pathParameters: { [key: string]: string | number } = {},
     queryParameters: { [key: string]: string | number } = {},
 ) {
-    const urlPathsAsArray = lodash.isArray(urlPaths) ? urlPaths : [urlPaths];
+    const urlPathsAsArray = isArray(urlPaths) ? urlPaths : [urlPaths];
     let joinedPath = '';
 
     if (urlPathsAsArray.length <= 1) {
@@ -20,7 +20,7 @@ function createUrl(
         }
     }
 
-    if (!lodash.isEmpty(pathParameters)) {
+    if (!isEmpty(pathParameters)) {
         for (const pathParamKey of Object.keys(pathParameters)) {
             const re = new RegExp(`:${pathParamKey}`);
             joinedPath = joinedPath.replace(re, pathParameters[pathParamKey].toString());
@@ -29,7 +29,7 @@ function createUrl(
 
     let url = urlJoin(serverAddress, joinedPath);
 
-    if (!lodash.isEmpty(queryParameters)) {
+    if (!isEmpty(queryParameters)) {
         url = urlJoin(url, { query: queryParameters });
     }
 
