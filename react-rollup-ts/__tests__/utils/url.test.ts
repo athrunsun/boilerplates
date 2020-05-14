@@ -1,3 +1,5 @@
+import { describe, it, expect } from '@jest/globals';
+
 import * as urlUtils from '@app/utils/url';
 
 describe('urlUtil', () => {
