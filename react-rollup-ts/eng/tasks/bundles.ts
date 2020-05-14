@@ -9,7 +9,6 @@ import { terser as rollupPluginTerser } from 'rollup-plugin-terser';
 import rollupPluginUrl from '@rollup/plugin-url';
 import rollupPluginJson from '@rollup/plugin-json';
 import rollupPluginPostcss from 'rollup-plugin-postcss';
-import rollupPluginHtml from '@rollup/plugin-html';
 
 import { PATHS } from '@eng/paths';
 import { REACT_APP_CONFIG_KEY_PREFIX, CONFIG } from '@eng/config';
@@ -186,10 +185,6 @@ function basePlugins({ nomodule = false } = {}) {
         rollupPluginUrl(),
         rollupPluginJson(),
     ];
-
-    if (!CONFIG.MULTI_BUNDLES) {
-        plugins.push(rollupPluginHtml({ title: CONFIG.TITLE, publicPath: CONFIG.PUBLIC_PATH }));
-    }
 
     // Only add minification in production
     if (process.env.NODE_ENV === 'production') {

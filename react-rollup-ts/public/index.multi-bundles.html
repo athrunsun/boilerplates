@@ -5,6 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <title>{{ TITLE }}</title>
         <link rel="icon" href="{{ PUBLIC_PATH }}{{ APP_FAVICON_FILE_NAME }}" />
+        {% for module in modulepreload.main %}
+            <link rel="preload" as="script" crossorigin="anonymous" href="{{ module }}" />
+        {%- endfor %}
     </head>
 
     <body>
@@ -12,7 +15,7 @@
             You need to enable JavaScript to run this app.
         </noscript>
         <div id="root"></div>
-        <script type="module" src="{{ manifest.vendor }}"></script>
         <script type="module" src="{{ manifest.main }}"></script>
+        <script nomodule src="{{ manifest.nomodule }}"></script>
     </body>
 </html>
