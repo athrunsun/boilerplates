@@ -31,6 +31,7 @@ if (lodash.isNil(process.env.CONFIG_ENV)) {
 const CONFIG = {
     TITLE: process.env.TITLE as string,
     MULTI_BUNDLES: process.env.MULTI_BUNDLES === 'true',
+    OUTPUT_LEGACY_BUNDLE: process.env.OUTPUT_LEGACY_BUNDLE === 'true',
     ENABLE_MOCK: process.env.ENABLE_MOCK === 'true',
     REACT_APP_API_PREFIX: process.env.REACT_APP_API_PREFIX as string,
     REACT_APP_API_TARGET: process.env.REACT_APP_API_TARGET as string,
