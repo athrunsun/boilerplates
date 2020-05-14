@@ -29,6 +29,7 @@ if (lodash.isNil(process.env.CONFIG_ENV)) {
 }
 
 const CONFIG = {
+    TITLE: process.env.TITLE as string,
     MULTI_BUNDLES: process.env.MULTI_BUNDLES === 'true',
     ENABLE_MOCK: process.env.ENABLE_MOCK === 'true',
     VUE_APP_API_PREFIX: process.env.VUE_APP_API_PREFIX as string,

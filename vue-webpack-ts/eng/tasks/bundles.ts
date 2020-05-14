@@ -52,7 +52,7 @@ function composeWebpackDefinePluginDefinitions() {
             envKey.startsWith(VUE_APP_CONFIG_KEY_PREFIX) &&
             lodash.isNil(definePluginDefinitions['process.env'][envKey])
         ) {
-            definePluginDefinitions['process.env'][envKey] = JSON.stringify(process.env.configKey);
+            definePluginDefinitions['process.env'][envKey] = JSON.stringify(process.env[envKey]);
         }
     }
 
@@ -103,12 +103,16 @@ function configurePlugins(nomodule: boolean) {
             plugins.push(
                 new HtmlWebpackPlugin({
                     template: PATHS.APP_INDEX_HTML,
+                    title: CONFIG.TITLE,
                     favicon: PATHS.APP_FAVICON,
                     inject: true,
                 }),
             );
         }
     } else if (process.env.NODE_ENV === 'production') {
+        // This plugin will cause a build error in nomodule mode, most likely because splitChunks is not turned on.
+        // In multi-bundles mode, this plugin is used by modern bundle to inject css file, while style-loader is used by
+        // legacy bundle to inject inline css, thus make it useless.
         if (!nomodule) {
             plugins.push(
                 new MiniCssExtractPlugin({

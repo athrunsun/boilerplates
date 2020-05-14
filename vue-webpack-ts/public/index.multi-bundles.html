@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <title>Vue-Webpack-TypeScript-Babel-Multi-Bundles-Boilerplate</title>
+        <title>{{ TITLE }}</title>
         <link rel="icon" href="{{ PUBLIC_PATH }}{{ APP_FAVICON_FILE_NAME }}" />
         {% for moduleName, module in modulepreload %}
             <link rel="preload" as="script" crossorigin="anonymous" href="{{ PUBLIC_PATH }}{{ module }}" />

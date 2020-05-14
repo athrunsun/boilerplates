@@ -27,6 +27,7 @@ async function compileTemplates() {
     const templateData = {
         ENV: process.env.NODE_ENV || 'development',
         PUBLIC_PATH: CONFIG.PUBLIC_PATH,
+        TITLE: CONFIG.TITLE,
         APP_FAVICON_FILE_NAME: PATHS.APP_FAVICON_FILE_NAME,
         manifest,
         modulepreload,
