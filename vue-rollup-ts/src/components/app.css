@@ -1,0 +1,5 @@
+/* This file is only used to test css-loader */
+
+div {
+    font-family: 'Cascadia Code', Monaco, 'Courier New', Courier, monospace;
+}
