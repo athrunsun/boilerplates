@@ -6,7 +6,7 @@ module.exports = api => {
     const browsers = ['last 2 Chrome versions', 'last 2 Firefox versions'];
 
     const presetEnvOptionsNode = { targets: { node: 'current' } };
-    const presetEnvOptionsBrowser = { modules: false, targets: { browsers } };
+    const presetEnvOptionsBrowser = { modules: false, targets: browsers };
 
     const plugins = [
         [

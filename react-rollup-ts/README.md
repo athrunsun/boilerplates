@@ -7,8 +7,6 @@ A React boilerplate with:
 - Jest as testing framework
 - [typestyle](https://github.com/typestyle/typestyle) as css-in-js library
 
-This boilerplate is based on [Using Native JavaScript Modules in Production Today](https://philipwalton.com/articles/using-native-javascript-modules-in-production-today/).
-
 ## Get Started
 ### View site locally
 ```sh

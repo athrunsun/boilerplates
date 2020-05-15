@@ -206,7 +206,7 @@ function configureBabelLoader(nomodule: boolean) {
 
     return {
         test: /\.(tsx?|m?js)$/,
-        exclude: (file: any) => {
+        exclude: (file: string) => {
             if (nomodule) {
                 return /node_modules(\/|\\)(core-js|regenerator-runtime)(\/|\\)/.test(file);
                 // return false;
