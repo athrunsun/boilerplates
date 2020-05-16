@@ -481,19 +481,24 @@ async function bundles() {
     const compileModernBundle = createModernBundleCompiler();
     const compileLegacyBundle = createLegacyBundleCompiler();
 
-    if (CONFIG.MULTI_BUNDLES) {
-        logger('Compiling modern bundle...\n');
-        await compileModernBundle();
-        logger('Compiling legacy bundle...\n');
-        await compileLegacyBundle();
-    } else {
-        if (CONFIG.OUTPUT_LEGACY_BUNDLE) {
+    try {
+        if (CONFIG.MULTI_BUNDLES) {
+            logger('Compiling modern bundle...\n');
+            await compileModernBundle();
             logger('Compiling legacy bundle...\n');
             await compileLegacyBundle();
         } else {
-            logger('Compiling modern bundle...\n');
-            await compileModernBundle();
+            if (CONFIG.OUTPUT_LEGACY_BUNDLE) {
+                logger('Compiling legacy bundle...\n');
+                await compileLegacyBundle();
+            } else {
+                logger('Compiling modern bundle...\n');
+                await compileModernBundle();
+            }
         }
+    } catch (error) {
+        // Log this way so that we can see all fields of `error` object
+        logger([error.message, error]);
     }
 }
 
