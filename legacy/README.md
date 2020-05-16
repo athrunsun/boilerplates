@@ -1,5 +1,5 @@
-# Boilerplates
-My boilerplates collection.
+# Legacy
+Legacy boilerplates.
 
 # Frontend projects
 - `react-fusebox-ts`: a React boilerplate with TypeScript and FuseBox.
