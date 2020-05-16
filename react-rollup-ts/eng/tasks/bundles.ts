@@ -262,12 +262,24 @@ async function bundles() {
     const { output: outputOptionsModule, ...otherOptionsModule } = moduleConfig;
     const { output: outputOptionsNoModule, ...otherOptionsNoModule } = nomoduleConfig;
 
-    logger('Creating modern bundle...');
-    await createBundle(otherOptionsModule, outputOptionsModule as OutputOptions);
-
-    if (CONFIG.MULTI_BUNDLES) {
-        logger('Creating legacy bundle...');
-        await createBundle(otherOptionsNoModule, outputOptionsNoModule as OutputOptions);
+    try {
+        if (CONFIG.MULTI_BUNDLES) {
+            logger('Creating modern bundle...');
+            await createBundle(otherOptionsModule, outputOptionsModule as OutputOptions);
+            logger('Creating legacy bundle...');
+            await createBundle(otherOptionsNoModule, outputOptionsNoModule as OutputOptions);
+        } else {
+            if (CONFIG.OUTPUT_LEGACY_BUNDLE) {
+                logger('Creating legacy bundle...');
+                await createBundle(otherOptionsNoModule, outputOptionsNoModule as OutputOptions);
+            } else {
+                logger('Creating modern bundle...');
+                await createBundle(otherOptionsModule, outputOptionsModule as OutputOptions);
+            }
+        }
+    } catch (error) {
+        // Log this way so that we can see all fields of `error` object
+        logger([error.message, error]);
     }
 }
 

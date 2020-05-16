@@ -43,7 +43,7 @@ This will serve production bundles from [`http://localhost:3000`](http://localho
 ## Single-bundle/multi-bundles mode
 This boilerplate is based on [Deploying ES2015+ Code in Production Today](https://philipwalton.com/articles/deploying-es2015-code-in-production-today/), it will generate 2 bundles by default, one for modern browsers that support `<script type="module">`, one for browsers that do not.
 
-By default this mode is **off**, and only **modern** bundle is injected into template `index.html`.
+By default this mode is **off**, and only **modern** bundle is injected into template `index.html`. To inject **legacy** bundle, issue yarn command with `OUTPUT_LEGACY_BUNDLE` set to string value of `true` explicitly.
 
 To enable multi-bundle mode, issue yarn command with `MULTI_BUNDLES` set to string value of `true` explicitly.
 
