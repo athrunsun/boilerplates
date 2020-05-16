@@ -12,7 +12,11 @@ const logger = debug('eng:tasks:templates');
 async function compileTemplates() {
     logger('Compiling template...');
     const manifest = fsExtra.readJsonSync(path.resolve(PATHS.APP_BUILD_OUTPUT, PATHS.MANIFEST_FILE_NAME));
-    const modulepreload = fsExtra.readJsonSync(path.resolve(PATHS.APP_BUILD_OUTPUT, PATHS.MODULE_PRELOAD_FILE_NAME));
+    let modulepreload;
+
+    if (!CONFIG.OUTPUT_LEGACY_BUNDLE) {
+        modulepreload = fsExtra.readJsonSync(path.resolve(PATHS.APP_BUILD_OUTPUT, PATHS.MODULE_PRELOAD_FILE_NAME));
+    }
 
     nunjucks.configure({
         noCache: process.env.NODE_ENV !== 'production',
@@ -27,12 +31,21 @@ async function compileTemplates() {
         modulepreload,
     };
 
+    let templateFilePath;
+
+    if (CONFIG.MULTI_BUNDLES) {
+        templateFilePath = PATHS.APP_MULTI_BUNDLES_INDEX_HTML;
+    } else {
+        if (CONFIG.OUTPUT_LEGACY_BUNDLE) {
+            templateFilePath = PATHS.APP_LEGACY_INDEX_HTML;
+        } else {
+            templateFilePath = PATHS.APP_INDEX_HTML;
+        }
+    }
+
     await fsExtra.outputFile(
-        path.resolve(
-            PATHS.APP_BUILD_OUTPUT,
-            CONFIG.MULTI_BUNDLES ? PATHS.APP_MULTI_BUNDLES_INDEX_HTML_FILE_NAME : PATHS.APP_INDEX_HTML_FILE_NAME,
-        ),
-        nunjucks.render(CONFIG.MULTI_BUNDLES ? PATHS.APP_MULTI_BUNDLES_INDEX_HTML : PATHS.APP_INDEX_HTML, templateData),
+        path.resolve(PATHS.APP_BUILD_OUTPUT, PATHS.APP_INDEX_HTML_FILE_NAME),
+        nunjucks.render(templateFilePath, templateData),
     );
 
     copyAssets();

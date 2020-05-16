@@ -12,8 +12,6 @@
             You need to enable JavaScript to run this app.
         </noscript>
         <div id="root"></div>
-        <!-- `type="module"` is required here since rollup outputs esm -->
-        <script type="module" src="{{ manifest.vendor }}"></script>
-        <script type="module" src="{{ manifest.main }}"></script>
+        <script src="{{ manifest.nomodule }}"></script>
     </body>
 </html>

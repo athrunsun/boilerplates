@@ -5,7 +5,6 @@ import rollupPluginBabel from '@rollup/plugin-babel';
 import rollupPluginCommonjs from '@rollup/plugin-commonjs';
 import rollupPluginNodeResolve from '@rollup/plugin-node-resolve';
 import rollupPluginReplace from '@rollup/plugin-replace';
-import rollupPluginAlias from '@rollup/plugin-alias';
 import { terser as rollupPluginTerser } from 'rollup-plugin-terser';
 import rollupPluginUrl from '@rollup/plugin-url';
 import rollupPluginJson from '@rollup/plugin-json';
@@ -121,17 +120,20 @@ function createBabelPluginOptions(nomodule: boolean) {
     if (nomodule) {
         plugins.push(require.resolve('@babel/plugin-syntax-dynamic-import'));
         plugins.push(require.resolve('@babel/plugin-transform-parameters'));
+        // plugins.push(require.resolve('@babel/plugin-transform-arrow-functions'));
     }
 
     return {
         // Exclude `core-js` under nomodule mode b/c it will cause a lot of circular dependency warnings.
         // We need to transpile code in `node_modules` under nomodule mode b/c IE11 doesn't support a lot of ES6
         // features, which are used in 3rd-party libraries in `node_modules`.
+        // A negative look ahead is also used for regex in `module` mode in order to ensure JS transpilation is applied
+        // to Vue SFCs in `node_modules`. See https://vue-loader.vuejs.org/guide/pre-processors.html#excluding-node-modules.
         exclude: nomodule
             ? /node_modules(\/|\\)(core-js|regenerator-runtime)(\/|\\)/
             : /node_modules(\/|\\)(?!.+\.vue\.js)/,
-        // Need to include `.js` files when transpiling `node_modules` code under nomodule mode.
-        extensions: nomodule ? ['.ts', '.tsx', '.js'] : ['.ts', '.tsx'],
+        // Need to include `.js` and `.mjs` files when transpiling `node_modules` code under nomodule mode.
+        extensions: nomodule ? ['.ts', '.tsx', '.mjs', '.js'] : ['.ts', '.tsx'],
         babelHelpers: 'bundled',
         babelrc: false,
         configFile: false,
@@ -184,6 +186,8 @@ function basePlugins({ nomodule = false } = {}) {
         rollupPluginPostcss(process.env.NODE_ENV === 'development' ? { sourceMap: 'inline' } : { minimize: true }),
         rollupPluginUrl(),
         rollupPluginJson(),
+        // https://github.com/vuejs/rollup-plugin-vue/issues/238#issuecomment-523133535
+        // To address `Multiple conflicting contents for sourcemap source` error
         rollupPluginVue({ needMap: false }),
     ];
 
@@ -264,14 +268,22 @@ async function bundles() {
     const { output: outputOptionsNoModule, ...otherOptionsNoModule } = nomoduleConfig;
 
     try {
-        logger('Creating modern bundle...');
-        await createBundle(otherOptionsModule, outputOptionsModule as OutputOptions);
-
         if (CONFIG.MULTI_BUNDLES) {
+            logger('Creating modern bundle...');
+            await createBundle(otherOptionsModule, outputOptionsModule as OutputOptions);
             logger('Creating legacy bundle...');
             await createBundle(otherOptionsNoModule, outputOptionsNoModule as OutputOptions);
+        } else {
+            if (CONFIG.OUTPUT_LEGACY_BUNDLE) {
+                logger('Creating legacy bundle...');
+                await createBundle(otherOptionsNoModule, outputOptionsNoModule as OutputOptions);
+            } else {
+                logger('Creating modern bundle...');
+                await createBundle(otherOptionsModule, outputOptionsModule as OutputOptions);
+            }
         }
     } catch (error) {
+        // Log this way so that we can see all fields of `error` object
         logger([error.message, error]);
     }
 }

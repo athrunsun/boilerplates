@@ -8,6 +8,8 @@
 </template>
 
 <style lang="less">
+// https://github.com/egoist/rollup-plugin-postcss#imports
+// `~@app/components/...` only works for scss/sass files when using rollup-plugin-postcss.
 @import './app.less';
 </style>
 
@@ -16,6 +18,7 @@ import Vue from 'vue';
 
 import * as titleServices from '@app/services/title';
 
+// `@import` does NOT work in `<style>` block
 import '@app/components/app.css';
 
 export default Vue.extend({
