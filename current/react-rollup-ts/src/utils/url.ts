@@ -8,7 +8,7 @@ function createUrl(
     queryParameters: { [key: string]: string | number } = {},
 ) {
     const urlPathsAsArray = isArray(urlPaths) ? urlPaths : [urlPaths];
-    let joinedPath = urlJoin(urlPathsAsArray);
+    let joinedPath = urlJoin(...urlPathsAsArray);
 
     if (!isEmpty(pathParameters)) {
         for (const pathParamKey of Object.keys(pathParameters)) {
