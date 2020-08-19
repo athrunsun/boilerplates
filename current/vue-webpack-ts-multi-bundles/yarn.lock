@@ -1272,13 +1272,6 @@
   resolved "https://registry.npm.taobao.org/@types/prettier/download/@types/prettier-1.19.1.tgz?cache=0&sync_timestamp=1588201516205&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fprettier%2Fdownload%2F%40types%2Fprettier-1.19.1.tgz#33509849f8e679e4add158959fdb086440e9553f"
   integrity sha1-M1CYSfjmeeSt0ViVn9sIZEDpVT8=
 
-"@types/proper-url-join@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/@types/proper-url-join/-/proper-url-join-2.0.0.tgz#b63fed98a37631215586022de55353ba84384789"
-  integrity sha512-Q2MqlyNLYiqnJI01t/FRut17VURfCtbGzkavnfGueUQ9oM4a1cQwogjDUnCFxjaIfQBAomspYHuNGxhngVkfTQ==
-  dependencies:
-    query-string "^6.3.0"
-
 "@types/qs@*":
   version "6.9.1"
   resolved "https://registry.npm.taobao.org/@types/qs/download/@types/qs-6.9.1.tgz?cache=0&sync_timestamp=1588201516981&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fqs%2Fdownload%2F%40types%2Fqs-6.9.1.tgz#937fab3194766256ee09fcd40b781740758617e7"
@@ -5189,10 +5182,10 @@ lodash.sortby@^4.7.0:
   resolved "https://registry.npm.taobao.org/lodash.sortby/download/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
   integrity sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
 
-"lodash@>=3.5 <5", lodash@^4.17.10, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.4:
-  version "4.17.15"
-  resolved "https://registry.npm.taobao.org/lodash/download/lodash-4.17.15.tgz?cache=0&sync_timestamp=1580303049395&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flodash%2Fdownload%2Flodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha1-tEf2ZwoEVbv+7dETku/zMOoJdUg=
+"lodash@>=3.5 <5", lodash@^4.17.10, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.4:
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 loglevel@^1.6.2:
   version "1.6.8"
