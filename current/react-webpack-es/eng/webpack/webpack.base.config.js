@@ -1,5 +1,4 @@
 const path = require('path');
-const lodash = require('lodash');
 const webpack = require('webpack');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
@@ -17,7 +16,7 @@ function composeWebpackDefinePluginDefinitions() {
         // Will NOT override already processed keys
         if (
             envKey.startsWith(REACT_PUBLIC_CONFIG_KEY_PREFIX) &&
-            lodash.isNil(definePluginDefinitions['process.env'][envKey])
+            definePluginDefinitions['process.env'][envKey] == null
         ) {
             definePluginDefinitions['process.env'][envKey] = JSON.stringify(process.env[envKey]);
         }
