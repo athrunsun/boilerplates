@@ -2,9 +2,9 @@
 const path = require('path');
 const fs = require('fs');
 const dotenv = require('dotenv');
-const lodash = require('lodash');
 
 const { PATHS } = require('./paths');
+const commonUtils = require('./utils/common');
 
 const REACT_PUBLIC_CONFIG_KEY_PREFIX = 'REACT_PUBLIC_';
 
@@ -32,7 +32,7 @@ function loadEnvFile(envFileName) {
 // Load from default `.env` file
 loadEnvFile('.env');
 
-if (lodash.isNil(process.env.CONFIG_ENV)) {
+if (process.env.CONFIG_ENV == null) {
     console.warn('"process.env.CONFIG_ENV" not defined, skip reading environment specific dotenv file...');
 } else {
     const envFileName = `.env.${process.env.CONFIG_ENV}`;
@@ -44,7 +44,7 @@ const CONFIG = {
     REACT_PUBLIC_API_PREFIX: process.env.REACT_PUBLIC_API_PREFIX,
     REACT_PUBLIC_API_TARGET: process.env.REACT_PUBLIC_API_TARGET,
     REACT_PUBLIC_API_TARGET_MOCK: process.env.REACT_PUBLIC_API_TARGET_MOCK,
-    REACT_PUBLIC_PUBLIC_PATH: lodash.isEmpty(process.env.BASE_URL) ? '/' : process.env.BASE_URL,
+    REACT_PUBLIC_PUBLIC_PATH: commonUtils.isEmpty(process.env.BASE_URL) ? '/' : process.env.BASE_URL,
 };
 
 const undefinedConfigEntries = [];
