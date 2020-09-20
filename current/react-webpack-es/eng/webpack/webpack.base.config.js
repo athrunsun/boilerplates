@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 const { PATHS } = require('../paths');
 const { REACT_PUBLIC_CONFIG_KEY_PREFIX, CONFIG } = require('../config');
@@ -109,5 +108,5 @@ module.exports = {
         ],
     },
 
-    plugins: [new webpack.DefinePlugin(composeWebpackDefinePluginDefinitions()), new LodashModuleReplacementPlugin()],
+    plugins: [new webpack.DefinePlugin(composeWebpackDefinePluginDefinitions())],
 };

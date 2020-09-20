@@ -5,7 +5,6 @@ import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
@@ -91,7 +90,6 @@ function configurePlugins(nomodule: boolean) {
         }),
 
         new webpack.DefinePlugin(composeWebpackDefinePluginDefinitions()),
-        new LodashModuleReplacementPlugin(),
     ];
 
     if (process.env.NODE_ENV === 'development') {
