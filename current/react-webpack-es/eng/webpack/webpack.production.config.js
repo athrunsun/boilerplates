@@ -13,7 +13,7 @@ module.exports = webpackMerge(webpackBaseConfig, {
         filename: '[name].[contenthash].bundle.js',
         chunkFilename: '[id].[contenthash].bundle.js',
         path: PATHS.APP_BUILD_OUTPUT,
-        publicPath: CONFIG.PUBLIC_PATH,
+        publicPath: CONFIG.REACT_PUBLIC_PUBLIC_PATH,
     },
 
     mode: 'production',

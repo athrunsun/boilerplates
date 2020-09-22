@@ -12,7 +12,7 @@ module.exports = webpackMerge(webpackBaseConfig, {
         filename: '[name].[hash].bundle.js',
         chunkFilename: '[id].[hash].bundle.js',
         path: PATHS.APP_BUILD_OUTPUT,
-        publicPath: CONFIG.PUBLIC_PATH,
+        publicPath: CONFIG.REACT_PUBLIC_PUBLIC_PATH,
         pathinfo: true,
     },
 
@@ -20,6 +20,7 @@ module.exports = webpackMerge(webpackBaseConfig, {
 
     optimization: {
         minimize: false,
+        noEmitOnErrors: true,
     },
 
     module: {
@@ -65,6 +66,5 @@ module.exports = webpackMerge(webpackBaseConfig, {
             inject: true,
         }),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
     ],
 });
