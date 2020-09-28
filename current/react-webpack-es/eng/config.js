@@ -1,41 +1,36 @@
-const path = require('path');
-const fs = require('fs');
-const dotenv = require('dotenv');
-
-const { PATHS } = require('./paths');
 const commonUtils = require('./utils/common');
+const dotenvUtils = require('./utils/dotenv');
 
 const REACT_PUBLIC_CONFIG_KEY_PREFIX = 'REACT_PUBLIC_';
 
-/**
- * dotenv will NOT override environment variables that are already set
- * https://github.com/motdotla/dotenv#what-happens-to-environment-variables-that-were-already-set
- */
-function loadEnvFile(envFileName) {
-    const envFilePath = path.resolve(PATHS.APP_DIRECTORY, envFileName);
+function composeWebpackDefinePluginDefinitions() {
+    const definePluginDefinitions = { 'process.env': {} };
 
-    if (fs.existsSync(envFilePath)) {
-        console.log(`Loading environment variables from '${envFileName}'...`);
-    } else {
-        console.warn(`Env file '${envFilePath}' does NOT exist, skipping...`);
-        return;
+    for (const configKey of Object.keys(CONFIG)) {
+        definePluginDefinitions['process.env'][configKey] = JSON.stringify(CONFIG[configKey]);
     }
 
-    const envConfig = dotenv.parse(fs.readFileSync(envFilePath));
-
-    for (const k in envConfig) {
-        process.env[k] = envConfig[k];
+    for (const envKey of Object.keys(process.env)) {
+        // Will NOT override already processed keys
+        if (
+            envKey.startsWith(REACT_PUBLIC_CONFIG_KEY_PREFIX) &&
+            definePluginDefinitions['process.env'][envKey] == null
+        ) {
+            definePluginDefinitions['process.env'][envKey] = JSON.stringify(process.env[envKey]);
+        }
     }
+
+    return definePluginDefinitions;
 }
 
 // Load from default `.env` file
-loadEnvFile('.env');
+dotenvUtils.loadEnvFile('.env');
 
 if (process.env.CONFIG_ENV == null) {
     console.warn('"process.env.CONFIG_ENV" not defined, skip reading environment specific dotenv file...');
 } else {
     const envFileName = `.env.${process.env.CONFIG_ENV}`;
-    loadEnvFile(envFileName);
+    dotenvUtils.loadEnvFile(envFileName);
 }
 
 const CONFIG = {
@@ -58,4 +53,4 @@ if (undefinedConfigEntries.length > 0) {
     throw new Error(`The following config entries are missing: ${undefinedConfigEntries.join(', ')}`);
 }
 
-module.exports = { REACT_PUBLIC_CONFIG_KEY_PREFIX, CONFIG };
+module.exports = { REACT_PUBLIC_CONFIG_KEY_PREFIX, CONFIG, composeWebpackDefinePluginDefinitions };

@@ -2,27 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 const { PATHS } = require('../paths');
-const { REACT_PUBLIC_CONFIG_KEY_PREFIX, CONFIG } = require('../config');
-
-function composeWebpackDefinePluginDefinitions() {
-    const definePluginDefinitions = { 'process.env': {} };
-
-    for (const configKey of Object.keys(CONFIG)) {
-        definePluginDefinitions['process.env'][configKey] = JSON.stringify(CONFIG[configKey]);
-    }
-
-    for (const envKey of Object.keys(process.env)) {
-        // Will NOT override already processed keys
-        if (
-            envKey.startsWith(REACT_PUBLIC_CONFIG_KEY_PREFIX) &&
-            definePluginDefinitions['process.env'][envKey] == null
-        ) {
-            definePluginDefinitions['process.env'][envKey] = JSON.stringify(process.env[envKey]);
-        }
-    }
-
-    return definePluginDefinitions;
-}
+const { CONFIG, composeWebpackDefinePluginDefinitions } = require('../config');
 
 const imageAssetsPublicPath = path.join(CONFIG.REACT_PUBLIC_PUBLIC_PATH, PATHS.IMAGE_ASSETS_PATH);
 const fontAssetsPublicPath = path.join(CONFIG.REACT_PUBLIC_PUBLIC_PATH, PATHS.FONT_ASSETS_PATH);
