@@ -1,4 +1,3 @@
-/* eslint @typescript-eslint/no-var-requires: "off" */
 const { merge: webpackMerge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -20,6 +19,7 @@ module.exports = webpackMerge(webpackBaseConfig, {
     mode: 'production',
 
     optimization: {
+        minimize: true,
         minimizer: [
             new TerserPlugin({
                 test: /\.js(\?.*)?$/i,
@@ -47,10 +47,6 @@ module.exports = webpackMerge(webpackBaseConfig, {
                 use: [MiniCssExtractPlugin.loader, require.resolve('css-loader')],
             },
         ],
-    },
-
-    optimization: {
-        minimize: true,
     },
 
     plugins: [

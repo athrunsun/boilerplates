@@ -1,4 +1,3 @@
-/* eslint @typescript-eslint/no-var-requires: "off" */
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const history = require('connect-history-api-fallback');

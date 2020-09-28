@@ -1,4 +1,3 @@
-/* eslint @typescript-eslint/no-var-requires: "off" */
 const commonUtils = require('./utils/common');
 const dotenvUtils = require('./utils/dotenv');
 

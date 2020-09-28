@@ -1,9 +1,5 @@
 module.exports = {
-    // So parent files don't get applied
     root: true,
-    globals: {
-        preval: false,
-    },
     env: {
         es6: true,
         browser: true,
@@ -12,8 +8,11 @@ module.exports = {
     extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:react/recommended'],
     parser: 'babel-eslint',
     parserOptions: {
-        ecmaVersion: 7,
+        ecmaVersion: 2020,
         sourceType: 'module',
+        ecmaFeatures: {
+            jsx: true,
+        },
     },
     plugins: ['babel', 'prettier', 'react-hooks'],
     settings: {
@@ -26,10 +25,15 @@ module.exports = {
                 },
             },
         },
+        react: {
+            version: 'detect',
+        },
     },
     rules: {
         indent: 'off', // Incompatible with prettier
-        'prettier/prettier': ['error'],
+        'no-unused-vars': 'warn',
+        'prettier/prettier': 'warn',
+        'react/display-name': 'off',
         'react-hooks/rules-of-hooks': 'error',
         'react-hooks/exhaustive-deps': 'warn',
     },

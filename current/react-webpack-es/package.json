@@ -14,7 +14,7 @@
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand",
-        "lint": "eslint --ext .js,.jsx \"src\""
+        "lint": "eslint --ext .js,.jsx \".\""
     },
     "dependencies": {
         "axios": "^0.19.2",

@@ -1,4 +1,3 @@
-/* eslint @typescript-eslint/no-var-requires: "off" */
 const webpack = require('webpack');
 
 const webpackConfig = require('../webpack/webpack.production.config');
