@@ -22,7 +22,7 @@
         "test:debug": "yarn run type-check:test && node --inspect-brk node_modules/.bin/jest --runInBand"
     },
     "dependencies": {
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "core-js": "^3.6.5",
         "lodash-es": "^4.17.15",
         "proper-url-join": "^2.1.1",
