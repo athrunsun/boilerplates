@@ -81,7 +81,7 @@
         "http-proxy-middleware": "^1.0.3",
         "jest": "^25.5.4",
         "less": "^3.11.1",
-        "lodash": "^4.17.19",
+        "lodash": "^4.17.21",
         "nunjucks": "^3.2.1",
         "prettier": "^2.0.5",
         "rollup": "^2.9.1",
