@@ -24,7 +24,7 @@
     "dependencies": {
         "axios": "^0.21.1",
         "core-js": "^3.6.5",
-        "lodash": "^4.17.19",
+        "lodash": "^4.17.21",
         "proper-url-join": "^2.1.1",
         "regenerator-runtime": "^0.13.5",
         "typestyle": "^2.1.0",
