@@ -18,7 +18,7 @@
         "ts-polyfill": "^3.3.3",
         "tslib": "^1.9.3",
         "typestyle": "^2.0.1",
-        "urijs": "^1.19.9"
+        "urijs": "^1.19.10"
     },
     "devDependencies": {
         "@types/connect-history-api-fallback": "^1.3.1",
