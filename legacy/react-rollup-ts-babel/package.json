@@ -22,7 +22,7 @@
         "axios": "^0.18.1",
         "core-js": "^3.2.1",
         "dynamic-import-polyfill": "^0.1.0",
-        "lodash-es": "^4.17.15",
+        "lodash-es": "^4.17.21",
         "path-to-regexp": "^3.0.0",
         "proper-url-join": "^2.0.1",
         "react": "^16.9.0",
