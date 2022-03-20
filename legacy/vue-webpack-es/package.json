@@ -20,7 +20,7 @@
         "axios": "^0.21.2",
         "babel-jest": "^24.9.0",
         "jest": "^24.9.0",
-        "lodash": "^4.17.13",
+        "lodash": "^4.17.21",
         "proper-url-join": "^2.0.1",
         "typestyle": "^2.0.1",
         "vue": "^2.6.6",
