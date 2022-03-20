@@ -76,7 +76,7 @@
         "globby": "^10.0.1",
         "http-proxy-middleware": "^0.20.0",
         "jest": "^24.9.0",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.21",
         "nunjucks": "^3.2.0",
         "prettier": "^1.18.2",
         "rollup": "^1.20.2",
