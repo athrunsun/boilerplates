@@ -17,7 +17,7 @@
         "lint": "node eng/scripts/lint"
     },
     "dependencies": {
-        "axios": "^0.18.1",
+        "axios": "^0.21.2",
         "lodash": "^4.17.21",
         "path-to-regexp": "^3.0.0",
         "proper-url-join": "^2.0.1",
