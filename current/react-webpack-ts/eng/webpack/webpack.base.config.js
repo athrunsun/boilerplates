@@ -56,7 +56,7 @@ module.exports = {
                     {
                         loader: require.resolve('file-loader'),
                         options: {
-                            name: '[name].[hash].[ext]',
+                            name: '[name].[contenthash].[ext]',
                             outputPath: PATHS.IMAGE_ASSETS_PATH,
                             publicPath: imageAssetsPublicPath,
                         },

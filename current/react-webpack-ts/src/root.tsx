@@ -1,47 +1,31 @@
-import React from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { cssRaw } from 'typestyle';
+import React, { StrictMode } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import * as commonUtils from '@/utils/common';
 
 import * as routePathHelpers from '@/helpers/route-path';
 
-const App = React.lazy(() => import('@/components/app'));
+import '@/root.css';
 
-cssRaw(`
-    html {
-        box-sizing: border-box;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-    body {
-        margin: 0;
-    }
-    *,
-    *::before,
-    *::after {
-        box-sizing: inherit;
-    }
-`);
+const App = React.lazy(() => import('@/routes/app'));
+const RootRoute = React.lazy(() => import('@/routes/root-route'));
 
 function Root() {
     return (
-        <BrowserRouter
-            {...(!commonUtils.isEmpty(process.env.REACT_PUBLIC_PUBLIC_PATH) && {
-                basename: process.env.REACT_PUBLIC_PUBLIC_PATH,
-            })}
-        >
-            <Switch>
-                <React.Suspense fallback={null}>
-                    <Redirect
-                        exact={true}
-                        from={routePathHelpers.routePathProvider.ROOT}
-                        to={routePathHelpers.routePathProvider.APP}
-                    />
-                    <Route path={routePathHelpers.routePathProvider.APP} component={App} />
-                </React.Suspense>
-            </Switch>
-        </BrowserRouter>
+        <StrictMode>
+            <BrowserRouter
+                {...(!commonUtils.isEmpty(process.env.REACT_PUBLIC_PUBLIC_PATH) && {
+                    basename: process.env.REACT_PUBLIC_PUBLIC_PATH,
+                })}
+            >
+                <Routes>
+                    <React.Suspense fallback={null}>
+                        <Route path={routePathHelpers.routePathProvider.ROOT} element={<RootRoute />} />
+                        <Route path={routePathHelpers.routePathProvider.APP} element={<App />} />
+                    </React.Suspense>
+                </Routes>
+            </BrowserRouter>
+        </StrictMode>
     );
 }
 

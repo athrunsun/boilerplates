@@ -18,6 +18,7 @@ module.exports = (api) => {
         require.resolve('@babel/plugin-proposal-class-properties'),
         require.resolve('@babel/plugin-syntax-dynamic-import'),
         require.resolve('babel-plugin-lodash'),
+        require.resolve('@vanilla-extract/babel-plugin'),
     ];
 
     return {

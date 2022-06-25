@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { VanillaExtractPlugin } = require('@vanilla-extract/webpack-plugin');
 
 const { PATHS } = require('../paths');
 const { CONFIG } = require('../config');
@@ -69,5 +70,6 @@ module.exports = webpackMerge(webpackBaseConfig, {
             chunkFilename: '[id].[contenthash].css',
         }),
         new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
+        new VanillaExtractPlugin(),
     ],
 });

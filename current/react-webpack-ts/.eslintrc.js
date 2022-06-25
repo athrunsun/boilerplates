@@ -6,7 +6,7 @@ module.exports = {
         node: true,
     },
     extends: ['eslint:recommended', 'plugin:prettier/recommended', 'plugin:react/recommended'],
-    parser: 'babel-eslint',
+    parser: '@babel/eslint-parser',
     parserOptions: {
         ecmaVersion: 2020,
         sourceType: 'module',
@@ -47,9 +47,9 @@ module.exports = {
             },
             extends: [
                 'plugin:@typescript-eslint/recommended',
-                'plugin:react/recommended',
                 'plugin:prettier/recommended',
-                'prettier/@typescript-eslint',
+                'plugin:react/recommended',
+                'plugin:react-hooks/recommended',
             ],
             parser: '@typescript-eslint/parser',
             parserOptions: {
@@ -60,7 +60,7 @@ module.exports = {
                 },
                 project: './tsconfig.json',
             },
-            plugins: ['prettier', 'react-hooks'],
+            plugins: ['@typescript-eslint', 'prettier', 'react', 'react-hooks'],
             settings: {
                 react: {
                     version: 'detect',

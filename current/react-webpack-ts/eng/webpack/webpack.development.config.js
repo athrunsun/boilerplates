@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const { merge: webpackMerge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { VanillaExtractPlugin } = require('@vanilla-extract/webpack-plugin');
 
 const { PATHS } = require('../paths');
 const { CONFIG } = require('../config');
@@ -20,7 +21,7 @@ module.exports = webpackMerge(webpackBaseConfig, {
 
     optimization: {
         minimize: false,
-        noEmitOnErrors: true,
+        emitOnErrors: false,
     },
 
     module: {
@@ -42,9 +43,6 @@ module.exports = webpackMerge(webpackBaseConfig, {
                 use: [
                     {
                         loader: require.resolve('style-loader'),
-                        options: {
-                            sourceMap: true,
-                        },
                     },
                     {
                         loader: require.resolve('css-loader'),
@@ -66,5 +64,6 @@ module.exports = webpackMerge(webpackBaseConfig, {
             inject: true,
         }),
         new webpack.HotModuleReplacementPlugin(),
+        new VanillaExtractPlugin(),
     ],
 });

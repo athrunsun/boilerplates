@@ -61,8 +61,11 @@ function parse(src, options) {
 
 /**
  * Load a dotenv file into `process.env`.
- * CAUTION: dotenv will NOT override environment variables that are already set
- * https://github.com/motdotla/dotenv#what-happens-to-environment-variables-that-were-already-set
+ *
+ * This is a customized version of dotenv functionality. Original dotenv functionality doesn't suffice my needs in that,
+ * it will NOT override environment variables that are already set.
+ *
+ * @see [What happens to environment variables that were already set?](https://github.com/motdotla/dotenv#what-happens-to-environment-variables-that-were-already-set)
  * @param {string} envFileName
  */
 function loadEnvFile(envFileName) {

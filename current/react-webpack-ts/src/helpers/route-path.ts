@@ -8,7 +8,7 @@ const composeRouterPath = (
 
 const routePathProvider = {
     ROOT: composeRouterPath('/'),
-    APP: composeRouterPath('/app'),
+    APP: composeRouterPath('app'),
 };
 
 export { routePathProvider };
