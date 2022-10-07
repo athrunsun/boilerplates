@@ -11,6 +11,7 @@
         "start:mock": "cross-env REACT_APP_ENABLE_API_MOCK=true pnpm run start",
         "start:mock-server": "cross-env CONFIG_ENV=development node eng/mock/server",
         "build": "pnpm run clean && pnpm install && pnpm run type-check && cross-env NODE_ENV=production CONFIG_ENV=production node eng/prod/build",
+        "build:dev": "pnpm run clean && cross-env NODE_ENV=development CONFIG_ENV=development node eng/dev/build",
         "serve": "cross-env NODE_ENV=production CONFIG_ENV=production node eng/prod/serve",
         "clean": "rimraf dist",
         "test": "jest",

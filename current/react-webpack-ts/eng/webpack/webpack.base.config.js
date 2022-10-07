@@ -24,6 +24,7 @@ module.exports = {
         },
         modules: [PATHS.APP_DIRECTORY, PATHS.APP_NODE_MODULES, PATHS.APP_SRC],
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        symlinks: false,
     },
 
     module: {
