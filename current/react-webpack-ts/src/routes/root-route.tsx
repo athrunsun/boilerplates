@@ -1,16 +1,10 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 
 import * as routePathHelpers from '@/helpers/route-path';
 
 function RootRoute() {
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        navigate(routePathHelpers.routePathProvider.ROOT);
-    });
-
-    return null;
+    return <Navigate to={routePathHelpers.routePathProvider.APP} />;
 }
 
 export default RootRoute;
