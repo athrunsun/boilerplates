@@ -1,4 +1,4 @@
-# React-Webpack-TypeScript-Boilerplate
+# React-Webpack-TypeScript-pnpm-Boilerplate
 A React boilerplate with:
 
 - Webpack as bundler

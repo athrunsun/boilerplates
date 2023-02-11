@@ -1,5 +1,5 @@
 {
-    "name": "react-webpack-ts-boilerplate",
+    "name": "react-webpack-ts-pnpm-boilerplate",
     "version": "0.1.0",
     "private": true,
     "scripts": {
@@ -22,11 +22,11 @@
         "preinstall": "npx only-allow pnpm"
     },
     "dependencies": {
-        "@vanilla-extract/css": "^1.7.2",
+        "@vanilla-extract/css": "^1.9.1",
         "axios": "^0.27.2",
         "react": "^18.1.0",
         "react-dom": "^18.1.0",
-        "react-router-dom": "^6.3.0"
+        "react-router-dom": "^6.4.2"
     },
     "devDependencies": {
         "@babel/core": "^7.18.2",
